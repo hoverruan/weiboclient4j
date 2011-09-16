@@ -24,6 +24,9 @@ public class User {
     private Date createdAt;
     private boolean following;
     private boolean verified;
+    private boolean allowAllActMsg;
+    private boolean geoEnabled;
+    private Status status;
 
     public long getId() {
         return id;
@@ -167,5 +170,29 @@ public class User {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public boolean isAllowAllActMsg() {
+        return allowAllActMsg;
+    }
+
+    public void setAllowAllActMsg(boolean allowAllActMsg) {
+        this.allowAllActMsg = allowAllActMsg;
+    }
+
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
+    public void setGeoEnabled(boolean geoEnabled) {
+        this.geoEnabled = geoEnabled;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

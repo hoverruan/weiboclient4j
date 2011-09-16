@@ -12,14 +12,18 @@ public class Status {
     private String source;
     private boolean favorited;
     private boolean truncated;
-    private long inReplyToStatusId;
-    private long inReplyToUserId;
+    private String inReplyToStatusId;
+    private String inReplyToUserId;
     private String inReplyToScreenName;
     private String thumbnailPic;
     private String bmiddlePic;
     private String originalPic;
     private Status retweetedStatus;
     private User user;
+    private Geo geo;
+    private String mid;
+    private Annotation[] annotations;
+    private String deleted;
 
     public Date getCreatedAt() {
         return createdAt;
@@ -69,19 +73,19 @@ public class Status {
         this.truncated = truncated;
     }
 
-    public long getInReplyToStatusId() {
+    public String getInReplyToStatusId() {
         return inReplyToStatusId;
     }
 
-    public void setInReplyToStatusId(long inReplyToStatusId) {
+    public void setInReplyToStatusId(String inReplyToStatusId) {
         this.inReplyToStatusId = inReplyToStatusId;
     }
 
-    public long getInReplyToUserId() {
+    public String getInReplyToUserId() {
         return inReplyToUserId;
     }
 
-    public void setInReplyToUserId(long inReplyToUserId) {
+    public void setInReplyToUserId(String inReplyToUserId) {
         this.inReplyToUserId = inReplyToUserId;
     }
 
@@ -131,5 +135,37 @@ public class Status {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Geo getGeo() {
+        return geo;
+    }
+
+    public void setGeo(Geo geo) {
+        this.geo = geo;
+    }
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(Annotation[] annotations) {
+        this.annotations = annotations;
+    }
+
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
     }
 }
