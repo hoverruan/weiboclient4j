@@ -23,7 +23,7 @@ public class Parameters {
         return this;
     }
 
-    public Parameters add(Paging paging) {
+    Parameters add(Paging paging) {
         params.putAll(paging.buildParameters());
 
         return this;

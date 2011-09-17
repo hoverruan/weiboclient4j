@@ -34,6 +34,9 @@ public class WeiboClient {
     private static final String P_STATUS_TYPE = "feature";
     private static final String P_WITH_NEW_STATUS = "with_new_status";
     private static final String P_TYPE = "type";
+    private static final String P_LANGUAGE = "language";
+    private static final String P_USER_ID = "user_id";
+    private static final String P_SCREEN_NAME = "screen_name";
 
     private OAuthService service;
     private Token accessToken;
@@ -115,10 +118,6 @@ public class WeiboClient {
         return showUser(userId);
     }
 
-    public User showUser(long userId) throws WeiboClientException {
-        return get("users/show/" + userId, User.class);
-    }
-
     //=======================================================================
     //  Statuses API
     //=======================================================================
@@ -196,11 +195,11 @@ public class WeiboClient {
         Parameters params = Parameters.create().add(P_BASE_APP, baseApp);
 
         if (userId > 0) {
-            params.add("user_id", userId);
+            params.add(P_USER_ID, userId);
         }
 
         if (screenName != null && screenName.length() > 0) {
-            params.add("screen_name", screenName);
+            params.add(P_SCREEN_NAME, screenName);
         }
 
         if (type != null) {
@@ -336,22 +335,56 @@ public class WeiboClient {
     //  statuses/reset_count
     //*****************************************************
 
-    /*public boolean resetCount(CounterType type) throws WeiboClientException {
+    public Result resetCount(CounterType type) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_TYPE, type.ordinal() + 1);
 
+        return post("statuses/reset_count", Result.class, Paging.EMPTY_PAGING, params);
+    }
 
-    }*/
+    //*****************************************************
+    //  emotions
+    //*****************************************************
+
+    static final TypeReference<List<Emotion>> TYPE_EMOTION_LIST = new TypeReference<List<Emotion>>() {
+    };
+
+    public List<Emotion> getEmotions() throws WeiboClientException {
+        return getEmotions(EmotionType.FACE, Language.CNNAME);
+    }
+
+    public List<Emotion> getEmotions(EmotionType type, Language language) throws WeiboClientException {
+        Parameters params = Parameters.create()
+                .add(P_TYPE, type.name().toLowerCase())
+                .add(P_LANGUAGE, language.name().toLowerCase());
+
+        return get("emotions", TYPE_EMOTION_LIST, Paging.EMPTY_PAGING, params);
+    }
+
+    //=======================================================================
+    //  Users API
+    //=======================================================================
+
+    //*****************************************************
+    //  users/show
+    //*****************************************************
+
+    public User showUser(long userId) throws WeiboClientException {
+        return get("users/show", User.class, Paging.EMPTY_PAGING, Parameters.create().add(P_USER_ID, userId));
+    }
+
+    public User showUser(String screenName) throws WeiboClientException {
+        return get("users/show", User.class, Paging.EMPTY_PAGING, Parameters.create().add(P_SCREEN_NAME, screenName));
+    }
 
     //=======================================================================
     // Private methods
     //=======================================================================
 
-
-    private String getContent(String path, Paging paging, Parameters params) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, BASE_URL + path + ".json");
+    private String getContent(Verb verb, String path, Paging paging, Parameters params) {
+        OAuthRequest request = new OAuthRequest(verb, BASE_URL + path + ".json");
 
         params.add(paging);
-        Map<String,String> paramMap = params.buildParameters();
+        Map<String, String> paramMap = params.buildParameters();
         for (String key : paramMap.keySet()) {
             request.addQuerystringParameter(key, paramMap.get(key));
         }
@@ -367,7 +400,7 @@ public class WeiboClient {
     }
 
     private <T> T get(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(path, paging, params);
+        String content = getContent(Verb.GET, path, paging, params);
 
         return parseJsonObject(content, clazz);
     }
@@ -377,7 +410,27 @@ public class WeiboClient {
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(path, paging, params);
+        String content = getContent(Verb.GET, path, paging, params);
+
+        return parseJsonObject(content, type);
+    }
+
+    private <T> T post(String path, Class<T> clazz) throws WeiboClientException {
+        return get(path, clazz, Paging.EMPTY_PAGING, Parameters.create());
+    }
+
+    private <T> T post(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
+        String content = getContent(Verb.POST, path, paging, params);
+
+        return parseJsonObject(content, clazz);
+    }
+
+    private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
+        return get(path, type, paging, Parameters.create());
+    }
+
+    private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
+        String content = getContent(Verb.POST, path, paging, params);
 
         return parseJsonObject(content, type);
     }
