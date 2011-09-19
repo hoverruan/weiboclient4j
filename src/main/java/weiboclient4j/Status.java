@@ -1,10 +1,14 @@
 package weiboclient4j;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
  * @author Hover Ruan
  */
+
+@JsonIgnoreProperties(value = "annotations")
 public class Status {
     private Date createdAt;
     private long id;
@@ -22,7 +26,6 @@ public class Status {
     private User user;
     private Geo geo;
     private String mid;
-    private Annotation[] annotations;
     private String deleted;
 
     public Date getCreatedAt() {
@@ -151,14 +154,6 @@ public class Status {
 
     public void setMid(String mid) {
         this.mid = mid;
-    }
-
-    public Annotation[] getAnnotations() {
-        return annotations;
-    }
-
-    public void setAnnotations(Annotation[] annotations) {
-        this.annotations = annotations;
     }
 
     public String getDeleted() {

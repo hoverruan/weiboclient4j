@@ -8,6 +8,7 @@ public class Emotion {
     private String type;
     private String url;
     private boolean isHot;
+    private boolean isCommon;
     private int orderNumber;
     private String category;
 
@@ -35,12 +36,20 @@ public class Emotion {
         this.url = url;
     }
 
-    public boolean isHot() {
+    public boolean isIsHot() {
         return isHot;
     }
 
-    public void setHot(boolean hot) {
-        isHot = hot;
+    public void setIsHot(boolean isHot) {
+        isHot = isHot;
+    }
+
+    public boolean isIsCommon() {
+        return isCommon;
+    }
+
+    public void setIsCommon(boolean isCommon) {
+        this.isCommon = isCommon;
     }
 
     public int getOrderNumber() {

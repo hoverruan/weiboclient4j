@@ -8,6 +8,9 @@ import java.util.Map;
  */
 public class Paging {
     public static final String P_SINCE_ID = "since_id";
+    public static final String P_PAGE = "page";
+    public static final String P_COUNT = "count";
+    public static final String P_MAX_ID = "max_id";
 
     public static final Paging EMPTY_PAGING = new Paging() {
         @Override
@@ -30,9 +33,6 @@ public class Paging {
             throw new UnsupportedOperationException();
         }
     };
-    public static final String P_PAGE = "page";
-    public static final String P_COUNT = "count";
-    public static final String P_MAX_ID = "max_id";
 
     private Paging() {
 
@@ -95,10 +95,6 @@ public class Paging {
         }
 
         return params;
-    }
-
-    private static void appendParameter(StringBuilder buf, String key, long value) {
-        appendParameter(buf, key, String.valueOf(value));
     }
 
     private static void appendParameter(StringBuilder buf, String key, String value) {

@@ -27,6 +27,7 @@ public class User {
     private boolean allowAllActMsg;
     private boolean geoEnabled;
     private Status status;
+    private String remark;
 
     public long getId() {
         return id;
@@ -194,5 +195,13 @@ public class User {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
