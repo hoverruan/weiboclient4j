@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
@@ -46,7 +47,7 @@ public class WeiboClient {
     private Token accessToken;
 
     private long userId;
-    private ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
     {
         mapper.setPropertyNamingStrategy(new SinaJsonNamingStrategy());
@@ -586,7 +587,7 @@ public class WeiboClient {
     }
 
     private GlobalTrendList getTrendsDaily(Parameters params) throws WeiboClientException {
-        return get("trends/daily", GlobalTrendList.class, params);
+        return new GlobalTrendList(getContentAsJsonNode("trends/daily", Paging.EMPTY_PAGING, params));
     }
 
     //*****************************************************
@@ -674,6 +675,18 @@ public class WeiboClient {
         Response response = request.send();
 
         return response.getBody();
+    }
+
+    private JsonNode getContentAsJsonNode(String path, Paging paging, Parameters params) throws WeiboClientException {
+        String content = getContent(Verb.GET, path, paging, params);
+
+        try {
+            return mapper.readValue(content, JsonNode.class);
+        } catch (IOException e) {
+            log.warning("Parse failed: " + content);
+
+            throw new WeiboClientException(e);
+        }
     }
 
     private <T> T get(String path, Class<T> clazz) throws WeiboClientException {
