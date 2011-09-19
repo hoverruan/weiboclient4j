@@ -569,7 +569,7 @@ public class WeiboClient {
     }
 
     private GlobalTrendList getTrendsHourly(Parameters params) throws WeiboClientException {
-        return get("trends/hourly", GlobalTrendList.class, params);
+        return new GlobalTrendList(getContentAsJsonNode("trends/hourly", Paging.EMPTY_PAGING, params));
     }
 
     //*****************************************************
@@ -605,7 +605,7 @@ public class WeiboClient {
     }
 
     private GlobalTrendList getTrendsWeekly(Parameters params) throws WeiboClientException {
-        return get("trends/weekly", GlobalTrendList.class, params);
+        return new GlobalTrendList(getContentAsJsonNode("trends/weekly", Paging.EMPTY_PAGING, params));
     }
 
     //=======================================================================
