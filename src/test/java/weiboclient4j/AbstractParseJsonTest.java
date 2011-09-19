@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * @author Hover Ruan
  */
-public class AbstractParseJsonTest {
+public abstract class AbstractParseJsonTest {
     protected WeiboClient client = new WeiboClient();
 
     protected String readResource(String path) throws Exception {

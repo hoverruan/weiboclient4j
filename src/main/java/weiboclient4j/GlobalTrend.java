@@ -13,7 +13,7 @@ public class GlobalTrend {
 
     }
 
-    public GlobalTrend(JsonNode json) {
+    GlobalTrend(JsonNode json) {
         name = json.get("name").getValueAsText();
         query = json.get("query").getValueAsText();
     }

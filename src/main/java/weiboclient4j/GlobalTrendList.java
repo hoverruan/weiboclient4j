@@ -18,7 +18,7 @@ public class GlobalTrendList {
     public GlobalTrendList() {
     }
 
-    public GlobalTrendList(JsonNode json) {
+    GlobalTrendList(JsonNode json) {
         asOf = json.get("as_of").getLongValue();
         JsonNode trendsNode = json.get("trends");
         Iterator<String> fieldNames = trendsNode.getFieldNames();

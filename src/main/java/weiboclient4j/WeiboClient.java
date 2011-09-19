@@ -633,7 +633,7 @@ public class WeiboClient {
     }
 
     private List<Tag> getTags(Paging paging, Parameters params) throws WeiboClientException {
-        return get("tags", TYPE_TAG_LIST, paging, params);
+        return Tag.parseTags(getContentAsJsonNode("tags", paging, params));
     }
 
     //=======================================================================
