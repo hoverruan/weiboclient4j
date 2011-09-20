@@ -59,20 +59,21 @@ public class WeiboClient {
     }
 
     public WeiboClient(String apiKey, String apiSecret) {
+        init(apiKey, apiSecret);
+    }
+
+    public WeiboClient(String apiKey, String apiSecret, Token accessToken) {
+        init(apiKey, apiSecret);
+
+        setAccessToken(accessToken);
+    }
+
+    private void init(String apiKey, String apiSecret) {
         service = new ServiceBuilder()
                 .provider(SinaWeiboApi.class)
                 .apiKey(apiKey)
                 .apiSecret(apiSecret)
                 .build();
-    }
-
-    public WeiboClient(Token accessToken) {
-        setAccessToken(accessToken);
-    }
-
-    public WeiboClient(Token accessToken, long userId) {
-        setAccessToken(accessToken);
-        setUserId(userId);
     }
 
     /**
@@ -90,11 +91,15 @@ public class WeiboClient {
     public void setAccessToken(Token accessToken) {
         this.accessToken = accessToken;
 
-        if (accessToken.getRawResponse() != null) {
-            Matcher matcher = USER_ID_PATTERN.matcher(accessToken.getRawResponse());
-            if (matcher.find()) {
-                setUserId(Long.parseLong(matcher.group(1)));
+        try {
+            if (accessToken.getRawResponse() != null) {
+                Matcher matcher = USER_ID_PATTERN.matcher(accessToken.getRawResponse());
+                if (matcher.find()) {
+                    setUserId(Long.parseLong(matcher.group(1)));
+                }
             }
+        } catch (Exception e) {
+            // ignore
         }
     }
 
