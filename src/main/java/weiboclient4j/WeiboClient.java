@@ -103,7 +103,7 @@ public class WeiboClient {
         }
     }
 
-    public Token getOAuthRequestToken() {
+    public Token getRequestToken() {
         return service.getRequestToken();
     }
 
@@ -111,8 +111,10 @@ public class WeiboClient {
         return service.getAuthorizationUrl(requestToken);
     }
 
-    public Token getOAuthAccessToken(Token requestToken, Verifier verifier) {
-        return service.getAccessToken(requestToken, verifier);
+    public Token getAccessToken(Token requestToken, Verifier verifier) {
+        setAccessToken(service.getAccessToken(requestToken, verifier));
+
+        return accessToken;
     }
 
     public void setUserId(long userId) {
@@ -662,7 +664,7 @@ public class WeiboClient {
     private List<Status> getFavoriteStatuses(Paging paging) throws WeiboClientException {
         return get("favorites", TYPE_STATUS_LIST, paging);
     }
-    
+
     //=======================================================================
     // Private methods
     //=======================================================================
