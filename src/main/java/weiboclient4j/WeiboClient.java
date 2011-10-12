@@ -6,7 +6,11 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.SinaWeiboApi;
-import org.scribe.model.*;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.utils.SinaJsonNamingStrategy;
 
@@ -666,6 +670,38 @@ public class WeiboClient {
     }
 
     //=======================================================================
+    //  Short URL API
+    //=======================================================================
+
+    static final TypeReference<List<Url>> TYPE_URL_LIST = new TypeReference<List<Url>>() {
+    };
+
+    //*****************************************************
+    //  short_url/expand
+    //*****************************************************
+
+    public Url expandShortUrl(String shortUrl) throws WeiboClientException {
+        List<Url> urls = expandShortUrls(shortUrl);
+
+        if (urls != null && urls.size() > 0) {
+            return urls.get(0);
+        }
+
+        return null;
+    }
+
+    private List<Url> expandShortUrls(String... shortUrls) throws WeiboClientException {
+        Parameters params = Parameters.create();
+
+        // TODO fixme: only works when shortUrls.length == 1
+        for (String shortUrl : shortUrls) {
+            params.add("url_short", shortUrl);
+        }
+
+        return get("short_url/expand", TYPE_URL_LIST, params);
+    }
+
+    //=======================================================================
     // Private methods
     //=======================================================================
 
@@ -764,9 +800,7 @@ public class WeiboClient {
         try {
             return mapper.readValue(content, clazz);
         } catch (IOException e) {
-            log.warning("Parse failed: " + content);
-
-            throw new WeiboClientException(e);
+            return handleWeiboError(content, e);
         }
     }
 
@@ -774,8 +808,16 @@ public class WeiboClient {
         try {
             return mapper.readValue(content, type);
         } catch (IOException e) {
-            log.warning("Parse failed: " + content);
+            return handleWeiboError(content, e);
+        }
+    }
 
+    private <T> T handleWeiboError(String content, IOException e) throws WeiboClientException {
+        try {
+            WeiboError error = mapper.readValue(content, WeiboError.class);
+            throw new WeiboClientException(error);
+        } catch (IOException ex) {
+            log.warning("Parse failed: " + content);
             throw new WeiboClientException(e);
         }
     }
