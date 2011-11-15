@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import com.sun.xml.internal.ws.util.localization.NullLocalizable;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
@@ -141,6 +142,10 @@ public class WeiboClient {
     static final TypeReference<List<Status>> TYPE_STATUS_LIST = new TypeReference<List<Status>>() {
     };
 
+    public List<Status> parseStatusList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_STATUS_LIST);
+    }
+
     //*****************************************************
     // statuses/public_timeline
     //*****************************************************
@@ -249,6 +254,10 @@ public class WeiboClient {
     static final TypeReference<List<Comment>> TYPE_COMMENT_LIST = new TypeReference<List<Comment>>() {
     };
 
+    public List<Comment> parseCommentList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_COMMENT_LIST);
+    }
+
     public List<Comment> getMyComments() throws WeiboClientException {
         return getMyComments(Paging.EMPTY_PAGING);
     }
@@ -308,6 +317,10 @@ public class WeiboClient {
 
     static final TypeReference<List<Count>> TYPE_COUNT_LIST = new TypeReference<List<Count>>() {
     };
+
+    public List<Count> parseCountList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_COUNT_LIST);
+    }
 
     public List<Count> getCounts(long... ids) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_IDS, ids);
@@ -378,6 +391,10 @@ public class WeiboClient {
 
     static final TypeReference<List<Emotion>> TYPE_EMOTION_LIST = new TypeReference<List<Emotion>>() {
     };
+
+    public List<Emotion> parseEmotionList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_EMOTION_LIST);
+    }
 
     public List<Emotion> getEmotions() throws WeiboClientException {
         return getEmotions(Parameters.create());
@@ -498,6 +515,10 @@ public class WeiboClient {
     static final TypeReference<List<User>> TYPE_USER_LIST = new TypeReference<List<User>>() {
     };
 
+    public List<User> parseUserList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_USER_LIST);
+    }
+
     public List<User> getHotUsers() throws WeiboClientException {
         return getHotUsers(Parameters.create());
     }
@@ -523,6 +544,10 @@ public class WeiboClient {
     static final TypeReference<List<SuggestedUser>> TYPE_SUGGESTED_USER_LIST = new TypeReference<List<SuggestedUser>>() {
     };
 
+    public List<SuggestedUser> parseSuggestedUserList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_SUGGESTED_USER_LIST);
+    }
+
     public List<SuggestedUser> getSuggestedUsersWithReason() throws WeiboClientException {
         Parameters params = Parameters.create().add(P_WITH_REASON, 1);
 
@@ -539,6 +564,10 @@ public class WeiboClient {
 
     static final TypeReference<List<Trend>> TYPE_TREND_LIST = new TypeReference<List<Trend>>() {
     };
+
+    public List<Trend> parseTrendList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_TREND_LIST);
+    }
 
     public List<Trend> getTrends(long userId) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_USER_ID, userId);
@@ -630,6 +659,10 @@ public class WeiboClient {
     static final TypeReference<List<Tag>> TYPE_TAG_LIST = new TypeReference<List<Tag>>() {
     };
 
+    public List<Tag> parseTagList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_TAG_LIST);
+    }
+
     public List<Tag> getTags(long userId) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_USER_ID, userId);
 
@@ -675,6 +708,10 @@ public class WeiboClient {
 
     static final TypeReference<List<Url>> TYPE_URL_LIST = new TypeReference<List<Url>>() {
     };
+
+    public List<Url> parseUrlList(String json) throws WeiboClientException {
+        return parseJsonObject(json, TYPE_URL_LIST);
+    }
 
     //*****************************************************
     //  short_url/expand
@@ -796,23 +833,25 @@ public class WeiboClient {
         return parseJsonObject(content, type);
     }
 
-    <T> T parseJsonObject(String content, Class<T> clazz) throws WeiboClientException {
+    public <T> T parseJsonObject(String content, Class<T> clazz) throws WeiboClientException {
         try {
             return mapper.readValue(content, clazz);
         } catch (IOException e) {
-            return handleWeiboError(content, e);
+            handleWeiboError(content, e);
+            return null;
         }
     }
 
-    <T> List<T> parseJsonObject(String content, TypeReference<List<T>> type) throws WeiboClientException {
+    public <T> List<T> parseJsonObject(String content, TypeReference<List<T>> type) throws WeiboClientException {
         try {
             return mapper.readValue(content, type);
         } catch (IOException e) {
-            return handleWeiboError(content, e);
+            handleWeiboError(content, e);
+            return null;
         }
     }
 
-    private <T> T handleWeiboError(String content, IOException e) throws WeiboClientException {
+    private void handleWeiboError(String content, IOException e) throws WeiboClientException {
         try {
             WeiboError error = mapper.readValue(content, WeiboError.class);
             throw new WeiboClientException(error);
