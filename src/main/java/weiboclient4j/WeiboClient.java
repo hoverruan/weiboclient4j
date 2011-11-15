@@ -796,7 +796,7 @@ public class WeiboClient {
         return parseJsonObject(content, type);
     }
 
-    <T> T parseJsonObject(String content, Class<T> clazz) throws WeiboClientException {
+    public <T> T parseJsonObject(String content, Class<T> clazz) throws WeiboClientException {
         try {
             return mapper.readValue(content, clazz);
         } catch (IOException e) {
@@ -804,7 +804,7 @@ public class WeiboClient {
         }
     }
 
-    <T> List<T> parseJsonObject(String content, TypeReference<List<T>> type) throws WeiboClientException {
+    public <T> List<T> parseJsonObject(String content, TypeReference<List<T>> type) throws WeiboClientException {
         try {
             return mapper.readValue(content, type);
         } catch (IOException e) {
