@@ -1,6 +1,5 @@
 package weiboclient4j;
 
-import com.sun.xml.internal.ws.util.localization.NullLocalizable;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
