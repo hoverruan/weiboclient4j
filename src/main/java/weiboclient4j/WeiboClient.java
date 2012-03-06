@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,6 +127,15 @@ public class WeiboClient {
     }
 
     public long getUserId() {
+        if (userId <= 0) {
+            try {
+                User user = get("account/verify_credentials.json", User.class);
+                userId = user.getId();
+            } catch (WeiboClientException e) {
+                log.log(Level.WARNING, "Failed getting uid from account/verify_credentials.json: " + e.getMessage(), e);
+            }
+        }
+
         return userId;
     }
 
@@ -784,65 +794,65 @@ public class WeiboClient {
         }
     }
 
-    private <T> T get(String path, Class<T> clazz) throws WeiboClientException {
+    public <T> T get(String path, Class<T> clazz) throws WeiboClientException {
         return get(path, clazz, Paging.EMPTY_PAGING, Parameters.create());
     }
 
-    private <T> T get(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
+    public <T> T get(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
         String content = getContent(Verb.GET, path, Paging.EMPTY_PAGING, params);
 
         return parseJsonObject(content, clazz);
     }
 
-    private <T> T get(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
+    public <T> T get(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
         String content = getContent(Verb.GET, path, paging, params);
 
         return parseJsonObject(content, clazz);
     }
 
-    private <T> List<T> get(String path, TypeReference<List<T>> type) throws WeiboClientException {
+    public <T> List<T> get(String path, TypeReference<List<T>> type) throws WeiboClientException {
         return get(path, type, Paging.EMPTY_PAGING, Parameters.create());
     }
 
-    private <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
+    public <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
         return get(path, type, paging, Parameters.create());
     }
 
-    private <T> List<T> get(String path, TypeReference<List<T>> type, Parameters params) throws WeiboClientException {
+    public <T> List<T> get(String path, TypeReference<List<T>> type, Parameters params) throws WeiboClientException {
         return get(path, type, Paging.EMPTY_PAGING, params);
     }
 
-    private <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
+    public <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
         String content = getContent(Verb.GET, path, paging, params);
 
         return parseJsonObject(content, type);
     }
 
-    private <T> T post(String path, Class<T> clazz) throws WeiboClientException {
-        return get(path, clazz, Paging.EMPTY_PAGING, Parameters.create());
+    public <T> T post(String path, Class<T> clazz) throws WeiboClientException {
+        return post(path, clazz, Paging.EMPTY_PAGING, Parameters.create());
     }
 
-    private <T> T post(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
+    public <T> T post(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
         String content = getContent(Verb.POST, path, Paging.EMPTY_PAGING, params);
 
         return parseJsonObject(content, clazz);
     }
 
-    private <T> T post(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
+    public <T> T post(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
         String content = getContent(Verb.POST, path, paging, params);
 
         return parseJsonObject(content, clazz);
     }
 
-    private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
-        return get(path, type, paging, Parameters.create());
+    public <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
+        return post(path, type, paging, Parameters.create());
     }
 
-    private <T> List<T> post(String path, TypeReference<List<T>> type, Parameters params) throws WeiboClientException {
-        return get(path, type, Paging.EMPTY_PAGING, params);
+    public <T> List<T> post(String path, TypeReference<List<T>> type, Parameters params) throws WeiboClientException {
+        return post(path, type, Paging.EMPTY_PAGING, params);
     }
 
-    private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
+    public <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
         String content = getContent(Verb.POST, path, paging, params);
 
         return parseJsonObject(content, type);
