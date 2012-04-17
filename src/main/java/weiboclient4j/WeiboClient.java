@@ -1,8 +1,6 @@
 package weiboclient4j;
 
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.SinaWeiboApi;
@@ -12,14 +10,12 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
-import weiboclient4j.utils.SinaJsonNamingStrategy;
+import static weiboclient4j.utils.JsonUtils.parseJsonObject;
+import static weiboclient4j.utils.JsonUtils.readValue;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,16 +47,6 @@ public class WeiboClient {
     private Token accessToken;
 
     private long userId;
-    ObjectMapper mapper = new ObjectMapper();
-
-    {
-        mapper.setPropertyNamingStrategy(new SinaJsonNamingStrategy());
-
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
-        mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.getDeserializationConfig().setDateFormat(format);
-    }
 
     public WeiboClient(String apiKey, String apiSecret) {
         init(apiKey, apiSecret);
@@ -760,7 +746,7 @@ public class WeiboClient {
         String content = getContent(Verb.GET, path, paging, params);
 
         try {
-            return mapper.readValue(content, JsonNode.class);
+            return readValue(content, JsonNode.class);
         } catch (IOException e) {
             log.warning("Parse failed: " + content);
 
@@ -830,34 +816,6 @@ public class WeiboClient {
         String content = getContent(Verb.POST, path, paging, params);
 
         return parseJsonObject(content, type);
-    }
-
-    public <T> T parseJsonObject(String content, Class<T> clazz) throws WeiboClientException {
-        try {
-            return mapper.readValue(content, clazz);
-        } catch (IOException e) {
-            handleWeiboError(content, e);
-            return null;
-        }
-    }
-
-    public <T> List<T> parseJsonObject(String content, TypeReference<List<T>> type) throws WeiboClientException {
-        try {
-            return mapper.readValue(content, type);
-        } catch (IOException e) {
-            handleWeiboError(content, e);
-            return null;
-        }
-    }
-
-    private void handleWeiboError(String content, IOException e) throws WeiboClientException {
-        try {
-            WeiboError error = mapper.readValue(content, WeiboError.class);
-            throw new WeiboClientException(error);
-        } catch (IOException ex) {
-            log.warning("Parse failed: " + content);
-            throw new WeiboClientException(e);
-        }
     }
 
     private boolean isNotBlank(String screenName) {

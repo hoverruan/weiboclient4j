@@ -6,8 +6,6 @@ import java.io.*;
  * @author Hover Ruan
  */
 public abstract class AbstractParseJsonTest {
-    protected WeiboClient client = new WeiboClient();
-
     protected String readResource(String path) throws Exception {
         BufferedReader reader = null;
         StringWriter result;
