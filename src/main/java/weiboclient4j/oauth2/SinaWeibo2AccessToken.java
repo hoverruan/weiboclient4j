@@ -8,16 +8,18 @@ import org.scribe.model.Token;
 public class SinaWeibo2AccessToken extends Token {
     private long expiresIn;
     private long remindIn;
+    private long uid;
 
     public SinaWeibo2AccessToken(String token, String secret) {
         super(token, secret);
     }
 
     public SinaWeibo2AccessToken(SinaWeibo2AccessTokenResponse response) {
-        super(response.getAccessToken(), "");
+        this(response.getAccessToken(), "");
 
         expiresIn = response.getExpiresIn();
         remindIn = response.getRemindIn();
+        uid = response.getUid();
     }
 
     public long getExpiresIn() {
@@ -26,5 +28,9 @@ public class SinaWeibo2AccessToken extends Token {
 
     public long getRemindIn() {
         return remindIn;
+    }
+
+    public long getUid() {
+        return uid;
     }
 }

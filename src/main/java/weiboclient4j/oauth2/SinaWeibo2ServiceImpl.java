@@ -5,7 +5,6 @@ import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
-import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuth20ServiceImpl;
 
@@ -27,7 +26,7 @@ public class SinaWeibo2ServiceImpl extends OAuth20ServiceImpl {
 
     @Override
     public Token getAccessToken(Token requestToken, Verifier verifier) {
-        OAuthRequest request = new OAuthRequest(Verb.POST, api.getAccessTokenEndpoint());
+        OAuthRequest request = new OAuthRequest(api.getAccessTokenVerb(), api.getAccessTokenEndpoint());
         request.addBodyParameter(OAuthConstants.CLIENT_ID, config.getApiKey());
         request.addBodyParameter(OAuthConstants.CLIENT_SECRET, config.getApiSecret());
         request.addBodyParameter(GRANT_TYPE, api.getGrantType().getType());

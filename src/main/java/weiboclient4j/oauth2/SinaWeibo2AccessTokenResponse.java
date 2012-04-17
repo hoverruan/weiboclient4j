@@ -3,7 +3,7 @@ package weiboclient4j.oauth2;
 /**
  * @author Hover Ruan
  */
-class SinaWeibo2AccessTokenResponse {
+public class SinaWeibo2AccessTokenResponse {
     private String accessToken;
     private long expiresIn;
     private long remindIn;

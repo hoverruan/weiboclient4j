@@ -12,6 +12,7 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import static weiboclient4j.utils.JsonUtils.readValue;
+import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.util.List;
@@ -727,7 +728,7 @@ public class WeiboClient {
     // Private methods
     //=======================================================================
 
-    private String getContent(Verb verb, String path, Paging paging, Parameters params) {
+    private Response getContent(Verb verb, String path, Paging paging, Parameters params) {
         OAuthRequest request = new OAuthRequest(verb, BASE_URL + path + ".json");
 
         params.add(paging);
@@ -737,18 +738,16 @@ public class WeiboClient {
         }
 
         service.signRequest(accessToken, request);
-        Response response = request.send();
-
-        return response.getBody();
+        return request.send();
     }
 
     private JsonNode getContentAsJsonNode(String path, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.GET, path, paging, params);
+        Response response = getContent(Verb.GET, path, paging, params);
 
         try {
-            return readValue(content, JsonNode.class);
+            return readValue(response.getBody(), JsonNode.class);
         } catch (IOException e) {
-            log.warning("Parse failed: " + content);
+            log.warning("Parse failed: " + response.getBody());
 
             throw new WeiboClientException(e);
         }
@@ -759,15 +758,15 @@ public class WeiboClient {
     }
 
     private <T> T get(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.GET, path, Paging.EMPTY_PAGING, params);
+        Response response = getContent(Verb.GET, path, Paging.EMPTY_PAGING, params);
 
-        return parseJsonObject(content, clazz);
+        return parseJsonObject(response, clazz);
     }
 
     private <T> T get(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.GET, path, paging, params);
+        Response response = getContent(Verb.GET, path, paging, params);
 
-        return parseJsonObject(content, clazz);
+        return parseJsonObject(response, clazz);
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type) throws WeiboClientException {
@@ -783,9 +782,9 @@ public class WeiboClient {
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.GET, path, paging, params);
+        Response response = getContent(Verb.GET, path, paging, params);
 
-        return parseJsonObject(content, type);
+        return parseJsonObject(response, type);
     }
 
     private <T> T post(String path, Class<T> clazz) throws WeiboClientException {
@@ -793,15 +792,15 @@ public class WeiboClient {
     }
 
     private <T> T post(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.POST, path, Paging.EMPTY_PAGING, params);
+        Response response = getContent(Verb.POST, path, Paging.EMPTY_PAGING, params);
 
-        return parseJsonObject(content, clazz);
+        return parseJsonObject(response, clazz);
     }
 
     private <T> T post(String path, Class<T> clazz, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.POST, path, paging, params);
+        Response response = getContent(Verb.POST, path, paging, params);
 
-        return parseJsonObject(content, clazz);
+        return parseJsonObject(response, clazz);
     }
 
     private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
@@ -813,12 +812,8 @@ public class WeiboClient {
     }
 
     private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
-        String content = getContent(Verb.POST, path, paging, params);
+        Response response = getContent(Verb.POST, path, paging, params);
 
-        return parseJsonObject(content, type);
-    }
-
-    private boolean isNotBlank(String screenName) {
-        return screenName != null && screenName.trim().length() > 0;
+        return parseJsonObject(response, type);
     }
 }

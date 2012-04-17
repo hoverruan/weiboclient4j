@@ -1,33 +1,91 @@
 package weiboclient4j;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+import weiboclient4j.model.AccountUidResponse;
+import weiboclient4j.oauth2.DisplayType;
+import weiboclient4j.oauth2.GrantType;
+import weiboclient4j.oauth2.ResponseType;
+import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
-import weiboclient4j.utils.SinaJsonNamingStrategy;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.logging.Logger;
+import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**
  * @author Hover Ruan
  */
 public class WeiboClient2 {
-    private static final Logger log = Logger.getLogger("weibo_client2");
+    public static final String BASE_URL = "https://api.weibo.com/2/";
 
-    private OAuthService service;
+//    private static final Logger log = Logger.getLogger("weibo_client2");
 
-    public WeiboClient2(String apiKey, String apiSecret, String callback) {
-        SinaWeibo2Api api = new SinaWeibo2Api();
+    private String clientId;
+    private String clientSecret;
+    private SinaWeibo2AccessToken accessToken;
 
-        service = new ServiceBuilder()
-                .apiKey(apiKey)
-                .apiSecret(apiSecret)
-                .provider(api)
+    public WeiboClient2(String clientId, String clientSecret) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+    }
+
+    public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state, String callback) {
+        SinaWeibo2Api api = new SinaWeibo2Api(responseType, displayType);
+        api.setState(state);
+
+        OAuthService service = new ServiceBuilder()
+                .apiKey(clientId)
+                .apiSecret(clientSecret)
                 .callback(callback)
+                .provider(api)
                 .build();
+
+        return service.getAuthorizationUrl(null);
+    }
+
+    public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String state, String callback) {
+        SinaWeibo2Api api = new SinaWeibo2Api(grantType);
+        api.setState(state);
+
+        OAuthService service = new ServiceBuilder()
+                .apiKey(clientId)
+                .apiSecret(clientSecret)
+                .callback(callback)
+                .provider(api)
+                .build();
+
+        accessToken = (SinaWeibo2AccessToken) service.getAccessToken(null, new Verifier(code));
+
+        return accessToken;
+    }
+
+    public void setAccessToken(SinaWeibo2AccessToken accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public long getAccountUid() throws WeiboClientException {
+        OAuthRequest request = createGetRequest("account/get_uid");
+        AccountUidResponse accountUidResponse = sendRequestAndGetResponseObject(request, AccountUidResponse.class);
+
+        return accountUidResponse.getUid();
+    }
+
+    public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Class<T> clazz) throws WeiboClientException {
+        Response response = request.send();
+
+        return parseJsonObject(response, clazz);
+    }
+
+    public OAuthRequest createGetRequest(String path) {
+        OAuthRequest request = new OAuthRequest(Verb.GET, getFullPath(path));
+        request.addQuerystringParameter("access_token", accessToken.getToken());
+
+        return request;
+    }
+
+    public String getFullPath(String path) {
+        return BASE_URL + path + ".json";
     }
 }
