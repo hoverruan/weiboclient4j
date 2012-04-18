@@ -73,5 +73,9 @@ public class OAuth2CommandLine {
         Timeline publicTimeline = client.getPublicTimeline(Paging.create().count(30).page(1));
         System.out.println();
         System.out.println("Public timeline: " + JsonUtils.writeObjectAsString(publicTimeline));
+
+        Timeline friendsTimeline = client.getFriendsTimeline();
+        System.out.println();
+        System.out.println("Friends timeline: " + JsonUtils.writeObjectAsString(friendsTimeline));
     }
 }

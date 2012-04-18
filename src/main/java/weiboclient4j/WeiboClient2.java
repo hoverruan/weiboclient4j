@@ -21,6 +21,7 @@ import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 public class WeiboClient2 {
     public static final String BASE_URL = "https://api.weibo.com/2/";
     public static final String BASE_APP = "base_app";
+    public static final String FEATURE = "feature";
 
 //    private static final Logger log = Logger.getLogger("weibo_client2");
 
@@ -87,6 +88,26 @@ public class WeiboClient2 {
         Parameters params = Parameters.create();
         if (baseApp) {
             params.add(BASE_APP, baseApp);
+        }
+        return sendRequestAndGetResponseObject(request, paging, params, Timeline.class);
+    }
+
+    public Timeline getFriendsTimeline() throws WeiboClientException {
+        return getFriendsTimeline(null);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging) throws WeiboClientException {
+        return getFriendsTimeline(paging, false, 0);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging, boolean baseApp, int feature) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/friends_timeline");
+        Parameters params = Parameters.create();
+        if (baseApp) {
+            params.add(BASE_APP, baseApp);
+        }
+        if (feature > 0) {
+            params.add(FEATURE, feature);
         }
         return sendRequestAndGetResponseObject(request, paging, params, Timeline.class);
     }
