@@ -2,6 +2,7 @@ package weiboclient4j;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.type.TypeReference;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -9,7 +10,8 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
-import weiboclient4j.model.Mid;
+import weiboclient4j.model.IdResponse;
+import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
@@ -25,7 +27,10 @@ import weiboclient4j.params.FilterByAuthor;
 import weiboclient4j.params.FilterBySource;
 import weiboclient4j.params.FilterByType;
 import weiboclient4j.params.Id;
+import weiboclient4j.params.InboxType;
+import weiboclient4j.params.IsBase62;
 import weiboclient4j.params.IsBatch;
+import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
@@ -41,6 +46,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Hover Ruan
@@ -59,6 +65,9 @@ public class WeiboClient2 {
     public static final String FILTER_BY_TYPE = "filter_by_type";
     public static final String IS_BATCH = "is_batch";
     public static final String TYPE = "type";
+    public static final String MID = "mid";
+    public static final String INBOX = "inbox";
+    public static final String IS_BASE_62 = "isBase62";
 
     private String clientId;
     private String clientSecret;
@@ -374,8 +383,8 @@ public class WeiboClient2 {
         Parameters params = Parameters.create();
         addIdParam(params, id);
         addMidTypeParam(params, midType);
-        Mid mid = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, Mid.class);
-        return mid != null ? mid.getMid() : null;
+        MidResponse midResponse = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, MidResponse.class);
+        return midResponse != null ? midResponse.getMid() : null;
     }
 
     public Map<Long, String> queryMidList(Collection<Id> idList, MidType midType) throws WeiboClientException {
@@ -400,6 +409,128 @@ public class WeiboClient2 {
         return map;
     }
 
+    public long queryId(Mid mid, MidType type, IsBase62 isBase62) throws WeiboClientException {
+        return queryId(mid, type, null, isBase62);
+    }
+
+    public long queryId(Mid mid, MidType type, InboxType inboxType, IsBase62 isBase62) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/queryid");
+        Parameters params = Parameters.create();
+        addMidParam(params, mid);
+        addMidTypeParam(params, type);
+        addInboxTypeParam(params, inboxType);
+        addIsBase62Param(params, isBase62);
+        IdResponse idResponse = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, IdResponse.class);
+        return idResponse.getId();
+    }
+
+    public Map<String, Long> queryIdList(Collection<Mid> midList, MidType type, IsBase62 isBase62) throws WeiboClientException {
+        return queryIdList(midList, type, null, isBase62);
+    }
+
+    public Map<String, Long> queryIdList(Collection<Mid> midList, MidType type, InboxType inboxType, IsBase62 isBase62)
+            throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/queryid");
+        Parameters params = Parameters.create();
+        addMidListParam(params, midList);
+        addMidTypeParam(params, type);
+        addInboxTypeParam(params, inboxType);
+        addIsBase62Param(params, isBase62);
+        addIsBatchParam(params, IsBatch.Yes);
+
+        // [{"yfcLPlKKn":"3436240135184587"},{"yfd9X6XAx":"3436255091659029"}]
+        ArrayNode arrayNode = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, ArrayNode.class);
+        Map<String, Long> map = new HashMap<String, Long>();
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode node = arrayNode.get(i);
+            Iterator<String> fieldNames = node.getFieldNames();
+            while (fieldNames.hasNext()) {
+                String mid = fieldNames.next();
+                map.put(mid, node.get(mid).asLong());
+            }
+        }
+
+        return map;
+    }
+
+    public List<Status> getHotRepostDaily() throws WeiboClientException {
+        return getHotRepostDaily(Paging.EMPTY);
+    }
+
+    public List<Status> getHotRepostDaily(Paging paging) throws WeiboClientException {
+        return getHotRepostDaily(paging, BaseApp.No);
+    }
+
+    public List<Status> getHotRepostDaily(Paging paging, BaseApp baseApp) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/hot/repost_daily");
+        Parameters params = Parameters.create();
+        addBaseAppParam(params, baseApp);
+        return sendRequestAndGetResponseObject(request, paging, params, WeiboClient.TYPE_STATUS_LIST);
+    }
+
+    public List<Status> getHotRepostWeekly() throws WeiboClientException {
+        return getHotRepostWeekly(Paging.EMPTY);
+    }
+
+    public List<Status> getHotRepostWeekly(Paging paging) throws WeiboClientException {
+        return getHotRepostWeekly(paging, BaseApp.No);
+    }
+
+    public List<Status> getHotRepostWeekly(Paging paging, BaseApp baseApp) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/hot/repost_weekly");
+        Parameters params = Parameters.create();
+        addBaseAppParam(params, baseApp);
+        return sendRequestAndGetResponseObject(request, paging, params, WeiboClient.TYPE_STATUS_LIST);
+    }
+
+    public List<Status> getHotCommentsDaily() throws WeiboClientException {
+        return getHotCommentsDaily(Paging.EMPTY);
+    }
+
+    public List<Status> getHotCommentsDaily(Paging paging) throws  WeiboClientException {
+        return getHotCommentsDaily(paging, BaseApp.No);
+    }
+
+    public List<Status> getHotCommentsDaily(Paging paging, BaseApp baseApp) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/hot/comments_daily");
+        Parameters params = Parameters.create();
+        addBaseAppParam(params, baseApp);
+        return sendRequestAndGetResponseObject(request, paging, params, WeiboClient.TYPE_STATUS_LIST);
+    }
+
+    public List<Status> getHotCommentsWeekly() throws WeiboClientException {
+        return getHotCommentsWeekly(Paging.EMPTY);
+    }
+
+    public List<Status> getHotCommentsWeekly(Paging paging) throws WeiboClientException {
+        return getHotCommentsWeekly(paging, BaseApp.No);
+    }
+
+    public List<Status> getHotCommentsWeekly(Paging paging, BaseApp baseApp) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/hot/comments_weekly");
+        Parameters params = Parameters.create();
+        addBaseAppParam(params, baseApp);
+        return sendRequestAndGetResponseObject(request, paging, params, WeiboClient.TYPE_STATUS_LIST);
+    }
+
+    public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params,
+                                                       TypeReference<List<T>> typeReference) throws WeiboClientException {
+        if (paging != null) {
+            params.add(paging);
+        }
+
+        params.appendTo(request);
+
+        return sendRequestAndGetResponseObject(request, typeReference);
+    }
+
+    public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        Response response = request.send();
+
+        return parseJsonObject(response, typeReference);
+    }
+
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params, Class<T> clazz)
             throws WeiboClientException {
         if (paging != null) {
@@ -419,6 +550,8 @@ public class WeiboClient2 {
 
     public OAuthRequest createGetRequest(String path) {
         OAuthRequest request = new OAuthRequest(Verb.GET, getFullPath(path));
+        request.setConnectTimeout(30, TimeUnit.SECONDS);
+        request.setReadTimeout(30, TimeUnit.SECONDS);
         request.addQuerystringParameter("access_token", accessToken.getToken());
 
         return request;
@@ -474,6 +607,16 @@ public class WeiboClient2 {
         }
     }
 
+    private void addMidListParam(Parameters params, Collection<Mid> midList) {
+        if (midList != null && midList.size() > 0) {
+            List<String> midStringList = new ArrayList<String>(midList.size());
+            for (Mid mid : midList) {
+                midStringList.add(mid.getValue());
+            }
+            params.add(MID, StringUtils.join(midStringList, ","));
+        }
+    }
+
     private void addFilterByAuthorParam(Parameters params, FilterByAuthor filterByAuthor) {
         if (filterByAuthor != null && filterByAuthor != FilterByAuthor.All) {
             params.add(FILTER_BY_AUTHOR, filterByAuthor.getValue());
@@ -501,6 +644,24 @@ public class WeiboClient2 {
     private void addIsBatchParam(Parameters params, IsBatch isBatch) {
         if (isBatch == IsBatch.Yes) {
             params.add(IS_BATCH, isBatch.getValue());
+        }
+    }
+
+    private void addIsBase62Param(Parameters params, IsBase62 isBase62) {
+        if (isBase62 != null && isBase62 == IsBase62.Yes) {
+            params.add(IS_BASE_62, isBase62.getValue());
+        }
+    }
+
+    private void addInboxTypeParam(Parameters params, InboxType inboxType) {
+        if (inboxType != null && inboxType == InboxType.Inbox) {
+            params.add(INBOX, inboxType.getValue());
+        }
+    }
+
+    private void addMidParam(Parameters params, Mid mid) {
+        if (mid != null && mid.isValid()) {
+            params.add(MID, mid.getValue());
         }
     }
 }

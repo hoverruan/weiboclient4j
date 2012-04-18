@@ -3,7 +3,7 @@ package weiboclient4j.model;
 /**
  * @author Hover Ruan
  */
-public class Mid {
+public class MidResponse {
     private String mid;
 
     public String getMid() {

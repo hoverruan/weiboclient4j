@@ -1,6 +1,7 @@
 package weiboclient4j.examples;
 
 import weiboclient4j.WeiboClient2;
+import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.oauth2.DisplayType;
@@ -10,6 +11,8 @@ import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.Id;
+import weiboclient4j.params.IsBase62;
+import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ScreenName;
@@ -138,5 +141,26 @@ public class OAuth2CommandLine {
         System.out.println();
         System.out.println("Mid " + 3436240135184587L + "=" + midMap.get(3436240135184587L) + ", " +
                 3436255091659029L + "=" + midMap.get(3436255091659029L));
+
+        client.queryId(new Mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
+
+        List<Mid> midList = new ArrayList<Mid>(2);
+        midList.add(new Mid("yfcLPlKKn"));
+        midList.add(new Mid("yfd9X6XAx"));
+
+        Map<String, Long> idMap = client.queryIdList(midList, MidType.Message, IsBase62.Yes);
+        System.out.println();
+        System.out.println("Id yfcLPlKKn=" + idMap.get("yfcLPlKKn") + ", yfd9X6XAx=" + idMap.get("yfd9X6XAx"));
+
+        List<Status> hotRepostDaily = client.getHotRepostDaily();
+        System.out.println();
+        System.out.println("Hot repost daily: " + writeObjectAsString(hotRepostDaily));
+
+        List<Status> hotRepostWeekly = client.getHotRepostWeekly();
+        System.out.println();
+        System.out.println("Hot report weekly: " + writeObjectAsString(hotRepostWeekly));
+
+        client.getHotCommentsDaily();
+        client.getHotCommentsWeekly();
     }
 }
