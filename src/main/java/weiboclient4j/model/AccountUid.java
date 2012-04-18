@@ -3,7 +3,7 @@ package weiboclient4j.model;
 /**
  * @author Hover Ruan
  */
-public class AccountUidResponse {
+public class AccountUid {
     private long uid;
 
     public long getUid() {

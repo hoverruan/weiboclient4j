@@ -8,11 +8,11 @@ import weiboclient4j.utils.JsonUtils;
 /**
  * @author Hover Ruan
  */
-public class ParseAccountUidResponseTest extends AbstractParseJsonTest {
+public class ParseAccountUidTest extends AbstractParseJsonTest {
     @Test
     public void testParseAccountUidResponseTest() throws Exception {
-        String content = readResource("/weiboclient4j/model/account_uid_response.json");
-        AccountUidResponse response = JsonUtils.readValue(content, AccountUidResponse.class);
+        String content = readResource("/weiboclient4j/model/account_uid.json");
+        AccountUid response = JsonUtils.readValue(content, AccountUid.class);
 
         assertEquals("Account uid", 3456676543L, response.getUid());
     }

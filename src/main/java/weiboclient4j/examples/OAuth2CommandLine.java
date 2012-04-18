@@ -1,13 +1,14 @@
 package weiboclient4j.examples;
 
-import weiboclient4j.Paging;
 import weiboclient4j.WeiboClient2;
 import weiboclient4j.model.Timeline;
+import weiboclient4j.model.TimelineIds;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.utils.JsonUtils;
+import static weiboclient4j.utils.JsonUtils.writeObjectAsString;
 import static weiboclient4j.utils.StringUtils.isBlank;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 
@@ -72,14 +73,28 @@ public class OAuth2CommandLine {
 
         Timeline publicTimeline = client.getPublicTimeline();
         System.out.println();
-        System.out.println("Public timeline: " + JsonUtils.writeObjectAsString(publicTimeline));
+        System.out.println("Public timeline: " + writeObjectAsString(publicTimeline));
 
         Timeline friendsTimeline = client.getFriendsTimeline();
         System.out.println();
-        System.out.println("Friends timeline: " + JsonUtils.writeObjectAsString(friendsTimeline));
+        System.out.println("Friends timeline: " + writeObjectAsString(friendsTimeline));
 
         Timeline homeTimeline = client.getHomeTimeline();
         System.out.println();
-        System.out.println("Home timeline: " + JsonUtils.writeObjectAsString(homeTimeline));
+        System.out.println("Home timeline: " + writeObjectAsString(homeTimeline));
+
+        TimelineIds friendsTimelineIds = client.getFriendsTimelineIds();
+        System.out.println();
+        System.out.println("Friends timeline ids: " + writeObjectAsString(friendsTimelineIds));
+
+        Timeline userTimeline = client.getUserTimeline();
+        System.out.println();
+        System.out.println("User timeline: " + writeObjectAsString(userTimeline));
+
+        Timeline userTimelineTrimUser = client.getUserTimeline(true);
+
+        Timeline userTimelineFor1834561765 = client.getUserTimeline(1834561765L);
+        System.out.println();
+        System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
     }
 }

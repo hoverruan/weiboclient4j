@@ -28,6 +28,7 @@ public class Status {
     private String originalPic;
     private Status retweetedStatus;
     private User user;
+    private String userId;
     private Geo geo;
     private String mid;
     private String deleted;
@@ -144,6 +145,14 @@ public class Status {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Geo getGeo() {
