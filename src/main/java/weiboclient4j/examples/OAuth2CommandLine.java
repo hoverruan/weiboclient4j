@@ -9,6 +9,9 @@ import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Feature;
+import weiboclient4j.params.Id;
+import weiboclient4j.params.Paging;
+import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import static weiboclient4j.utils.JsonUtils.writeObjectAsString;
@@ -98,8 +101,19 @@ public class OAuth2CommandLine {
         System.out.println();
         System.out.println("User timeline that trim user: " + writeObjectAsString(userTimelineTrimUser));
 
+        client.getUserTimeline(ScreenName.EMPTY);
+        client.getUserTimeline(Uid.EMPTY);
+        client.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
+
         Timeline userTimelineFor1834561765 = client.getUserTimeline(new Uid(1834561765L), null, null, BaseApp.No, Feature.All, TrimUser.No);
         System.out.println();
         System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
+
+        client.getUserTimelineIds(ScreenName.EMPTY);
+        client.getUserTimelineIds(Uid.EMPTY);
+        client.getUserTimelineIds();
+
+        client.getRepostTimeline(new Id(3436240135184587L));
+        client.getRepostTimelineIds(new Id(3436240135184587L));
     }
 }

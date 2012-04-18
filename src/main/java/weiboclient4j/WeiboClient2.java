@@ -7,6 +7,7 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
+import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.oauth2.DisplayType;
@@ -16,6 +17,8 @@ import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Feature;
+import weiboclient4j.params.FilterByAuthor;
+import weiboclient4j.params.Id;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
@@ -34,6 +37,8 @@ public class WeiboClient2 {
     public static final String UID = "uid";
     public static final String SCREEN_NAME = "screen_name";
     public static final String TRIM_USER = "trim_user";
+    public static final String ID = "id";
+    public static final String FILTER_BY_AUTHOR = "filter_by_author";
 
     private String clientId;
     private String clientSecret;
@@ -243,6 +248,38 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, TimelineIds.class);
     }
 
+    public RepostTimeline getRepostTimeline(Id id) throws WeiboClientException {
+        return getRepostTimeline(id, Paging.EMPTY);
+    }
+
+    public RepostTimeline getRepostTimeline(Id id, Paging paging) throws WeiboClientException {
+        return getRepostTimeline(id, paging, FilterByAuthor.All);
+    }
+
+    public RepostTimeline getRepostTimeline(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/repost_timeline");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addFilterByAuthorParam(params, filterByAuthor);
+        return sendRequestAndGetResponseObject(request, paging, params, RepostTimeline.class);
+    }
+
+    public TimelineIds getRepostTimelineIds(Id id) throws WeiboClientException {
+        return getRepostTimelineIds(id, Paging.EMPTY);
+    }
+
+    public TimelineIds getRepostTimelineIds(Id id, Paging paging) throws WeiboClientException {
+        return getRepostTimelineIds(id, paging, FilterByAuthor.All);
+    }
+
+    public TimelineIds getRepostTimelineIds(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/repost_timeline/ids");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addFilterByAuthorParam(params, filterByAuthor);
+        return sendRequestAndGetResponseObject(request, paging, params, TimelineIds.class);
+    }
+
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params, Class<T> clazz)
             throws WeiboClientException {
         if (paging != null) {
@@ -272,7 +309,7 @@ public class WeiboClient2 {
     }
 
     private void addFeatureParam(Parameters params, Feature feature) {
-        if (feature.getValue() > 0) {
+        if (feature != null && feature != Feature.All) {
             params.add(FEATURE, feature.getValue());
         }
     }
@@ -298,6 +335,18 @@ public class WeiboClient2 {
     private void addBaseAppParam(Parameters params, BaseApp baseApp) {
         if (baseApp == BaseApp.Yes) {
             params.add(BASE_APP, baseApp.getValue());
+        }
+    }
+
+    private void addIdParam(Parameters params, Id id) {
+        if (id != null && id.isValid()) {
+            params.add(ID, id.getValue());
+        }
+    }
+
+    private void addFilterByAuthorParam(Parameters params, FilterByAuthor filterByAuthor) {
+        if (filterByAuthor != null && filterByAuthor != FilterByAuthor.All) {
+            params.add(FILTER_BY_AUTHOR, filterByAuthor.getValue());
         }
     }
 }

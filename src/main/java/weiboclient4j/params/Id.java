@@ -3,12 +3,10 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public class Uid {
-    public static final Uid EMPTY = new Uid(0);
-
+public class Id {
     private long value;
 
-    public Uid(long value) {
+    public Id(long value) {
         this.value = value;
     }
 
