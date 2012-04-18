@@ -1,16 +1,20 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import weiboclient4j.Geo;
+import weiboclient4j.User;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hover Ruan
  */
 
-@JsonIgnoreProperties(value = "annotations")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Status {
     private Date createdAt;
+    private String idstr;
     private long id;
     private String text;
     private String source;
@@ -27,6 +31,8 @@ public class Status {
     private Geo geo;
     private String mid;
     private String deleted;
+    private int repostsCount;
+    private int commentsCount;
 
     public Date getCreatedAt() {
         return createdAt;
@@ -162,5 +168,29 @@ public class Status {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted;
+    }
+
+    public String getIdstr() {
+        return idstr;
+    }
+
+    public void setIdstr(String idstr) {
+        this.idstr = idstr;
+    }
+
+    public int getRepostsCount() {
+        return repostsCount;
+    }
+
+    public void setRepostsCount(int repostsCount) {
+        this.repostsCount = repostsCount;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
     }
 }

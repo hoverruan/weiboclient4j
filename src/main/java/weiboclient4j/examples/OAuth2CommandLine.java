@@ -1,10 +1,13 @@
 package weiboclient4j.examples;
 
+import weiboclient4j.Paging;
 import weiboclient4j.WeiboClient2;
+import weiboclient4j.model.Timeline;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
+import weiboclient4j.utils.JsonUtils;
 import static weiboclient4j.utils.StringUtils.isBlank;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 
@@ -66,5 +69,9 @@ public class OAuth2CommandLine {
         long uid = client.getAccountUid();
         System.out.println();
         System.out.println("Got account uid: " + uid);
+
+        Timeline publicTimeline = client.getPublicTimeline(Paging.create().count(30).page(1));
+        System.out.println();
+        System.out.println("Public timeline: " + JsonUtils.writeObjectAsString(publicTimeline));
     }
 }
