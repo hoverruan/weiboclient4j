@@ -200,6 +200,49 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, Timeline.class);
     }
 
+    public TimelineIds getUserTimelineIds(ScreenName screenName) throws WeiboClientException {
+        return getUserTimelineIds(screenName, Paging.EMPTY);
+    }
+
+    public TimelineIds getUserTimelineIds(ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getUserTimelineIds(Uid.EMPTY, screenName, paging);
+    }
+
+    public TimelineIds getUserTimelineIds(Uid uid) throws WeiboClientException {
+        return getUserTimelineIds(uid, Paging.EMPTY);
+    }
+
+    public TimelineIds getUserTimelineIds(Uid uid, Paging paging) throws WeiboClientException {
+        return getUserTimelineIds(uid, ScreenName.EMPTY, paging);
+    }
+
+    public TimelineIds getUserTimelineIds(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getUserTimelineIds(uid, screenName, paging, BaseApp.No, Feature.All);
+    }
+
+    public TimelineIds getUserTimelineIds() throws WeiboClientException {
+        return getUserTimelineIds(Paging.EMPTY);
+    }
+
+    public TimelineIds getUserTimelineIds(Paging paging) throws WeiboClientException {
+        return getUserTimelineIds(paging, BaseApp.No, Feature.All);
+    }
+
+    public TimelineIds getUserTimelineIds(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
+        return getUserTimelineIds(Uid.EMPTY, ScreenName.EMPTY, paging, baseApp, feature);
+    }
+
+    public TimelineIds getUserTimelineIds(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature)
+            throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/user_timeline/ids");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        addBaseAppParam(params, baseApp);
+        addFeatureParam(params, feature);
+        return sendRequestAndGetResponseObject(request, paging, params, TimelineIds.class);
+    }
+
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params, Class<T> clazz)
             throws WeiboClientException {
         if (paging != null) {
