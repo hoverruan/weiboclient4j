@@ -1,4 +1,4 @@
-package weiboclient4j;
+package weiboclient4j.params;
 
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
@@ -26,7 +26,7 @@ public class Parameters {
         return this;
     }
 
-    Parameters add(Paging paging) {
+    public Parameters add(Paging paging) {
         params.putAll(paging.buildParameters());
 
         return this;

@@ -11,6 +11,8 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.Status;
+import weiboclient4j.params.Paging;
+import weiboclient4j.params.Parameters;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import static weiboclient4j.utils.JsonUtils.readValue;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
@@ -138,7 +140,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getPublicStatuses() throws WeiboClientException {
-        return getPublicStatuses(Paging.EMPTY_PAGING, Parameters.create());
+        return getPublicStatuses(Paging.EMPTY, Parameters.create());
     }
 
     public List<Status> getPublicStatuses(int count) throws WeiboClientException {
@@ -159,7 +161,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getFriendsStatuses() throws WeiboClientException {
-        return getFriendsStatuses(Paging.EMPTY_PAGING);
+        return getFriendsStatuses(Paging.EMPTY);
     }
 
     public List<Status> getFriendsStatuses(Paging paging) throws WeiboClientException {
@@ -181,7 +183,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getUserStatuses(long userId) throws WeiboClientException {
-        return getUserStatuses(userId, Paging.EMPTY_PAGING);
+        return getUserStatuses(userId, Paging.EMPTY);
     }
 
     public List<Status> getUserStatuses(long userId, Paging paging) throws WeiboClientException {
@@ -193,7 +195,7 @@ public class WeiboClient {
     }
 
     public List<Status> getUserStatuses(String screenName) throws WeiboClientException {
-        return getUserStatuses(screenName, Paging.EMPTY_PAGING);
+        return getUserStatuses(screenName, Paging.EMPTY);
     }
 
     public List<Status> getUserStatuses(String screenName, Paging paging) throws WeiboClientException {
@@ -227,7 +229,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getMentionsStatuses() throws WeiboClientException {
-        return getMentionsStatuses(Paging.EMPTY_PAGING);
+        return getMentionsStatuses(Paging.EMPTY);
     }
 
     public List<Status> getMentionsStatuses(Paging paging) throws WeiboClientException {
@@ -246,7 +248,7 @@ public class WeiboClient {
     }
 
     public List<Comment> getMyComments() throws WeiboClientException {
-        return getMyComments(Paging.EMPTY_PAGING);
+        return getMyComments(Paging.EMPTY);
     }
 
     public List<Comment> getMyComments(Paging paging) throws WeiboClientException {
@@ -258,7 +260,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Comment> getCommentsByMe() throws WeiboClientException {
-        return getCommentsByMe(Paging.EMPTY_PAGING);
+        return getCommentsByMe(Paging.EMPTY);
     }
 
     public List<Comment> getCommentsByMe(Paging paging) throws WeiboClientException {
@@ -270,7 +272,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Comment> getCommentsToMe() throws WeiboClientException {
-        return getCommentsToMe(Paging.EMPTY_PAGING);
+        return getCommentsToMe(Paging.EMPTY);
     }
 
     public List<Comment> getCommentsToMe(Paging paging) throws WeiboClientException {
@@ -284,7 +286,7 @@ public class WeiboClient {
     public List<Comment> getComments(long statusId) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_ID, statusId);
 
-        return getComments(Paging.EMPTY_PAGING, params);
+        return getComments(Paging.EMPTY, params);
     }
 
     public List<Comment> getComments(long statusId, int count, int page) throws WeiboClientException {
@@ -320,7 +322,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getRepostStatuses(long statusId) throws WeiboClientException {
-        return getRepostStatuses(statusId, Paging.EMPTY_PAGING);
+        return getRepostStatuses(statusId, Paging.EMPTY);
     }
 
     public List<Status> getRepostStatuses(long statusId, Paging paging) throws WeiboClientException {
@@ -334,7 +336,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getRepostStatusesByUser(long userId) throws WeiboClientException {
-        return getRepostStatusesByUser(userId, Paging.EMPTY_PAGING);
+        return getRepostStatusesByUser(userId, Paging.EMPTY);
     }
 
     public List<Status> getRepostStatusesByUser(long userId, Paging paging) throws WeiboClientException {
@@ -348,7 +350,7 @@ public class WeiboClient {
     //*****************************************************
 
     public UnreadCount getUnreadCount() throws WeiboClientException {
-        return getUnreadCount(Paging.EMPTY_PAGING, Parameters.create());
+        return getUnreadCount(Paging.EMPTY, Parameters.create());
     }
 
     public UnreadCount getUnreadCount(boolean withNewStatus, long sinceId) throws WeiboClientException {
@@ -432,11 +434,11 @@ public class WeiboClient {
     //*****************************************************
 
     public List<User> getFriends() throws WeiboClientException {
-        return getFriends(Paging.EMPTY_PAGING, Parameters.create());
+        return getFriends(Paging.EMPTY, Parameters.create());
     }
 
     public List<User> getFriends(String screenName) throws WeiboClientException {
-        return getFriends(Paging.EMPTY_PAGING, Parameters.create().add(P_SCREEN_NAME, screenName));
+        return getFriends(Paging.EMPTY, Parameters.create().add(P_SCREEN_NAME, screenName));
     }
 
     public List<User> getFriends(String screenName, int cursor, int count) throws WeiboClientException {
@@ -447,7 +449,7 @@ public class WeiboClient {
     }
 
     public List<User> getFriends(long userId) throws WeiboClientException {
-        return getFriends(Paging.EMPTY_PAGING, Parameters.create().add(P_USER_ID, userId));
+        return getFriends(Paging.EMPTY, Parameters.create().add(P_USER_ID, userId));
     }
 
     public List<User> getFriends(long userId, int cursor, int count) throws WeiboClientException {
@@ -466,11 +468,11 @@ public class WeiboClient {
     //*****************************************************
 
     public List<User> getFollowers() throws WeiboClientException {
-        return getFollowers(Paging.EMPTY_PAGING, Parameters.create());
+        return getFollowers(Paging.EMPTY, Parameters.create());
     }
 
     public List<User> getFollowers(long userId) throws WeiboClientException {
-        return getFollowers(Paging.EMPTY_PAGING, Parameters.create().add(P_USER_ID, userId));
+        return getFollowers(Paging.EMPTY, Parameters.create().add(P_USER_ID, userId));
     }
 
     public List<User> getFollowers(long userId, int cursor, int count) throws WeiboClientException {
@@ -481,7 +483,7 @@ public class WeiboClient {
     }
 
     public List<User> getFollowers(String screenName) throws WeiboClientException {
-        return getFollowers(Paging.EMPTY_PAGING, Parameters.create().add(P_SCREEN_NAME, screenName));
+        return getFollowers(Paging.EMPTY, Parameters.create().add(P_SCREEN_NAME, screenName));
     }
 
     public List<User> getFollowers(String screenName, int cursor, int count) throws WeiboClientException {
@@ -559,7 +561,7 @@ public class WeiboClient {
     public List<Trend> getTrends(long userId) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_USER_ID, userId);
 
-        return getTrends(Paging.EMPTY_PAGING, params);
+        return getTrends(Paging.EMPTY, params);
     }
 
     public List<Trend> getTrends(long userId, int page, int count) throws WeiboClientException {
@@ -596,7 +598,7 @@ public class WeiboClient {
     }
 
     private GlobalTrendList getTrendsHourly(Parameters params) throws WeiboClientException {
-        return new GlobalTrendList(getContentAsJsonNode("trends/hourly", Paging.EMPTY_PAGING, params));
+        return new GlobalTrendList(getContentAsJsonNode("trends/hourly", Paging.EMPTY, params));
     }
 
     //*****************************************************
@@ -614,7 +616,7 @@ public class WeiboClient {
     }
 
     private GlobalTrendList getTrendsDaily(Parameters params) throws WeiboClientException {
-        return new GlobalTrendList(getContentAsJsonNode("trends/daily", Paging.EMPTY_PAGING, params));
+        return new GlobalTrendList(getContentAsJsonNode("trends/daily", Paging.EMPTY, params));
     }
 
     //*****************************************************
@@ -632,7 +634,7 @@ public class WeiboClient {
     }
 
     private GlobalTrendList getTrendsWeekly(Parameters params) throws WeiboClientException {
-        return new GlobalTrendList(getContentAsJsonNode("trends/weekly", Paging.EMPTY_PAGING, params));
+        return new GlobalTrendList(getContentAsJsonNode("trends/weekly", Paging.EMPTY, params));
     }
 
     //=======================================================================
@@ -653,7 +655,7 @@ public class WeiboClient {
     public List<Tag> getTags(long userId) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_USER_ID, userId);
 
-        return getTags(Paging.EMPTY_PAGING, params);
+        return getTags(Paging.EMPTY, params);
     }
 
     public List<Tag> getTags(long userId, int count, int page) throws WeiboClientException {
@@ -676,7 +678,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getFavoriteStatuses() throws WeiboClientException {
-        return getFavoriteStatuses(Paging.EMPTY_PAGING);
+        return getFavoriteStatuses(Paging.EMPTY);
     }
 
     public List<Status> getFavoriteStatuses(int page) throws WeiboClientException {
@@ -755,11 +757,11 @@ public class WeiboClient {
     }
 
     private <T> T get(String path, Class<T> clazz) throws WeiboClientException {
-        return get(path, clazz, Paging.EMPTY_PAGING, Parameters.create());
+        return get(path, clazz, Paging.EMPTY, Parameters.create());
     }
 
     private <T> T get(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
-        Response response = getContent(Verb.GET, path, Paging.EMPTY_PAGING, params);
+        Response response = getContent(Verb.GET, path, Paging.EMPTY, params);
 
         return parseJsonObject(response, clazz);
     }
@@ -771,7 +773,7 @@ public class WeiboClient {
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type) throws WeiboClientException {
-        return get(path, type, Paging.EMPTY_PAGING, Parameters.create());
+        return get(path, type, Paging.EMPTY, Parameters.create());
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging) throws WeiboClientException {
@@ -779,7 +781,7 @@ public class WeiboClient {
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type, Parameters params) throws WeiboClientException {
-        return get(path, type, Paging.EMPTY_PAGING, params);
+        return get(path, type, Paging.EMPTY, params);
     }
 
     private <T> List<T> get(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {
@@ -789,11 +791,11 @@ public class WeiboClient {
     }
 
     private <T> T post(String path, Class<T> clazz) throws WeiboClientException {
-        return get(path, clazz, Paging.EMPTY_PAGING, Parameters.create());
+        return get(path, clazz, Paging.EMPTY, Parameters.create());
     }
 
     private <T> T post(String path, Class<T> clazz, Parameters params) throws WeiboClientException {
-        Response response = getContent(Verb.POST, path, Paging.EMPTY_PAGING, params);
+        Response response = getContent(Verb.POST, path, Paging.EMPTY, params);
 
         return parseJsonObject(response, clazz);
     }
@@ -809,7 +811,7 @@ public class WeiboClient {
     }
 
     private <T> List<T> post(String path, TypeReference<List<T>> type, Parameters params) throws WeiboClientException {
-        return get(path, type, Paging.EMPTY_PAGING, params);
+        return get(path, type, Paging.EMPTY, params);
     }
 
     private <T> List<T> post(String path, TypeReference<List<T>> type, Paging paging, Parameters params) throws WeiboClientException {

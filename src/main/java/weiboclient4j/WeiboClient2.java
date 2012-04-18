@@ -14,8 +14,14 @@ import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
+import weiboclient4j.params.BaseApp;
+import weiboclient4j.params.Feature;
+import weiboclient4j.params.Paging;
+import weiboclient4j.params.Parameters;
+import weiboclient4j.params.ScreenName;
+import weiboclient4j.params.TrimUser;
+import weiboclient4j.params.Uid;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
-import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 /**
  * @author Hover Ruan
@@ -80,14 +86,14 @@ public class WeiboClient2 {
     }
 
     public Timeline getPublicTimeline() throws WeiboClientException {
-        return getPublicTimeline(null);
+        return getPublicTimeline(Paging.EMPTY);
     }
 
     public Timeline getPublicTimeline(Paging paging) throws WeiboClientException {
-        return getPublicTimeline(paging, false);
+        return getPublicTimeline(paging, BaseApp.No);
     }
 
-    public Timeline getPublicTimeline(Paging paging, boolean baseApp) throws WeiboClientException {
+    public Timeline getPublicTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/public_timeline");
         Parameters params = Parameters.create();
         addBaseAppParam(params, baseApp);
@@ -95,14 +101,14 @@ public class WeiboClient2 {
     }
 
     public Timeline getFriendsTimeline() throws WeiboClientException {
-        return getFriendsTimeline(null);
+        return getFriendsTimeline(Paging.EMPTY);
     }
 
     public Timeline getFriendsTimeline(Paging paging) throws WeiboClientException {
-        return getFriendsTimeline(paging, false, 0);
+        return getFriendsTimeline(paging, BaseApp.No, Feature.All);
     }
 
-    public Timeline getFriendsTimeline(Paging paging, boolean baseApp, int feature) throws WeiboClientException {
+    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/friends_timeline");
         Parameters params = Parameters.create();
         addBaseAppParam(params, baseApp);
@@ -111,14 +117,14 @@ public class WeiboClient2 {
     }
 
     public Timeline getHomeTimeline() throws WeiboClientException {
-        return getHomeTimeline(null);
+        return getHomeTimeline(Paging.EMPTY);
     }
 
     public Timeline getHomeTimeline(Paging paging) throws WeiboClientException {
-        return getHomeTimeline(paging, false, 0);
+        return getHomeTimeline(paging, BaseApp.No, Feature.All);
     }
 
-    public Timeline getHomeTimeline(Paging paging, boolean baseApp, int feature) throws WeiboClientException {
+    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/home_timeline");
         Parameters params = Parameters.create();
         addBaseAppParam(params, baseApp);
@@ -127,14 +133,14 @@ public class WeiboClient2 {
     }
 
     public TimelineIds getFriendsTimelineIds() throws WeiboClientException {
-        return getFriendsTimelineIds(null);
+        return getFriendsTimelineIds(Paging.EMPTY);
     }
 
     public TimelineIds getFriendsTimelineIds(Paging paging) throws WeiboClientException {
-        return getFriendsTimelineIds(paging, false, 0);
+        return getFriendsTimelineIds(paging, BaseApp.No, Feature.All);
     }
 
-    public TimelineIds getFriendsTimelineIds(Paging paging, boolean baseApp, int feature) throws WeiboClientException {
+    public TimelineIds getFriendsTimelineIds(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/friends_timeline/ids");
         Parameters params = Parameters.create();
         addBaseAppParam(params, baseApp);
@@ -142,47 +148,47 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, TimelineIds.class);
     }
 
-    public Timeline getUserTimeline(String screenName) throws WeiboClientException {
-        return getUserTimeline(screenName, null);
+    public Timeline getUserTimeline(ScreenName screenName) throws WeiboClientException {
+        return getUserTimeline(screenName, Paging.EMPTY);
     }
 
-    public Timeline getUserTimeline(String screenName, Paging paging) throws WeiboClientException {
-        return getUserTimeline(0, screenName, paging);
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getUserTimeline(Uid.EMPTY, screenName, paging);
     }
 
-    public Timeline getUserTimeline(long uid) throws WeiboClientException {
-        return getUserTimeline(uid, null);
+    public Timeline getUserTimeline(Uid uid) throws WeiboClientException {
+        return getUserTimeline(uid, Paging.EMPTY);
     }
 
-    public Timeline getUserTimeline(long uid, Paging paging) throws WeiboClientException {
-        return getUserTimeline(uid, null, paging);
+    public Timeline getUserTimeline(Uid uid, Paging paging) throws WeiboClientException {
+        return getUserTimeline(uid, ScreenName.EMPTY, paging);
     }
 
-    public Timeline getUserTimeline(long uid, String screenName, Paging paging) throws WeiboClientException {
-        return getUserTimeline(uid, screenName, paging, false, 0, false);
+    public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getUserTimeline(uid, screenName, paging, BaseApp.No, Feature.All, TrimUser.No);
     }
 
     public Timeline getUserTimeline() throws WeiboClientException {
-        return getUserTimeline((Paging) null);
+        return getUserTimeline(Paging.EMPTY);
     }
 
-    public Timeline getUserTimeline(boolean trimUser) throws WeiboClientException {
-        return getUserTimeline(null, false, 0, trimUser);
+    public Timeline getUserTimeline(TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(Paging.EMPTY, BaseApp.No, Feature.All, trimUser);
     }
 
     public Timeline getUserTimeline(Paging paging) throws WeiboClientException {
-        return getUserTimeline(paging, false, 0, false);
+        return getUserTimeline(paging, BaseApp.No, Feature.All, TrimUser.No);
     }
 
-    public Timeline getUserTimeline(Paging paging, boolean trimUser) throws WeiboClientException {
-        return getUserTimeline(paging, false, 0, trimUser);
+    public Timeline getUserTimeline(Paging paging, TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(paging, BaseApp.No, Feature.All, trimUser);
     }
 
-    public Timeline getUserTimeline(Paging paging, boolean baseApp, int feature, boolean trimUser) throws WeiboClientException {
-        return getUserTimeline(0, null, paging, baseApp, feature, trimUser);
+    public Timeline getUserTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, paging, baseApp, feature, trimUser);
     }
 
-    public Timeline getUserTimeline(long uid, String screenName, Paging paging, boolean baseApp, int feature, boolean trimUser)
+    public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
             throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/user_timeline");
         Parameters params = Parameters.create();
@@ -222,33 +228,33 @@ public class WeiboClient2 {
         return API2_URL + path + ".json";
     }
 
-    private void addFeatureParam(Parameters params, int feature) {
-        if (feature > 0) {
-            params.add(FEATURE, feature);
+    private void addFeatureParam(Parameters params, Feature feature) {
+        if (feature.getValue() > 0) {
+            params.add(FEATURE, feature.getValue());
         }
     }
 
-    private void addTrimUserParam(Parameters params, boolean trimUser) {
-        if (trimUser) {
-            params.add(TRIM_USER, trimUser);
+    private void addTrimUserParam(Parameters params, TrimUser trimUser) {
+        if (trimUser == TrimUser.Yes) {
+            params.add(TRIM_USER, trimUser.getValue());
         }
     }
 
-    private void addScreenNameParam(Parameters params, String screenName) {
-        if (isNotBlank(screenName)) {
-            params.add(SCREEN_NAME, screenName);
+    private void addScreenNameParam(Parameters params, ScreenName screenName) {
+        if (screenName != null && screenName.isValid()) {
+            params.add(SCREEN_NAME, screenName.getValue());
         }
     }
 
-    private void addUidParam(Parameters params, long uid) {
-        if (uid > 0) {
-            params.add(UID, uid);
+    private void addUidParam(Parameters params, Uid uid) {
+        if (uid != null && uid.isValid()) {
+            params.add(UID, uid.getValue());
         }
     }
 
-    private void addBaseAppParam(Parameters params, boolean baseApp) {
-        if (baseApp) {
-            params.add(BASE_APP, baseApp);
+    private void addBaseAppParam(Parameters params, BaseApp baseApp) {
+        if (baseApp == BaseApp.Yes) {
+            params.add(BASE_APP, baseApp.getValue());
         }
     }
 }
