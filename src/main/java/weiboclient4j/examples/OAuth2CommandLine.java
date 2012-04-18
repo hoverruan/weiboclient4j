@@ -70,12 +70,16 @@ public class OAuth2CommandLine {
         System.out.println();
         System.out.println("Got account uid: " + uid);
 
-        Timeline publicTimeline = client.getPublicTimeline(Paging.create().count(30).page(1));
+        Timeline publicTimeline = client.getPublicTimeline();
         System.out.println();
         System.out.println("Public timeline: " + JsonUtils.writeObjectAsString(publicTimeline));
 
         Timeline friendsTimeline = client.getFriendsTimeline();
         System.out.println();
         System.out.println("Friends timeline: " + JsonUtils.writeObjectAsString(friendsTimeline));
+
+        Timeline homeTimeline = client.getHomeTimeline();
+        System.out.println();
+        System.out.println("Home timeline: " + JsonUtils.writeObjectAsString(homeTimeline));
     }
 }
