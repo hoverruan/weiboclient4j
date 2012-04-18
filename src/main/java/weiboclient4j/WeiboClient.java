@@ -638,6 +638,22 @@ public class WeiboClient {
     }
 
     //=======================================================================
+    //  Social Graph API
+    //=======================================================================
+
+    public IdList getFriendsIds(long userId, int cursor, int count) throws WeiboClientException {
+        Paging paging = Paging.create().count(count);
+        Parameters params = Parameters.create().add(P_USER_ID, userId).add(P_CURSOR, cursor);
+        return get("friends/ids", IdList.class, paging, params);
+    }
+
+    public IdList getFollowerIds(long userId, int cursor, int count) throws WeiboClientException {
+        Paging paging = Paging.create().count(count);
+        Parameters params = Parameters.create().add(P_USER_ID, userId).add(P_CURSOR, cursor);
+        return get("followers/ids", IdList.class, paging, params);
+    }
+
+    //=======================================================================
     //  Tags API
     //=======================================================================
 
