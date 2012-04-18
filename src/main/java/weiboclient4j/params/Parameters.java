@@ -1,4 +1,7 @@
-package weiboclient4j;
+package weiboclient4j.params;
+
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Verb;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +26,7 @@ public class Parameters {
         return this;
     }
 
-    Parameters add(Paging paging) {
+    public Parameters add(Paging paging) {
         params.putAll(paging.buildParameters());
 
         return this;
@@ -61,5 +64,17 @@ public class Parameters {
 
     public Map<String, String> buildParameters() {
         return params;
+    }
+
+    public void appendTo(OAuthRequest request) {
+        if (request.getVerb() == Verb.GET) {
+            for (String key : params.keySet()) {
+                request.addQuerystringParameter(key, params.get(key));
+            }
+        } else {
+            for (String key : params.keySet()) {
+                request.addBodyParameter(key, params.get(key));
+            }
+        }
     }
 }

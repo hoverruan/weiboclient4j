@@ -2,6 +2,7 @@ package weiboclient4j;
 
 import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
+import static weiboclient4j.utils.JsonUtils.readValue;
 
 /**
  * @author Hover Ruan
@@ -11,6 +12,6 @@ public class ParseGlobalTrendListTest extends AbstractParseJsonTest {
     public void testParseGlobalTrendList() throws Exception {
         String content = readResource("/weiboclient4j/global_trend_list.json");
 
-        new GlobalTrendList(client.mapper.readValue(content, JsonNode.class));
+        new GlobalTrendList(readValue(content, JsonNode.class));
     }
 }

@@ -1,4 +1,4 @@
-package weiboclient4j;
+package weiboclient4j.params;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,12 +7,12 @@ import java.util.Map;
  * @author Hover Ruan
  */
 public class Paging {
-    public static final String P_SINCE_ID = "since_id";
-    public static final String P_PAGE = "page";
-    public static final String P_COUNT = "count";
-    public static final String P_MAX_ID = "max_id";
+    public static final String SINCE_ID = "since_id";
+    public static final String PAGE = "page";
+    public static final String COUNT = "count";
+    public static final String MAX_ID = "max_id";
 
-    public static final Paging EMPTY_PAGING = new Paging() {
+    public static final Paging EMPTY = new Paging() {
         @Override
         public void setPage(int page) {
             throw new UnsupportedOperationException();
@@ -79,19 +79,19 @@ public class Paging {
         Map<String, String> params = new HashMap<String, String>();
 
         if (page > 0) {
-            params.put(P_PAGE, String.valueOf(page));
+            params.put(PAGE, String.valueOf(page));
         }
 
         if (count > 0) {
-            params.put(P_COUNT, String.valueOf(count));
+            params.put(COUNT, String.valueOf(count));
         }
 
         if (sinceId > 0) {
-            params.put(P_SINCE_ID, String.valueOf(sinceId));
+            params.put(SINCE_ID, String.valueOf(sinceId));
         }
 
         if (maxId > 0) {
-            params.put(P_MAX_ID, String.valueOf(maxId));
+            params.put(MAX_ID, String.valueOf(maxId));
         }
 
         return params;

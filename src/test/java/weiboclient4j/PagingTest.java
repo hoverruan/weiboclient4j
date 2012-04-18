@@ -3,6 +3,7 @@ package weiboclient4j;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import weiboclient4j.params.Paging;
 
 /**
  * @author Hover Ruan

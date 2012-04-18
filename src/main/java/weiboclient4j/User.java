@@ -1,12 +1,18 @@
 package weiboclient4j;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import weiboclient4j.model.Status;
+
 import java.util.Date;
 
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private long id;
+    private String idstr;
     private String screenName;
     private String name;
     private String province;
@@ -15,6 +21,7 @@ public class User {
     private String description;
     private String url;
     private String profileImageUrl;
+    private String profileUrl;
     private String domain;
     private String gender;
     private int followersCount;
@@ -35,6 +42,14 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIdstr() {
+        return idstr;
+    }
+
+    public void setIdstr(String idstr) {
+        this.idstr = idstr;
     }
 
     public String getScreenName() {
@@ -99,6 +114,14 @@ public class User {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
     public String getDomain() {
