@@ -1,5 +1,7 @@
 package weiboclient4j;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -7,7 +9,9 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
+import weiboclient4j.model.Mid;
 import weiboclient4j.model.RepostTimeline;
+import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.oauth2.DisplayType;
@@ -18,13 +22,25 @@ import weiboclient4j.oauth2.SinaWeibo2Api;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.FilterByAuthor;
+import weiboclient4j.params.FilterBySource;
+import weiboclient4j.params.FilterByType;
 import weiboclient4j.params.Id;
+import weiboclient4j.params.IsBatch;
+import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
+import weiboclient4j.utils.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hover Ruan
@@ -39,6 +55,10 @@ public class WeiboClient2 {
     public static final String TRIM_USER = "trim_user";
     public static final String ID = "id";
     public static final String FILTER_BY_AUTHOR = "filter_by_author";
+    public static final String FILTER_BY_SOURCE = "filter_by_source";
+    public static final String FILTER_BY_TYPE = "filter_by_type";
+    public static final String IS_BATCH = "is_batch";
+    public static final String TYPE = "type";
 
     private String clientId;
     private String clientSecret;
@@ -280,6 +300,106 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, TimelineIds.class);
     }
 
+    public RepostTimeline getRepostByMe() throws WeiboClientException {
+        return getRepostByMe(Paging.EMPTY);
+    }
+
+    public RepostTimeline getRepostByMe(Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/repost_by_me");
+        Parameters params = Parameters.create();
+        return sendRequestAndGetResponseObject(request, paging, params, RepostTimeline.class);
+    }
+
+    public Timeline getMentions() throws WeiboClientException {
+        return getMentions(Paging.EMPTY);
+    }
+
+    public Timeline getMentions(Paging paging) throws WeiboClientException {
+        return getMentions(paging, FilterByAuthor.All, FilterBySource.All, FilterByType.All);
+    }
+
+    public Timeline getMentions(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource, FilterByType filterByType)
+            throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/mentions");
+        Parameters params = Parameters.create();
+        addFilterByAuthorParam(params, filterByAuthor);
+        addFilterBySourceParam(params, filterBySource);
+        addFilterByTypeParam(params, filterByType);
+        return sendRequestAndGetResponseObject(request, paging, params, Timeline.class);
+    }
+
+    public TimelineIds getMentionsIds() throws WeiboClientException {
+        return getMentionsIds(Paging.EMPTY);
+    }
+
+    public TimelineIds getMentionsIds(Paging paging) throws WeiboClientException {
+        return getMentionsIds(paging, FilterByAuthor.All, FilterBySource.All, FilterByType.All);
+    }
+
+    public TimelineIds getMentionsIds(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource, FilterByType filterByType)
+            throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/mentions/ids");
+        Parameters params = Parameters.create();
+        addFilterByAuthorParam(params, filterByAuthor);
+        addFilterBySourceParam(params, filterBySource);
+        addFilterByTypeParam(params, filterByType);
+        return sendRequestAndGetResponseObject(request, paging, params, TimelineIds.class);
+    }
+
+    public Timeline getBilateralTimeline() throws WeiboClientException {
+        return getBilateralTimeline(Paging.EMPTY);
+    }
+
+    public Timeline getBilateralTimeline(Paging paging) throws WeiboClientException {
+        return getBilateralTimeline(paging, BaseApp.No, Feature.All);
+    }
+
+    public Timeline getBilateralTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/bilateral_timeline");
+        Parameters params = Parameters.create();
+        addBaseAppParam(params, baseApp);
+        addFeatureParam(params, feature);
+        return sendRequestAndGetResponseObject(request, paging, params, Timeline.class);
+    }
+
+    public Status showStatus(Id id) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/show");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, Status.class);
+    }
+
+    public String queryMid(Id id, MidType midType) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/querymid");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addMidTypeParam(params, midType);
+        Mid mid = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, Mid.class);
+        return mid != null ? mid.getMid() : null;
+    }
+
+    public Map<Long, String> queryMidList(Collection<Id> idList, MidType midType) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/querymid");
+        Parameters params = Parameters.create();
+        addIdListParam(params, idList);
+        addMidTypeParam(params, midType);
+        addIsBatchParam(params, IsBatch.Yes);
+
+        // [{"3436240135184587":"yfcLPlKKn"},{"3436255091659029":"yfd9X6XAx"}]
+        ArrayNode arrayNode = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, ArrayNode.class);
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode node = arrayNode.get(i);
+            Iterator<String> fieldNames = node.getFieldNames();
+            while (fieldNames.hasNext()) {
+                String idString = fieldNames.next();
+                map.put(new Long(idString), node.get(idString).asText());
+            }
+        }
+
+        return map;
+    }
+
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params, Class<T> clazz)
             throws WeiboClientException {
         if (paging != null) {
@@ -344,9 +464,43 @@ public class WeiboClient2 {
         }
     }
 
+    private void addIdListParam(Parameters params, Collection<Id> idList) {
+        if (idList != null && idList.size() > 0) {
+            List<String> idStringList = new ArrayList<String>(idList.size());
+            for (Id id : idList) {
+                idStringList.add(String.valueOf(id.getValue()));
+            }
+            params.add(ID, StringUtils.join(idStringList, ","));
+        }
+    }
+
     private void addFilterByAuthorParam(Parameters params, FilterByAuthor filterByAuthor) {
         if (filterByAuthor != null && filterByAuthor != FilterByAuthor.All) {
             params.add(FILTER_BY_AUTHOR, filterByAuthor.getValue());
+        }
+    }
+
+    private void addFilterBySourceParam(Parameters params, FilterBySource filterBySource) {
+        if (filterBySource != null && filterBySource != FilterBySource.All) {
+            params.add(FILTER_BY_SOURCE, filterBySource.getValue());
+        }
+    }
+
+    private void addFilterByTypeParam(Parameters params, FilterByType filterByType) {
+        if (filterByType != null && filterByType != FilterByType.All) {
+            params.add(FILTER_BY_TYPE, filterByType.getValue());
+        }
+    }
+
+    private void addMidTypeParam(Parameters params, MidType midType) {
+        if (midType != null) {
+            params.add(TYPE, midType.getValue());
+        }
+    }
+
+    private void addIsBatchParam(Parameters params, IsBatch isBatch) {
+        if (isBatch == IsBatch.Yes) {
+            params.add(IS_BATCH, isBatch.getValue());
         }
     }
 }

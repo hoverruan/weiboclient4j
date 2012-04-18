@@ -10,6 +10,7 @@ import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.Id;
+import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.TrimUser;
@@ -20,6 +21,9 @@ import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
 
 /**
@@ -115,5 +119,24 @@ public class OAuth2CommandLine {
 
         client.getRepostTimeline(new Id(3436240135184587L));
         client.getRepostTimelineIds(new Id(3436240135184587L));
+
+        client.getRepostByMe();
+
+        client.getMentions();
+        client.getMentionsIds();
+
+        client.getBilateralTimeline();
+
+        client.showStatus(new Id(3436240135184587L));
+
+        client.queryMid(new Id(3436240135184587L), MidType.Status);
+
+        List<Id> idList = new ArrayList<Id>(2);
+        idList.add(new Id(3436240135184587L));
+        idList.add(new Id(3436255091659029L));
+        Map<Long, String> midMap = client.queryMidList(idList, MidType.Status);
+        System.out.println();
+        System.out.println("Mid " + 3436240135184587L + "=" + midMap.get(3436240135184587L) + ", " +
+                3436255091659029L + "=" + midMap.get(3436255091659029L));
     }
 }
