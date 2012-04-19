@@ -1,6 +1,9 @@
 package weiboclient4j.examples;
 
 import weiboclient4j.WeiboClient2;
+import weiboclient4j.model.Comment;
+import weiboclient4j.model.CommentList;
+import weiboclient4j.model.Emotion;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
@@ -9,6 +12,7 @@ import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.BaseApp;
+import weiboclient4j.params.Cid;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.Id;
 import weiboclient4j.params.IsBase62;
@@ -173,10 +177,34 @@ public class OAuth2CommandLine {
         System.out.println("Repost: " + writeObjectAsString(repostStatus));
 
         client.destroyStatus(new Id(repostStatus.getId()));
-        client.destroyStatus(new Id(justPostStatus.getId()));
 
-//        Need advanced permission
-//        Status uploadedStatusByImageUrl = client.uploadImageUrl("Post image test",
-//                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
+        // Need advanced permission
+        Status uploadedStatusByImageUrl = client.uploadImageUrl("Post image test",
+                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
+        client.destroyStatus(new Id(uploadedStatusByImageUrl.getId()));
+
+        List<Emotion> emotions = client.getEmotions();
+        System.out.println();
+        System.out.println("Emotions: " + writeObjectAsString(emotions));
+
+        client.getComments(new Id(3436240135184587L));
+        CommentList commentsByMe = client.getCommentsByMe();
+        long firstCommentId = commentsByMe.getComments().get(0).getId();
+
+        client.getCommentsToMe();
+        client.getCommentsTimeline();
+        client.getMentionsComments();
+
+        ArrayList<Cid> batchCids = new ArrayList<Cid>();
+        batchCids.add(new Cid(firstCommentId));
+        client.getCommentsBatch(batchCids);
+
+        Comment comment = client.createComment(new Id(justPostStatus.getId()), "Create comment test");
+        Comment reply = client.replyComment(new Id(justPostStatus.getCommentsCount()), new Cid(comment.getId()), "Reply test");
+        client.destroyComment(new Cid(comment.getId()));
+        client.destroyComment(new Cid(reply.getId()));
+
+        client.destroyStatus(new Id(justPostStatus.getId()));
+        client.destroyCommentBatch(new ArrayList<Cid>());
     }
 }

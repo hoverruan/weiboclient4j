@@ -9,8 +9,10 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class Count {
     private long id;
     private int comments;
-    private int rt;
     private int reposts;
+
+    // API V1 fields
+    private int rt;
 
     public long getId() {
         return id;

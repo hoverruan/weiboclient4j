@@ -10,7 +10,10 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
+import weiboclient4j.model.Comment;
+import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Count;
+import weiboclient4j.model.Emotion;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.RepostTimeline;
@@ -23,6 +26,8 @@ import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
 import weiboclient4j.params.BaseApp;
+import weiboclient4j.params.Cid;
+import weiboclient4j.params.CommentOri;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.FilterByAuthor;
 import weiboclient4j.params.FilterBySource;
@@ -41,6 +46,7 @@ import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
+import weiboclient4j.params.WithoutMention;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import weiboclient4j.utils.StringUtils;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
@@ -55,6 +61,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * API V2 client.
+ *
  * @author Hover Ruan
  */
 public class WeiboClient2 {
@@ -81,6 +89,10 @@ public class WeiboClient2 {
     public static final String LONGITUDE = "long";
     public static final String LATITUDE = "lat";
     public static final String URL_ = "url";
+    public static final String CIDS = "cids";
+    public static final String COMMENT = "comment";
+    public static final String COMMENT_ORI = "comment_ori";
+    public static final String CID = "cid";
 
     private String clientId;
     private String clientSecret;
@@ -586,7 +598,144 @@ public class WeiboClient2 {
 //
 //    }
 
+    public List<Emotion> getEmotions() throws WeiboClientException {
+        OAuthRequest request = createGetRequest("emotions");
+        return sendRequestAndGetResponseObject(request, WeiboClient.TYPE_EMOTION_LIST);
+    }
 
+    public CommentList getComments(Id id) throws WeiboClientException {
+        return getComments(id, Paging.EMPTY);
+    }
+
+    public CommentList getComments(Id id, Paging paging) throws WeiboClientException {
+        return getComments(id, paging, FilterByAuthor.All);
+    }
+
+    public CommentList getComments(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("comments/show");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addFilterByAuthorParam(params, filterByAuthor);
+        return sendRequestAndGetResponseObject(request, paging, params, CommentList.class);
+    }
+
+    public CommentList getCommentsByMe() throws WeiboClientException {
+        return getCommentsByMe(Paging.EMPTY);
+    }
+
+    public CommentList getCommentsByMe(Paging paging) throws WeiboClientException {
+        return getCommentsByMe(paging, FilterByAuthor.All);
+    }
+
+    public CommentList getCommentsByMe(Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("comments/by_me");
+        Parameters params = Parameters.create();
+        addFilterByAuthorParam(params, filterByAuthor);
+        return sendRequestAndGetResponseObject(request, paging, params, CommentList.class);
+    }
+
+    public CommentList getCommentsToMe() throws WeiboClientException {
+        return getCommentsToMe(Paging.EMPTY);
+    }
+
+    public CommentList getCommentsToMe(Paging paging) throws WeiboClientException {
+        return getCommentsToMe(paging, FilterByAuthor.All, FilterBySource.All);
+    }
+
+    public CommentList getCommentsToMe(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource)
+            throws WeiboClientException {
+        OAuthRequest request = createGetRequest("comments/to_me");
+        Parameters params = Parameters.create();
+        addFilterByAuthorParam(params, filterByAuthor);
+        addFilterBySourceParam(params, filterBySource);
+        return sendRequestAndGetResponseObject(request, paging, params, CommentList.class);
+    }
+
+    public CommentList getCommentsTimeline() throws WeiboClientException {
+        return getCommentsTimeline(Paging.EMPTY);
+    }
+
+    public CommentList getCommentsTimeline(Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("comments/timeline");
+        return sendRequestAndGetResponseObject(request, paging, CommentList.class);
+    }
+
+    public CommentList getMentionsComments() throws WeiboClientException {
+        return getMentionsComments(Paging.EMPTY);
+    }
+
+    public CommentList getMentionsComments(Paging paging) throws WeiboClientException {
+        return getMentionsComments(paging, FilterByAuthor.All, FilterBySource.All);
+    }
+
+    public CommentList getMentionsComments(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource)
+            throws WeiboClientException {
+        OAuthRequest request = createGetRequest("comments/mentions");
+        Parameters params = Parameters.create();
+        addFilterByAuthorParam(params, filterByAuthor);
+        addFilterBySourceParam(params, filterBySource);
+        return sendRequestAndGetResponseObject(request, paging, params, CommentList.class);
+    }
+
+    public List<Comment> getCommentsBatch(Collection<Cid> cids) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("comments/show_batch");
+        Parameters params = Parameters.create();
+        addCidsParam(params, cids);
+        return sendRequestAndGetResponseObject(request, params, WeiboClient.TYPE_COMMENT_LIST);
+    }
+
+    public Comment createComment(Id id, String comment) throws WeiboClientException {
+        return createComment(id, comment, CommentOri.No);
+    }
+
+    public Comment createComment(Id id, String comment, CommentOri commentOri) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("comments/create");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addCommentParam(params, comment);
+        addCommentOriParam(params, commentOri);
+        return sendRequestAndGetResponseObject(request, params, Comment.class);
+    }
+
+    public Comment destroyComment(Cid cid) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("comments/destroy");
+        Parameters params = Parameters.create();
+        addCidParam(params, cid);
+        return sendRequestAndGetResponseObject(request, params, Comment.class);
+    }
+
+    public List<Comment> destroyCommentBatch(Collection<Cid> cids) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("comments/destroy_batch");
+        Parameters params = Parameters.create();
+        List<Id> ids = new ArrayList<Id>(cids.size());
+        for (Cid cid : cids) {
+            ids.add(new Id(cid.getValue()));
+        }
+        addIdsParam(params, ids);
+        return sendRequestAndGetResponseObject(request, params, WeiboClient.TYPE_COMMENT_LIST);
+    }
+
+    public Comment replyComment(Id id, Cid cid, String comment) throws WeiboClientException {
+        return replyComment(id, cid, comment, WithoutMention.No, CommentOri.No);
+    }
+
+    public Comment replyComment(Id id, Cid cid, String comment, WithoutMention withoutMention, CommentOri commentOri)
+            throws WeiboClientException {
+        OAuthRequest request = createPostRequest("comments/reply");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addCidParam(params, cid);
+        addCommentParam(params, comment);
+        addWithoutMentionParam(params, withoutMention);
+        addCommentOriParam(params, commentOri);
+        return sendRequestAndGetResponseObject(request, params, Comment.class);
+    }
+
+    private void addWithoutMentionParam(Parameters params, WithoutMention withoutMention) {
+        if (withoutMention != null && withoutMention == WithoutMention.Yes) {
+            params.add("without_mention", withoutMention.getValue());
+        }
+    }
 
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
@@ -614,6 +763,11 @@ public class WeiboClient2 {
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Parameters params, Class<T> clazz)
             throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, clazz);
+    }
+
+    public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Class<T> clazz)
+            throws WeiboClientException {
+        return sendRequestAndGetResponseObject(request, paging, Parameters.create(), clazz);
     }
 
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params, Class<T> clazz)
@@ -797,6 +951,35 @@ public class WeiboClient2 {
     private void addUrlParam(Parameters params, URL url) {
         if (url != null) {
             params.add(URL_, url.toExternalForm());
+        }
+    }
+
+    private void addCidsParam(Parameters params, Collection<Cid> cids) {
+        if (cids != null && cids.size() > 0) {
+            List<String> idList = new ArrayList<String>();
+            for (Cid cid : cids) {
+                idList.add(String.valueOf(cid.getValue()));
+            }
+            String idListString = StringUtils.join(idList, ",");
+            params.add(CIDS, idListString);
+        }
+    }
+
+    private void addCommentOriParam(Parameters params, CommentOri commentOri) {
+        if (commentOri != null && commentOri == CommentOri.Yes) {
+            params.add(COMMENT_ORI, commentOri.getValue());
+        }
+    }
+
+    private void addCommentParam(Parameters params, String comment) {
+        if (isNotBlank(comment)) {
+            params.add(COMMENT, comment);
+        }
+    }
+
+    private void addCidParam(Parameters params, Cid cid) {
+        if (cid != null) {
+            params.add(CID, cid.getValue());
         }
     }
 }

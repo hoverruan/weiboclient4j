@@ -1,16 +1,25 @@
 package weiboclient4j.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * @author hover.ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Emotion {
     private String phrase;
     private String type;
     private String url;
+    private boolean hot;
+    private boolean common;
+    private String category;
+    private String icon;
+    private String value;
+
+    // API V1 fields
     private boolean isHot;
     private boolean isCommon;
     private int orderNumber;
-    private String category;
 
     public String getPhrase() {
         return phrase;
@@ -52,6 +61,22 @@ public class Emotion {
         this.isCommon = isCommon;
     }
 
+    public boolean isHot() {
+        return hot;
+    }
+
+    public void setHot(boolean hot) {
+        this.hot = hot;
+    }
+
+    public boolean isCommon() {
+        return common;
+    }
+
+    public void setCommon(boolean common) {
+        this.common = common;
+    }
+
     public int getOrderNumber() {
         return orderNumber;
     }
@@ -66,5 +91,21 @@ public class Emotion {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
