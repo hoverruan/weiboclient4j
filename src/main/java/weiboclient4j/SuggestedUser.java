@@ -1,5 +1,7 @@
 package weiboclient4j;
 
+import weiboclient4j.model.User;
+
 /**
  * @author Hover Ruan
  */

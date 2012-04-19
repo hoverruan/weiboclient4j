@@ -1,6 +1,4 @@
-package weiboclient4j;
-
-import weiboclient4j.model.Status;
+package weiboclient4j.model;
 
 import java.util.Date;
 

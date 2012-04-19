@@ -1,16 +1,12 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import weiboclient4j.Geo;
-import weiboclient4j.User;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Hover Ruan
  */
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Status {
     private Date createdAt;

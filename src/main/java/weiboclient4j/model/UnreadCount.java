@@ -1,4 +1,4 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 /**
  * @author Hover Ruan

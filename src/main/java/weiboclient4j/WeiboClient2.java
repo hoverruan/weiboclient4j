@@ -10,6 +10,7 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
+import weiboclient4j.model.Count;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.RepostTimeline;
@@ -30,6 +31,9 @@ import weiboclient4j.params.Id;
 import weiboclient4j.params.InboxType;
 import weiboclient4j.params.IsBase62;
 import weiboclient4j.params.IsBatch;
+import weiboclient4j.params.IsComment;
+import weiboclient4j.params.Latitude;
+import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
@@ -39,7 +43,9 @@ import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import weiboclient4j.utils.StringUtils;
+import static weiboclient4j.utils.StringUtils.isNotBlank;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,6 +60,7 @@ import java.util.concurrent.TimeUnit;
 public class WeiboClient2 {
     public static final String API2_URL = "https://api.weibo.com/2/";
 
+    public static final String ACCESS_TOKEN = "access_token";
     public static final String BASE_APP = "base_app";
     public static final String FEATURE = "feature";
     public static final String UID = "uid";
@@ -68,6 +75,12 @@ public class WeiboClient2 {
     public static final String MID = "mid";
     public static final String INBOX = "inbox";
     public static final String IS_BASE_62 = "isBase62";
+    public static final String IDS = "ids";
+    public static final String STATUS = "status";
+    public static final String IS_COMMENT = "is_comment";
+    public static final String LONGITUDE = "long";
+    public static final String LATITUDE = "lat";
+    public static final String URL_ = "url";
 
     private String clientId;
     private String clientSecret;
@@ -218,12 +231,13 @@ public class WeiboClient2 {
         return getUserTimeline(paging, BaseApp.No, Feature.All, trimUser);
     }
 
-    public Timeline getUserTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
+    public Timeline getUserTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
+            throws WeiboClientException {
         return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, paging, baseApp, feature, trimUser);
     }
 
-    public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
-            throws WeiboClientException {
+    public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp,
+                                    Feature feature, TrimUser trimUser) throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/user_timeline");
         Parameters params = Parameters.create();
         addUidParam(params, uid);
@@ -345,8 +359,8 @@ public class WeiboClient2 {
         return getMentionsIds(paging, FilterByAuthor.All, FilterBySource.All, FilterByType.All);
     }
 
-    public TimelineIds getMentionsIds(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource, FilterByType filterByType)
-            throws WeiboClientException {
+    public TimelineIds getMentionsIds(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource,
+                                      FilterByType filterByType) throws WeiboClientException {
         OAuthRequest request = createGetRequest("statuses/mentions/ids");
         Parameters params = Parameters.create();
         addFilterByAuthorParam(params, filterByAuthor);
@@ -375,7 +389,7 @@ public class WeiboClient2 {
         OAuthRequest request = createGetRequest("statuses/show");
         Parameters params = Parameters.create();
         addIdParam(params, id);
-        return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, Status.class);
+        return sendRequestAndGetResponseObject(request, params, Status.class);
     }
 
     public String queryMid(Id id, MidType midType) throws WeiboClientException {
@@ -383,7 +397,7 @@ public class WeiboClient2 {
         Parameters params = Parameters.create();
         addIdParam(params, id);
         addMidTypeParam(params, midType);
-        MidResponse midResponse = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, MidResponse.class);
+        MidResponse midResponse = sendRequestAndGetResponseObject(request, params, MidResponse.class);
         return midResponse != null ? midResponse.getMid() : null;
     }
 
@@ -395,7 +409,7 @@ public class WeiboClient2 {
         addIsBatchParam(params, IsBatch.Yes);
 
         // [{"3436240135184587":"yfcLPlKKn"},{"3436255091659029":"yfd9X6XAx"}]
-        ArrayNode arrayNode = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, ArrayNode.class);
+        ArrayNode arrayNode = sendRequestAndGetResponseObject(request, params, ArrayNode.class);
         Map<Long, String> map = new HashMap<Long, String>();
         for (int i = 0; i < arrayNode.size(); i++) {
             JsonNode node = arrayNode.get(i);
@@ -420,7 +434,7 @@ public class WeiboClient2 {
         addMidTypeParam(params, type);
         addInboxTypeParam(params, inboxType);
         addIsBase62Param(params, isBase62);
-        IdResponse idResponse = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, IdResponse.class);
+        IdResponse idResponse = sendRequestAndGetResponseObject(request, params, IdResponse.class);
         return idResponse.getId();
     }
 
@@ -439,7 +453,7 @@ public class WeiboClient2 {
         addIsBatchParam(params, IsBatch.Yes);
 
         // [{"yfcLPlKKn":"3436240135184587"},{"yfd9X6XAx":"3436255091659029"}]
-        ArrayNode arrayNode = sendRequestAndGetResponseObject(request, Paging.EMPTY, params, ArrayNode.class);
+        ArrayNode arrayNode = sendRequestAndGetResponseObject(request, params, ArrayNode.class);
         Map<String, Long> map = new HashMap<String, Long>();
         for (int i = 0; i < arrayNode.size(); i++) {
             JsonNode node = arrayNode.get(i);
@@ -487,7 +501,7 @@ public class WeiboClient2 {
         return getHotCommentsDaily(Paging.EMPTY);
     }
 
-    public List<Status> getHotCommentsDaily(Paging paging) throws  WeiboClientException {
+    public List<Status> getHotCommentsDaily(Paging paging) throws WeiboClientException {
         return getHotCommentsDaily(paging, BaseApp.No);
     }
 
@@ -513,6 +527,72 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, WeiboClient.TYPE_STATUS_LIST);
     }
 
+    public List<Count> getStatusesCounts(Collection<Id> ids) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("statuses/count");
+        Parameters params = Parameters.create();
+        addIdsParam(params, ids);
+        return sendRequestAndGetResponseObject(request, params, WeiboClient.TYPE_COUNT_LIST);
+    }
+
+    public Status repostStatus(Id id, String status) throws WeiboClientException {
+        return repostStatus(id, status, IsComment.No);
+    }
+
+    public Status repostStatus(Id id, String status, IsComment isComment) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/repost");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addStatusParam(params, status);
+        addIsCommentParam(params, isComment);
+        return sendRequestAndGetResponseObject(request, params, Status.class);
+    }
+
+    public Status updateStatus(String status) throws WeiboClientException {
+        return updateStatus(status, null, null);
+    }
+
+    public Status updateStatus(String status, Latitude latitude, Longitude longitude) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/update");
+        Parameters params = Parameters.create();
+        addStatusParam(params, status);
+        addLatitudeParam(params, latitude);
+        addLongitudeParam(params, longitude);
+        return sendRequestAndGetResponseObject(request, params, Status.class);
+    }
+
+    public Status destroyStatus(Id id) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/destroy");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        return sendRequestAndGetResponseObject(request, params, Status.class);
+    }
+
+    public Status uploadImageUrl(String status, URL url) throws WeiboClientException {
+        return uploadImageUrl(status, url, null, null);
+    }
+
+    public Status uploadImageUrl(String status, URL url, Latitude latitude, Longitude longitude) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/upload_url_text");
+        Parameters params = Parameters.create();
+        addStatusParam(params, status);
+        addUrlParam(params, url);
+        addLatitudeParam(params, latitude);
+        addLongitudeParam(params, longitude);
+        return sendRequestAndGetResponseObject(request, params, Status.class);
+    }
+
+//    TODO implements update binary image
+//    public Status uploadImageBinary() {
+//
+//    }
+
+
+
+    public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
+                                                       TypeReference<List<T>> typeReference) throws WeiboClientException {
+        return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
+    }
+
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         if (paging != null) {
@@ -529,6 +609,11 @@ public class WeiboClient2 {
         Response response = request.send();
 
         return parseJsonObject(response, typeReference);
+    }
+
+    public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Parameters params, Class<T> clazz)
+            throws WeiboClientException {
+        return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, clazz);
     }
 
     public <T> T sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params, Class<T> clazz)
@@ -552,7 +637,16 @@ public class WeiboClient2 {
         OAuthRequest request = new OAuthRequest(Verb.GET, getFullPath(path));
         request.setConnectTimeout(30, TimeUnit.SECONDS);
         request.setReadTimeout(30, TimeUnit.SECONDS);
-        request.addQuerystringParameter("access_token", accessToken.getToken());
+        request.addQuerystringParameter(ACCESS_TOKEN, accessToken.getToken());
+
+        return request;
+    }
+
+    public OAuthRequest createPostRequest(String path) {
+        OAuthRequest request = new OAuthRequest(Verb.POST, getFullPath(path));
+        request.setConnectTimeout(30, TimeUnit.SECONDS);
+        request.setReadTimeout(30, TimeUnit.SECONDS);
+        request.addBodyParameter(ACCESS_TOKEN, accessToken.getToken());
 
         return request;
     }
@@ -662,6 +756,47 @@ public class WeiboClient2 {
     private void addMidParam(Parameters params, Mid mid) {
         if (mid != null && mid.isValid()) {
             params.add(MID, mid.getValue());
+        }
+    }
+
+    private void addIdsParam(Parameters params, Collection<Id> ids) {
+        if (ids != null && ids.size() > 0) {
+            List<String> idStringList = new ArrayList<String>(ids.size());
+            for (Id id : ids) {
+                idStringList.add(String.valueOf(id.getValue()));
+            }
+            String idsString = StringUtils.join(idStringList, ",");
+            params.add(IDS, idsString);
+        }
+    }
+
+    private void addIsCommentParam(Parameters params, IsComment isComment) {
+        if (isComment != null && isComment != IsComment.No) {
+            params.add(IS_COMMENT, isComment.getValue());
+        }
+    }
+
+    private void addStatusParam(Parameters params, String status) {
+        if (isNotBlank(status)) {
+            params.add(STATUS, status);
+        }
+    }
+
+    private void addLongitudeParam(Parameters params, Longitude longitude) {
+        if (longitude != null) {
+            params.add(LONGITUDE, longitude.getValue());
+        }
+    }
+
+    private void addLatitudeParam(Parameters params, Latitude latitude) {
+        if (latitude != null) {
+            params.add(LATITUDE, latitude.getValue());
+        }
+    }
+
+    private void addUrlParam(Parameters params, URL url) {
+        if (url != null) {
+            params.add(URL_, url.toExternalForm());
         }
     }
 }

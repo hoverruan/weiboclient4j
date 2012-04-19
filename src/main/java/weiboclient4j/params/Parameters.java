@@ -40,6 +40,10 @@ public class Parameters {
         return add(key, value ? 1 : 0);
     }
 
+    public Parameters add(String key, float value) {
+        return add(key, String.valueOf(value));
+    }
+
     public Parameters add(String key, long[] valueArray) {
         if (valueArray != null && valueArray.length > 0) {
             StringBuilder result = new StringBuilder(String.valueOf(valueArray[0]));

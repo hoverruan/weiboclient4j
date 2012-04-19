@@ -1,6 +1,7 @@
 package weiboclient4j;
 
 import org.junit.Test;
+import weiboclient4j.model.User;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**

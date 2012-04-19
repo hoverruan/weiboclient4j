@@ -24,6 +24,7 @@ import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -162,5 +163,20 @@ public class OAuth2CommandLine {
 
         client.getHotCommentsDaily();
         client.getHotCommentsWeekly();
+
+        client.getStatusesCounts(idList);
+
+        Status justPostStatus = client.updateStatus("Update status api test");
+        Status repostStatus = client.repostStatus(new Id(justPostStatus.getId()), "Repost test");
+        System.out.println();
+        System.out.println("Just post: " + writeObjectAsString(justPostStatus));
+        System.out.println("Repost: " + writeObjectAsString(repostStatus));
+
+        client.destroyStatus(new Id(repostStatus.getId()));
+        client.destroyStatus(new Id(justPostStatus.getId()));
+
+//        Need advanced permission
+//        Status uploadedStatusByImageUrl = client.uploadImageUrl("Post image test",
+//                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
     }
 }

@@ -1,12 +1,16 @@
-package weiboclient4j;
+package weiboclient4j.model;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Count {
     private long id;
     private int comments;
     private int rt;
+    private int reposts;
 
     public long getId() {
         return id;
@@ -30,5 +34,13 @@ public class Count {
 
     public void setRt(int rt) {
         this.rt = rt;
+    }
+
+    public int getReposts() {
+        return reposts;
+    }
+
+    public void setReposts(int reposts) {
+        this.reposts = reposts;
     }
 }

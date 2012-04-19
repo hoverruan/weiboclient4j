@@ -1,4 +1,4 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
@@ -22,7 +22,7 @@ public class Tag {
         this.value = value;
     }
 
-    static List<Tag> parseTags(JsonNode json) {
+    public static List<Tag> parseTags(JsonNode json) {
         assert json != null;
         assert json.isArray();
 

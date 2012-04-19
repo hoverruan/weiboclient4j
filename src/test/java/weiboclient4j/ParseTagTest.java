@@ -2,6 +2,7 @@ package weiboclient4j;
 
 import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
+import weiboclient4j.model.Tag;
 import static weiboclient4j.utils.JsonUtils.readValue;
 
 /**

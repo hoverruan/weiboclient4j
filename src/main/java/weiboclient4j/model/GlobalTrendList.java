@@ -1,4 +1,4 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
@@ -18,7 +18,7 @@ public class GlobalTrendList {
     public GlobalTrendList() {
     }
 
-    GlobalTrendList(JsonNode json) {
+    public GlobalTrendList(JsonNode json) {
         asOf = json.get("as_of").getLongValue();
         JsonNode trendsNode = json.get("trends");
         Iterator<String> fieldNames = trendsNode.getFieldNames();
