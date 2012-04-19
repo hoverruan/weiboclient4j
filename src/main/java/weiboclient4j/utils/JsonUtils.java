@@ -1,13 +1,11 @@
 package weiboclient4j.utils;
 
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
 import org.scribe.model.Response;
 import weiboclient4j.WeiboClientException;
 import weiboclient4j.WeiboError;
-import weiboclient4j.model.Timeline;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.IOException;

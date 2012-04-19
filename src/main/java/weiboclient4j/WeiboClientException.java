@@ -1,7 +1,5 @@
 package weiboclient4j;
 
-import java.io.IOException;
-
 /**
  * @author Hover Ruan
  */

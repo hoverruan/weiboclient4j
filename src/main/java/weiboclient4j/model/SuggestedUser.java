@@ -1,6 +1,4 @@
-package weiboclient4j;
-
-import weiboclient4j.model.User;
+package weiboclient4j.model;
 
 /**
  * @author Hover Ruan

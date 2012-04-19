@@ -16,6 +16,7 @@ import weiboclient4j.model.Emotion;
 import weiboclient4j.model.GlobalTrendList;
 import weiboclient4j.model.IdList;
 import weiboclient4j.model.Status;
+import weiboclient4j.model.SuggestedUser;
 import weiboclient4j.model.Tag;
 import weiboclient4j.model.Trend;
 import weiboclient4j.model.UnreadCount;

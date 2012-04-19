@@ -1,8 +1,6 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import weiboclient4j.model.Status;
 
 import java.util.Date;
 
