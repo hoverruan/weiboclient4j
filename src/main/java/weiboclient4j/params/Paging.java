@@ -11,6 +11,7 @@ public class Paging {
     public static final String PAGE = "page";
     public static final String COUNT = "count";
     public static final String MAX_ID = "max_id";
+    public static final String CURSOR = "cursor";
 
     public static final Paging EMPTY = new Paging() {
         @Override
@@ -32,6 +33,11 @@ public class Paging {
         public void setMaxId(long maxId) {
             throw new UnsupportedOperationException();
         }
+
+        @Override
+        public void setCursor(long cursor) {
+            throw new UnsupportedOperationException();
+        }
     };
 
     private Paging() {
@@ -46,6 +52,7 @@ public class Paging {
     private int count;
     private long sinceId;
     private long maxId;
+    private long cursor;
 
     public Paging page(int page) {
         setPage(page);
@@ -71,8 +78,14 @@ public class Paging {
         return this;
     }
 
+    public Paging cursor(long cursor) {
+        setCursor(cursor);
+
+        return this;
+    }
+
     public boolean hasValue() {
-        return page > 0 || count > 0 || sinceId > 0 || maxId > 0;
+        return page > 0 || count > 0 || sinceId > 0 || maxId > 0 || cursor > 0;
     }
 
     public Map<String, String> buildParameters() {
@@ -92,6 +105,10 @@ public class Paging {
 
         if (maxId > 0) {
             params.put(MAX_ID, String.valueOf(maxId));
+        }
+
+        if (cursor > 0) {
+            params.put(CURSOR, String.valueOf(cursor));
         }
 
         return params;
@@ -135,5 +152,13 @@ public class Paging {
 
     public void setMaxId(long maxId) {
         this.maxId = maxId;
+    }
+
+    public long getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(long cursor) {
+        this.cursor = cursor;
     }
 }

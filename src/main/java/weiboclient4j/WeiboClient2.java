@@ -20,6 +20,10 @@ import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
+import weiboclient4j.model.User;
+import weiboclient4j.model.UserCount;
+import weiboclient4j.model.UserIdList;
+import weiboclient4j.model.UserList;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
@@ -44,6 +48,7 @@ import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
+import weiboclient4j.params.Suid;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.WithoutMention;
@@ -93,6 +98,8 @@ public class WeiboClient2 {
     public static final String COMMENT = "comment";
     public static final String COMMENT_ORI = "comment_ori";
     public static final String CID = "cid";
+    public static final String DOMAIN = "domain";
+    public static final String UIDS = "uids";
 
     private String clientId;
     private String clientSecret;
@@ -731,6 +738,126 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, params, Comment.class);
     }
 
+    public User showUser(ScreenName screenName) throws WeiboClientException {
+        return showUser(Uid.EMPTY, screenName);
+    }
+
+    public User showUser(Uid uid) throws WeiboClientException {
+        return showUser(uid, ScreenName.EMPTY);
+    }
+
+    private User showUser(Uid uid, ScreenName screenName) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("users/show");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, params, User.class);
+    }
+
+    public User showUserByDomain(String domain) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("users/domain_show");
+        Parameters params = Parameters.create();
+        addDomainParam(params, domain);
+        return sendRequestAndGetResponseObject(request, params, User.class);
+    }
+
+    public List<UserCount> getUsersCounts(Collection<Uid> uids) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("users/counts");
+        Parameters params = Parameters.create();
+        addUidsParam(params, uids);
+        return sendRequestAndGetResponseObject(request, params, UserCount.LIST_TYPE);
+    }
+
+    public UserList getFriends(Uid uid) throws WeiboClientException {
+        return getFriends(uid, Paging.EMPTY);
+    }
+
+    public UserList getFriends(Uid uid, Paging paging) throws WeiboClientException {
+        return getFriends(uid, ScreenName.EMPTY, paging);
+    }
+
+    public UserList getFriends(ScreenName screenName) throws WeiboClientException {
+        return getFriends(screenName, Paging.EMPTY);
+    }
+
+    public UserList getFriends(ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getFriends(Uid.EMPTY, screenName, paging);
+    }
+
+    private UserList getFriends(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/friends");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
+    }
+
+    public UserIdList getFriendsIds(Uid uid) throws WeiboClientException {
+        return getFriendsIds(uid, Paging.EMPTY);
+    }
+
+    public UserIdList getFriendsIds(Uid uid, Paging paging) throws WeiboClientException {
+        return getFriendsIds(uid, ScreenName.EMPTY, paging);
+    }
+
+    public UserIdList getFriendsIds(ScreenName screenName) throws WeiboClientException {
+        return getFriendsIds(screenName, Paging.EMPTY);
+    }
+
+    public UserIdList getFriendsIds(ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getFriendsIds(Uid.EMPTY, screenName, paging);
+    }
+
+    private UserIdList getFriendsIds(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/friends/ids");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, paging, params, UserIdList.class);
+    }
+
+    public UserList getFriendsInCommon(Uid uid) throws WeiboClientException {
+        return getFriendsInCommon(uid, Suid.EMPTY);
+    }
+
+    public UserList getFriendsInCommon(Uid uid, Paging paging) throws WeiboClientException {
+        return getFriendsInCommon(uid, Suid.EMPTY, paging);
+    }
+
+    public UserList getFriendsInCommon(Uid uid, Suid suid) throws WeiboClientException {
+        return getFriendsInCommon(uid, suid, Paging.EMPTY);
+    }
+
+    public UserList getFriendsInCommon(Uid uid, Suid suid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/friends/in_common");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addSuidParam(params, suid);
+        return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
+    }
+
+    public UserList getFriendsBilateral(Uid uid) throws WeiboClientException {
+        return getFriendsBilateral(uid, Paging.EMPTY);
+    }
+
+    public UserList getFriendsBilateral(Uid uid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/friends/bilateral");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
+    }
+
+    public UserIdList getFriendsBilateralIds(Uid uid) throws WeiboClientException {
+        return getFriendsBilateralIds(uid, Paging.EMPTY);
+    }
+
+    public UserIdList getFriendsBilateralIds(Uid uid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/friends/bilateral/ids");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        return sendRequestAndGetResponseObject(request, paging, params, UserIdList.class);
+    }
+
     private void addWithoutMentionParam(Parameters params, WithoutMention withoutMention) {
         if (withoutMention != null && withoutMention == WithoutMention.Yes) {
             params.add("without_mention", withoutMention.getValue());
@@ -980,6 +1107,28 @@ public class WeiboClient2 {
     private void addCidParam(Parameters params, Cid cid) {
         if (cid != null) {
             params.add(CID, cid.getValue());
+        }
+    }
+
+    private void addDomainParam(Parameters params, String domain) {
+        if (domain != null) {
+            params.add(DOMAIN, domain);
+        }
+    }
+
+    private void addUidsParam(Parameters params, Collection<Uid> uids) {
+        if (uids != null && uids.size() > 0) {
+            List<String> idList = new ArrayList<String>();
+            for (Uid uid : uids) {
+                idList.add(String.valueOf(uid.getValue()));
+            }
+            params.add(UIDS, StringUtils.join(idList, ","));
+        }
+    }
+
+    private void addSuidParam(Parameters params, Suid suid) {
+        if (suid != null && suid.isValid()) {
+            params.add("suid", suid.getValue());
         }
     }
 }

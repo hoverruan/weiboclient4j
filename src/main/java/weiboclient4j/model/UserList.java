@@ -9,6 +9,7 @@ public class UserList {
     private List<User> users;
     private int nextCursor;
     private int previousCursor;
+    private long totalNumber;
 
     public List<User> getUsers() {
         return users;
@@ -32,5 +33,13 @@ public class UserList {
 
     public void setPreviousCursor(int previousCursor) {
         this.previousCursor = previousCursor;
+    }
+
+    public long getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(long totalNumber) {
+        this.totalNumber = totalNumber;
     }
 }
