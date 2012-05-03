@@ -14,6 +14,10 @@ public class SinaWeibo2AccessToken extends Token {
         super(token, secret);
     }
 
+    public SinaWeibo2AccessToken(String token) {
+        this(token, "");
+    }
+
     public SinaWeibo2AccessToken(SinaWeibo2AccessTokenResponse response) {
         this(response.getAccessToken(), "");
 

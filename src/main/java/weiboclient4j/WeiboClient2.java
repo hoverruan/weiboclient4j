@@ -105,6 +105,12 @@ public class WeiboClient2 {
     private String clientSecret;
     private SinaWeibo2AccessToken accessToken;
 
+    /**
+     * Create api client v2.
+     *
+     * @param clientId Client ID, or Api Key
+     * @param clientSecret Client Secret, or Api Secret
+     */
     public WeiboClient2(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -858,12 +864,6 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, UserIdList.class);
     }
 
-    private void addWithoutMentionParam(Parameters params, WithoutMention withoutMention) {
-        if (withoutMention != null && withoutMention == WithoutMention.Yes) {
-            params.add("without_mention", withoutMention.getValue());
-        }
-    }
-
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
@@ -1129,6 +1129,12 @@ public class WeiboClient2 {
     private void addSuidParam(Parameters params, Suid suid) {
         if (suid != null && suid.isValid()) {
             params.add("suid", suid.getValue());
+        }
+    }
+
+    private void addWithoutMentionParam(Parameters params, WithoutMention withoutMention) {
+        if (withoutMention != null && withoutMention == WithoutMention.Yes) {
+            params.add("without_mention", withoutMention.getValue());
         }
     }
 }

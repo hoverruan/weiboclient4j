@@ -83,7 +83,7 @@ public class OAuth2CommandLine {
         System.out.println("Expires in: " + accessToken.getExpiresIn());
         System.out.println("Remind in: " + accessToken.getRemindIn());
 
-        accessToken = new SinaWeibo2AccessToken(accessToken.getToken(), "");
+        accessToken = new SinaWeibo2AccessToken(accessToken.getToken());
         client.setAccessToken(accessToken);
         long uid = client.getAccountUid();
         System.out.println();
