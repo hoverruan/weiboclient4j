@@ -943,6 +943,15 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
     }
 
+    public Friendship showFriendship(SourceUid sourceUid, TargetUid targetUid) throws WeiboClientException {
+        return showFriendship(sourceUid, SourceScreenName.EMPTY, targetUid, TargetScreenName.EMPTY);
+    }
+
+    public Friendship showFriendship(SourceScreenName sourceScreenName, TargetScreenName targetScreenName)
+        throws WeiboClientException {
+        return showFriendship(SourceUid.EMPTY, sourceScreenName, TargetUid.EMPTY, targetScreenName);
+    }
+
     public Friendship showFriendship(SourceUid sourceUid, SourceScreenName sourceScreenName,
                                      TargetUid targetUid, TargetScreenName targetScreenName) throws WeiboClientException {
         OAuthRequest request = createGetRequest("friendships/show");
