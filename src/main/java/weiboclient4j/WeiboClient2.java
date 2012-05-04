@@ -14,6 +14,7 @@ import weiboclient4j.model.Comment;
 import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Count;
 import weiboclient4j.model.Emotion;
+import weiboclient4j.model.Friendship;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.RepostTimeline;
@@ -48,13 +49,17 @@ import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
+import weiboclient4j.params.SourceScreenName;
+import weiboclient4j.params.SourceUid;
 import weiboclient4j.params.Suid;
+import weiboclient4j.params.TargetScreenName;
+import weiboclient4j.params.TargetUid;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.WithoutMention;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
-import weiboclient4j.utils.StringUtils;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
+import static weiboclient4j.utils.StringUtils.join;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -100,6 +105,10 @@ public class WeiboClient2 {
     public static final String CID = "cid";
     public static final String DOMAIN = "domain";
     public static final String UIDS = "uids";
+    public static final String SOURCE_ID = "source_id";
+    public static final String SOURCE_SCREEN_NAME = "source_screen_name";
+    public static final String TARGET_ID = "target_id";
+    public static final String TARGET_SCREEN_NAME = "target_screen_name";
 
     private String clientId;
     private String clientSecret;
@@ -864,6 +873,87 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, paging, params, UserIdList.class);
     }
 
+    public UserList getFollowers(ScreenName screenName) throws WeiboClientException {
+        return getFollowers(screenName, Paging.EMPTY);
+    }
+
+    public UserList getFollowers(ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getFollowers(Uid.EMPTY, screenName, paging);
+    }
+
+    public UserList getFollowers(Uid uid) throws WeiboClientException {
+        return getFollowers(uid, Paging.EMPTY);
+    }
+
+    public UserList getFollowers(Uid uid, Paging paging) throws WeiboClientException {
+        return getFollowers(uid, ScreenName.EMPTY, paging);
+    }
+
+    public UserList getFollowers(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/followers");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
+    }
+
+    public UserIdList getFollowersIds(ScreenName screenName) throws WeiboClientException {
+        return getFollowersIds(screenName, Paging.EMPTY);
+    }
+
+    public UserIdList getFollowersIds(ScreenName screenName, Paging paging) throws WeiboClientException {
+        return getFollowersIds(Uid.EMPTY, screenName, paging);
+    }
+
+    public UserIdList getFollowersIds(Uid uid) throws WeiboClientException {
+        return getFollowersIds(uid, Paging.EMPTY);
+    }
+
+    public UserIdList getFollowersIds(Uid uid, Paging paging) throws WeiboClientException {
+        return getFollowersIds(uid, ScreenName.EMPTY, paging);
+    }
+
+    public UserIdList getFollowersIds(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/followers/ids");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, paging, params, UserIdList.class);
+    }
+
+    public UserList getActiveFollowers(Uid uid) throws WeiboClientException {
+        return getActiveFollowers(uid, Paging.EMPTY);
+    }
+
+    public UserList getActiveFollowers(Uid uid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/followers/active");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
+    }
+
+    public UserList getChainFollowers(Uid uid) throws WeiboClientException {
+        return getChainFollowers(uid, Paging.EMPTY);
+    }
+
+    public UserList getChainFollowers(Uid uid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/friends_chain/followers");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        return sendRequestAndGetResponseObject(request, paging, params, UserList.class);
+    }
+
+    public Friendship showFriendship(SourceUid sourceUid, SourceScreenName sourceScreenName,
+                                     TargetUid targetUid, TargetScreenName targetScreenName) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("friendships/show");
+        Parameters params = Parameters.create();
+        addSourceUidParam(params, sourceUid);
+        addSourceScreenNameParam(params, sourceScreenName);
+        addTargetUidParam(params, targetUid);
+        addTargetScreenNameParam(params, targetScreenName);
+        return sendRequestAndGetResponseObject(request, params, Friendship.class);
+    }
+
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
@@ -978,7 +1068,7 @@ public class WeiboClient2 {
             for (Id id : idList) {
                 idStringList.add(String.valueOf(id.getValue()));
             }
-            params.add(ID, StringUtils.join(idStringList, ","));
+            params.add(ID, join(idStringList, ","));
         }
     }
 
@@ -988,7 +1078,7 @@ public class WeiboClient2 {
             for (Mid mid : midList) {
                 midStringList.add(mid.getValue());
             }
-            params.add(MID, StringUtils.join(midStringList, ","));
+            params.add(MID, join(midStringList, ","));
         }
     }
 
@@ -1046,7 +1136,7 @@ public class WeiboClient2 {
             for (Id id : ids) {
                 idStringList.add(String.valueOf(id.getValue()));
             }
-            String idsString = StringUtils.join(idStringList, ",");
+            String idsString = join(idStringList, ",");
             params.add(IDS, idsString);
         }
     }
@@ -1087,7 +1177,7 @@ public class WeiboClient2 {
             for (Cid cid : cids) {
                 idList.add(String.valueOf(cid.getValue()));
             }
-            String idListString = StringUtils.join(idList, ",");
+            String idListString = join(idList, ",");
             params.add(CIDS, idListString);
         }
     }
@@ -1122,7 +1212,7 @@ public class WeiboClient2 {
             for (Uid uid : uids) {
                 idList.add(String.valueOf(uid.getValue()));
             }
-            params.add(UIDS, StringUtils.join(idList, ","));
+            params.add(UIDS, join(idList, ","));
         }
     }
 
@@ -1135,6 +1225,30 @@ public class WeiboClient2 {
     private void addWithoutMentionParam(Parameters params, WithoutMention withoutMention) {
         if (withoutMention != null && withoutMention == WithoutMention.Yes) {
             params.add("without_mention", withoutMention.getValue());
+        }
+    }
+
+    private void addTargetScreenNameParam(Parameters params, TargetScreenName targetScreenName) {
+        if (targetScreenName != null && targetScreenName.isValid()) {
+            params.add(TARGET_SCREEN_NAME, targetScreenName.getValue());
+        }
+    }
+
+    private void addTargetUidParam(Parameters params, TargetUid targetUid) {
+        if (targetUid != null && targetUid.isValid()) {
+            params.add(TARGET_ID, targetUid.getValue());
+        }
+    }
+
+    private void addSourceScreenNameParam(Parameters params, SourceScreenName sourceScreenName) {
+        if (sourceScreenName != null && sourceScreenName.isValid()) {
+            params.add(SOURCE_SCREEN_NAME, sourceScreenName.getValue());
+        }
+    }
+
+    private void addSourceUidParam(Parameters params, SourceUid sourceUid) {
+        if (sourceUid != null && sourceUid.isValid()) {
+            params.add(SOURCE_ID, sourceUid.getValue());
         }
     }
 }

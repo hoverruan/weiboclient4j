@@ -1,0 +1,16 @@
+{
+  "target":{
+    "id":1418348195,
+    "screen_name":"zaku",
+    "followed_by":false,
+    "following":true,
+    "notifications_enabled":false
+  },
+  "source":{
+    "id":1734528095,
+    "screen_name":"檀木幻想",
+    "followed_by":false,
+    "following":false,
+    "notifications_enabled":false
+  }
+}
