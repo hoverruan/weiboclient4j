@@ -68,7 +68,25 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 - 一些API的参数较多，如果使用基本类型容易混淆各个参数的含义
 - IDE对已知类型的对象、Enum能提供更友好的提醒和自动完成
 
-所有的参数对象在 `package weiboclient4j.params` 下面
+所有的参数对象在 `package weiboclient4j.params` 下面；举一个例子：
+
+    Friendship friendship;
+
+    friendship = client.getFriendship(new SourceUid(12345), new TargetUid(67890));
+
+    // 或者
+    friendship = client.getFriendship(new SourceScreenName("xxx"), new TargetScreenName("yyy"));
+
+分页对象 Paging
+---
+
+分页相关的参数，全部通过 `Paging` 对象封装：
+
+    Paging paging = Paging.create()
+            .sinceId(12345)
+            .count(25);
+
+    Timeline timeline = client.getFriendsTimeline(paging, BaseApp.No, Feature.All); // 后两个参数可省略
 
 新浪微博API V2支持情况
 ---
