@@ -97,7 +97,7 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 <tr><td>微博接口</td><td>完成</td></tr>
 <tr><td>评论接口</td><td>完成</td></tr>
 <tr><td>用户接口</td><td>完成</td></tr>
-<tr><td>关系接口</td><td>进行中</td></tr>
+<tr><td>关系接口</td><td>完成</td></tr>
 <tr><td>帐号接口</td><td>未开始</td></tr>
 <tr><td>收藏接口</td><td>未开始</td></tr>
 <tr><td>话题接口</td><td>未开始</td></tr>
