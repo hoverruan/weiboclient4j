@@ -28,6 +28,7 @@ public class User {
     private int favouritesCount;
     private Date createdAt;
     private boolean following;
+    private boolean followMe;
     private boolean verified;
     private boolean allowAllActMsg;
     private boolean geoEnabled;
@@ -184,6 +185,14 @@ public class User {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public boolean isFollowMe() {
+        return followMe;
+    }
+
+    public void setFollowMe(boolean followMe) {
+        this.followMe = followMe;
     }
 
     public boolean isVerified() {

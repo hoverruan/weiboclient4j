@@ -48,6 +48,7 @@ import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
+import weiboclient4j.params.Remark;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.SourceScreenName;
 import weiboclient4j.params.SourceUid;
@@ -109,6 +110,9 @@ public class WeiboClient2 {
     public static final String SOURCE_SCREEN_NAME = "source_screen_name";
     public static final String TARGET_ID = "target_id";
     public static final String TARGET_SCREEN_NAME = "target_screen_name";
+    public static final String SUID = "suid";
+    public static final String WITHOUT_MENTION = "without_mention";
+    public static final String REMARK = "remark";
 
     private String clientId;
     private String clientSecret;
@@ -948,7 +952,7 @@ public class WeiboClient2 {
     }
 
     public Friendship showFriendship(SourceScreenName sourceScreenName, TargetScreenName targetScreenName)
-        throws WeiboClientException {
+            throws WeiboClientException {
         return showFriendship(SourceUid.EMPTY, sourceScreenName, TargetUid.EMPTY, targetScreenName);
     }
 
@@ -961,6 +965,46 @@ public class WeiboClient2 {
         addTargetUidParam(params, targetUid);
         addTargetScreenNameParam(params, targetScreenName);
         return sendRequestAndGetResponseObject(request, params, Friendship.class);
+    }
+
+    public User createFriendship(Uid uid) throws WeiboClientException {
+        return createFriendship(uid, ScreenName.EMPTY);
+    }
+
+    public User createFriendship(ScreenName screenName) throws WeiboClientException {
+        return createFriendship(Uid.EMPTY, screenName);
+    }
+
+    public User createFriendship(Uid uid, ScreenName screenName) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("friendships/create");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, params, User.class);
+    }
+
+    public User destroyFriendship(Uid uid) throws WeiboClientException {
+        return destroyFriendship(uid, ScreenName.EMPTY);
+    }
+
+    public User destroyFriendship(ScreenName screenName) throws WeiboClientException {
+        return destroyFriendship(Uid.EMPTY, screenName);
+    }
+
+    public User destroyFriendship(Uid uid, ScreenName screenName) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("friendships/destroy");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addScreenNameParam(params, screenName);
+        return sendRequestAndGetResponseObject(request, params, User.class);
+    }
+
+    public User updateRemark(Uid uid, Remark remark) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("friendships/remark/update");
+        Parameters params = Parameters.create();
+        addUidParam(params, uid);
+        addRemarkParam(params, remark);
+        return sendRequestAndGetResponseObject(request, params, User.class);
     }
 
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
@@ -1227,13 +1271,13 @@ public class WeiboClient2 {
 
     private void addSuidParam(Parameters params, Suid suid) {
         if (suid != null && suid.isValid()) {
-            params.add("suid", suid.getValue());
+            params.add(SUID, suid.getValue());
         }
     }
 
     private void addWithoutMentionParam(Parameters params, WithoutMention withoutMention) {
         if (withoutMention != null && withoutMention == WithoutMention.Yes) {
-            params.add("without_mention", withoutMention.getValue());
+            params.add(WITHOUT_MENTION, withoutMention.getValue());
         }
     }
 
@@ -1258,6 +1302,12 @@ public class WeiboClient2 {
     private void addSourceUidParam(Parameters params, SourceUid sourceUid) {
         if (sourceUid != null && sourceUid.isValid()) {
             params.add(SOURCE_ID, sourceUid.getValue());
+        }
+    }
+
+    private void addRemarkParam(Parameters params, Remark remark) {
+        if (remark != null && remark.isValid()) {
+            params.add(REMARK, remark.getValue());
         }
     }
 }
