@@ -17,6 +17,7 @@ import weiboclient4j.model.Emotion;
 import weiboclient4j.model.Friendship;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
+import weiboclient4j.model.Privacy;
 import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
@@ -1005,6 +1006,11 @@ public class WeiboClient2 {
         addUidParam(params, uid);
         addRemarkParam(params, remark);
         return sendRequestAndGetResponseObject(request, params, User.class);
+    }
+
+    public Privacy getPrivacy() throws WeiboClientException {
+        OAuthRequest request = createGetRequest("account/get_privacy");
+        return sendRequestAndGetResponseObject(request, Privacy.class);
     }
 
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
