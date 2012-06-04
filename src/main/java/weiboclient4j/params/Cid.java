@@ -18,4 +18,8 @@ public class Cid {
     public String toString() {
         return String.valueOf(value);
     }
+
+    public boolean isValid() {
+        return value > 0;
+    }
 }

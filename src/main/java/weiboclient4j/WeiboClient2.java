@@ -18,6 +18,7 @@ import weiboclient4j.model.Friendship;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.Privacy;
+import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
@@ -64,6 +65,8 @@ import static weiboclient4j.utils.StringUtils.isNotBlank;
 import static weiboclient4j.utils.StringUtils.join;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -1013,6 +1016,22 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, Privacy.class);
     }
 
+    public RateLimitStatus getRateLimitStatus() throws WeiboClientException {
+        OAuthRequest request = createGetRequest("account/rate_limit_status");
+        RawRateLimitStatus rawRateLimitStatus = sendRequestAndGetResponseObject(request, RawRateLimitStatus.class);
+
+        try {
+            return rawRateLimitStatus.asRateLimitStatus();
+        } catch (ParseException e) {
+            throw new WeiboClientException("Invalid date format (reset_time): " + rawRateLimitStatus.getResetTime());
+        }
+    }
+
+    public User endSession() throws WeiboClientException {
+        OAuthRequest request = createGetRequest("account/end_session");
+        return sendRequestAndGetResponseObject(request, User.class);
+    }
+
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
@@ -1083,6 +1102,87 @@ public class WeiboClient2 {
 
     public String getFullPath(String path) {
         return API2_URL + path + ".json";
+    }
+
+    private static SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private static class RawRateLimitStatus {
+        private int ipLimit;
+        private String limitTimeUnit;
+        private int remainingIpHits;
+        private int remainingUserHits;
+        private String resetTime;
+        private int resetTimeInSeconds;
+        private int userLimit;
+
+        public RateLimitStatus asRateLimitStatus() throws ParseException {
+            RateLimitStatus status = new RateLimitStatus();
+            status.setIpLimit(ipLimit);
+            status.setLimitTimeUnit(limitTimeUnit);
+            status.setRemainingUserHits(remainingUserHits);
+            status.setResetTimeInSeconds(resetTimeInSeconds);
+            status.setUserLimit(userLimit);
+
+            status.setResetTime(simpleFormat.parse(resetTime));
+
+            return status;
+        }
+
+        public int getIpLimit() {
+            return ipLimit;
+        }
+
+        public void setIpLimit(int ipLimit) {
+            this.ipLimit = ipLimit;
+        }
+
+        public String getLimitTimeUnit() {
+            return limitTimeUnit;
+        }
+
+        public void setLimitTimeUnit(String limitTimeUnit) {
+            this.limitTimeUnit = limitTimeUnit;
+        }
+
+        public int getRemainingIpHits() {
+            return remainingIpHits;
+        }
+
+        public void setRemainingIpHits(int remainingIpHits) {
+            this.remainingIpHits = remainingIpHits;
+        }
+
+        public int getRemainingUserHits() {
+            return remainingUserHits;
+        }
+
+        public void setRemainingUserHits(int remainingUserHits) {
+            this.remainingUserHits = remainingUserHits;
+        }
+
+        public String getResetTime() {
+            return resetTime;
+        }
+
+        public void setResetTime(String resetTime) {
+            this.resetTime = resetTime;
+        }
+
+        public int getResetTimeInSeconds() {
+            return resetTimeInSeconds;
+        }
+
+        public void setResetTimeInSeconds(int resetTimeInSeconds) {
+            this.resetTimeInSeconds = resetTimeInSeconds;
+        }
+
+        public int getUserLimit() {
+            return userLimit;
+        }
+
+        public void setUserLimit(int userLimit) {
+            this.userLimit = userLimit;
+        }
     }
 
     private void addFeatureParam(Parameters params, Feature feature) {
@@ -1160,13 +1260,13 @@ public class WeiboClient2 {
     }
 
     private void addMidTypeParam(Parameters params, MidType midType) {
-        if (midType != null) {
+        if (midType != null && midType != MidType.Status) {
             params.add(TYPE, midType.getValue());
         }
     }
 
     private void addIsBatchParam(Parameters params, IsBatch isBatch) {
-        if (isBatch == IsBatch.Yes) {
+        if (isBatch != null && isBatch == IsBatch.Yes) {
             params.add(IS_BATCH, isBatch.getValue());
         }
     }
@@ -1254,7 +1354,7 @@ public class WeiboClient2 {
     }
 
     private void addCidParam(Parameters params, Cid cid) {
-        if (cid != null) {
+        if (cid != null && cid.isValid()) {
             params.add(CID, cid.getValue());
         }
     }
