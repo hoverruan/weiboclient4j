@@ -14,6 +14,10 @@ import weiboclient4j.model.Comment;
 import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Count;
 import weiboclient4j.model.Emotion;
+import weiboclient4j.model.Favorites;
+import weiboclient4j.model.FavoritesIds;
+import weiboclient4j.model.FavoritesItem;
+import weiboclient4j.model.FavoritesTags;
 import weiboclient4j.model.Friendship;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
@@ -21,6 +25,7 @@ import weiboclient4j.model.Privacy;
 import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
+import weiboclient4j.model.Tag;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.model.User;
@@ -55,8 +60,10 @@ import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.SourceScreenName;
 import weiboclient4j.params.SourceUid;
 import weiboclient4j.params.Suid;
+import weiboclient4j.params.TagName;
 import weiboclient4j.params.TargetScreenName;
 import weiboclient4j.params.TargetUid;
+import weiboclient4j.params.Tid;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.WithoutMention;
@@ -117,6 +124,9 @@ public class WeiboClient2 {
     public static final String SUID = "suid";
     public static final String WITHOUT_MENTION = "without_mention";
     public static final String REMARK = "remark";
+    public static final String TID = "tid";
+    public static final String TAGS = "tags";
+    public static final String TAG = "tag";
 
     private String clientId;
     private String clientSecret;
@@ -1032,6 +1042,114 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(request, User.class);
     }
 
+    public Favorites getFavorites() throws WeiboClientException {
+        return getFavorites(Paging.EMPTY);
+    }
+
+    public Favorites getFavorites(Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("favorites");
+        return sendRequestAndGetResponseObject(request, paging, Favorites.class);
+    }
+
+    public FavoritesIds getFavoritesIds() throws WeiboClientException {
+        return getFavoritesIds(Paging.EMPTY);
+    }
+
+    public FavoritesIds getFavoritesIds(Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("favorites/ids");
+        return sendRequestAndGetResponseObject(request, paging, FavoritesIds.class);
+    }
+
+    public FavoritesItem showFavorites(Id id) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("favorites/show");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        return sendRequestAndGetResponseObject(request, params, FavoritesItem.class);
+    }
+
+    public Favorites getFavoritesByTags(Tid tid) throws WeiboClientException {
+        return getFavoritesByTags(tid, Paging.EMPTY);
+    }
+
+    public Favorites getFavoritesByTags(Tid tid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("favorites/by_tags");
+        Parameters params = Parameters.create();
+        addTidParam(params, tid);
+        return sendRequestAndGetResponseObject(request, paging, params, Favorites.class);
+    }
+
+    public FavoritesTags getFavoritesTags() throws WeiboClientException {
+        return getFavoritesTags(Paging.EMPTY);
+    }
+
+    public FavoritesTags getFavoritesTags(Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("favorites/tags");
+        return sendRequestAndGetResponseObject(request, paging, FavoritesTags.class);
+    }
+
+    public FavoritesIds getFavoritesIdsByTags(Tid tid) throws WeiboClientException {
+        return getFavoritesIdsByTags(tid, Paging.EMPTY);
+    }
+
+    public FavoritesIds getFavoritesIdsByTags(Tid tid, Paging paging) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("favorites/by_tags/ids");
+        Parameters params = Parameters.create();
+        addTidParam(params, tid);
+        return sendRequestAndGetResponseObject(request, paging, params, FavoritesIds.class);
+    }
+
+    public FavoritesItem createFavorites(Id id) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("favorites/create");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        return sendRequestAndGetResponseObject(request, params, FavoritesItem.class);
+    }
+
+    public FavoritesItem destroyFavorites(Id id) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("favorites/destroy");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        return sendRequestAndGetResponseObject(request, params, FavoritesItem.class);
+    }
+
+    public boolean destroyFavoritesBatch(Collection<Id> ids) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("favorites/destroy_batch");
+        Parameters params = Parameters.create();
+        addIdsParam(params, ids);
+
+        ResultResponse response = sendRequestAndGetResponseObject(request, params, ResultResponse.class);
+        return response.isResult();
+    }
+
+    public FavoritesItem updateFavoritesTags(Id id) throws WeiboClientException {
+        return updateFavoritesTags(id, null);
+    }
+
+    public FavoritesItem updateFavoritesTags(Id id, Collection<TagName> tags) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("favorites/tags/update");
+        Parameters params = Parameters.create();
+        addIdParam(params, id);
+        addTagsParam(params, tags);
+        return sendRequestAndGetResponseObject(request, params, FavoritesItem.class);
+    }
+
+    public Tag updateFavoritesTagsBatch(Tid tid, TagName tagName) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("favorites/tags/update_batch");
+        Parameters params = Parameters.create();
+        addTidParam(params, tid);
+        addTagParam(params, tagName);
+        return sendRequestAndGetResponseObject(request, params, Tag.class);
+    }
+
+    public boolean destroyFavoritesTagsBatch(Tid tid) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("favorites/tags/destroy_batch");
+        Parameters params = Parameters.create();
+        addTidParam(params, tid);
+
+        ResultResponse response = sendRequestAndGetResponseObject(request, params, ResultResponse.class);
+        return response.isResult();
+    }
+
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
@@ -1102,6 +1220,18 @@ public class WeiboClient2 {
 
     public String getFullPath(String path) {
         return API2_URL + path + ".json";
+    }
+
+    private static class ResultResponse {
+        private boolean result;
+
+        public boolean isResult() {
+            return result;
+        }
+
+        public void setResult(boolean result) {
+            this.result = result;
+        }
     }
 
     private static SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1334,7 +1464,9 @@ public class WeiboClient2 {
         if (cids != null && cids.size() > 0) {
             List<String> idList = new ArrayList<String>();
             for (Cid cid : cids) {
-                idList.add(String.valueOf(cid.getValue()));
+                if (cid.isValid()) {
+                    idList.add(String.valueOf(cid.getValue()));
+                }
             }
             String idListString = join(idList, ",");
             params.add(CIDS, idListString);
@@ -1414,6 +1546,30 @@ public class WeiboClient2 {
     private void addRemarkParam(Parameters params, Remark remark) {
         if (remark != null && remark.isValid()) {
             params.add(REMARK, remark.getValue());
+        }
+    }
+
+    private void addTidParam(Parameters params, Tid tid) {
+        if (tid != null && tid.isValid()) {
+            params.add(TID, tid.getValue());
+        }
+    }
+
+    private void addTagsParam(Parameters params, Collection<TagName> tags) {
+        if (tags != null && tags.size() > 0) {
+            List<String> tagList = new ArrayList<String>(tags.size());
+            for (TagName tag : tags) {
+                if (tag.isValid()) {
+                    tagList.add(tag.getValue());
+                }
+            }
+            params.add(TAGS, join(tagList, ","));
+        }
+    }
+
+    private void addTagParam(Parameters params, TagName tagName) {
+        if (tagName != null && tagName.isValid()) {
+            params.add(TAG, tagName.getValue());
         }
     }
 }

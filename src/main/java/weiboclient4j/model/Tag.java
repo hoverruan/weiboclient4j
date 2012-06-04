@@ -1,6 +1,7 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.node.ArrayNode;
 
 import java.util.ArrayList;
@@ -10,9 +11,12 @@ import java.util.List;
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tag {
     private long id;
     private String value;
+    private String tag;
+    private int count;
 
     public Tag() {
     }
@@ -55,5 +59,21 @@ public class Tag {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }
