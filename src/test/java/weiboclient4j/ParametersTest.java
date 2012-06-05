@@ -13,10 +13,10 @@ public class ParametersTest {
     public void testBuildParameters() throws Exception {
         Parameters parameters = Parameters.create();
 
-        assertEquals(0, parameters.buildParameters().size());
+        assertEquals(0, parameters.size());
 
         parameters.add("key", "value");
-        assertEquals("value", parameters.buildParameters().get("key"));
+        assertEquals("value", parameters.get("key"));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ParametersTest {
         long[] ids = new long[]{1};
         parameters.add("key", ids);
 
-        assertEquals("1", parameters.buildParameters().get("key"));
+        assertEquals("1", parameters.get("key"));
     }
 
     @Test
@@ -45,6 +45,6 @@ public class ParametersTest {
         long[] ids = new long[]{1, 2};
         parameters.add("key", ids);
 
-        assertEquals("1,2", parameters.buildParameters().get("key"));
+        assertEquals("1,2", parameters.get("key"));
     }
 }

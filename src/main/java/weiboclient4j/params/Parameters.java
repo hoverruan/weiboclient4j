@@ -3,14 +3,15 @@ package weiboclient4j.params;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Hover Ruan
  */
 public class Parameters {
-    private Map<String, String> params = new HashMap<String, String>();
+    private List<Parameter> parameterList = new ArrayList<Parameter>();
 
     private Parameters() {
 
@@ -21,13 +22,15 @@ public class Parameters {
     }
 
     public Parameters add(String key, String value) {
-        params.put(key, value);
+        parameterList.add(new Parameter(key, value));
 
         return this;
     }
 
     public Parameters add(Paging paging) {
-        params.putAll(paging.buildParameters());
+        for (Map.Entry<String, String> entry : paging.buildParameters().entrySet()) {
+            add(entry.getKey(), entry.getValue());
+        }
 
         return this;
     }
@@ -59,26 +62,58 @@ public class Parameters {
     }
 
     public boolean isEmpty() {
-        return params.size() == 0;
+        return parameterList.size() == 0;
     }
 
     public boolean isNotEmpty() {
-        return params.size() > 0;
+        return parameterList.size() > 0;
     }
 
-    public Map<String, String> buildParameters() {
-        return params;
+    public String get(String key) {
+        for (Parameter parameter : parameterList) {
+            if (key.equals(parameter.getKey())) {
+                return parameter.getValue();
+            }
+        }
+
+        return null;
+    }
+
+    public int size() {
+        return parameterList.size();
+    }
+
+    public List<Parameter> getParameterList() {
+        return parameterList;
     }
 
     public void appendTo(OAuthRequest request) {
         if (request.getVerb() == Verb.GET) {
-            for (String key : params.keySet()) {
-                request.addQuerystringParameter(key, params.get(key));
+            for (Parameter p : parameterList) {
+                request.addQuerystringParameter(p.getKey(), p.getValue());
             }
         } else {
-            for (String key : params.keySet()) {
-                request.addBodyParameter(key, params.get(key));
+            for (Parameter p : parameterList) {
+                request.addBodyParameter(p.getKey(), p.getValue());
             }
+        }
+    }
+
+    public static class Parameter {
+        private String key;
+        private String value;
+
+        private Parameter(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getValue() {
+            return value;
         }
     }
 }

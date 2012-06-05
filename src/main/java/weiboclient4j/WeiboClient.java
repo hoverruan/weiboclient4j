@@ -32,7 +32,6 @@ import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -764,9 +763,8 @@ public class WeiboClient {
         OAuthRequest request = new OAuthRequest(verb, BASE_URL + path + ".json");
 
         params.add(paging);
-        Map<String, String> paramMap = params.buildParameters();
-        for (String key : paramMap.keySet()) {
-            request.addQuerystringParameter(key, paramMap.get(key));
+        for (Parameters.Parameter parameter : params.getParameterList()) {
+            request.addQuerystringParameter(parameter.getKey(), parameter.getValue());
         }
 
         service.signRequest(accessToken, request);

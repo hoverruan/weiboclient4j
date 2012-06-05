@@ -28,6 +28,7 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.Tag;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
+import weiboclient4j.model.Url;
 import weiboclient4j.model.User;
 import weiboclient4j.model.UserCount;
 import weiboclient4j.model.UserIdList;
@@ -66,6 +67,8 @@ import weiboclient4j.params.TargetUid;
 import weiboclient4j.params.Tid;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
+import weiboclient4j.params.UrlLong;
+import weiboclient4j.params.UrlShort;
 import weiboclient4j.params.WithoutMention;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
@@ -127,6 +130,8 @@ public class WeiboClient2 {
     public static final String TID = "tid";
     public static final String TAGS = "tags";
     public static final String TAG = "tag";
+    public static final String URL_LONG = "url_long";
+    public static final String URL_SHORT = "url_short";
 
     private String clientId;
     private String clientSecret;
@@ -1150,6 +1155,24 @@ public class WeiboClient2 {
         return response.isResult();
     }
 
+    public List<Url> shortenUrl(Collection<UrlLong> urlList) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("short_url/shorten");
+        Parameters params = Parameters.create();
+        addUrlLongParam(params, urlList);
+
+        UrlResponse response = sendRequestAndGetResponseObject(request, params, UrlResponse.class);
+        return response.getUrls();
+    }
+
+    public List<Url> expandUrl(Collection<UrlShort> urlList) throws WeiboClientException {
+        OAuthRequest request = createGetRequest("short_url/expand");
+        Parameters params = Parameters.create();
+        addUrlShortParam(params, urlList);
+
+        UrlResponse response = sendRequestAndGetResponseObject(request, params, UrlResponse.class);
+        return response.getUrls();
+    }
+
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
@@ -1220,6 +1243,18 @@ public class WeiboClient2 {
 
     public String getFullPath(String path) {
         return API2_URL + path + ".json";
+    }
+
+    private static class UrlResponse {
+        private List<Url> urls;
+
+        public List<Url> getUrls() {
+            return urls;
+        }
+
+        public void setUrls(List<Url> urls) {
+            this.urls = urls;
+        }
     }
 
     private static class ResultResponse {
@@ -1570,6 +1605,26 @@ public class WeiboClient2 {
     private void addTagParam(Parameters params, TagName tagName) {
         if (tagName != null && tagName.isValid()) {
             params.add(TAG, tagName.getValue());
+        }
+    }
+
+    private void addUrlLongParam(Parameters params, Collection<UrlLong> urlList) {
+        if (urlList != null && urlList.size() > 0) {
+            for (UrlLong urlLong : urlList) {
+                if (urlLong.isValid()) {
+                    params.add(URL_LONG, urlLong.getValue());
+                }
+            }
+        }
+    }
+
+    private void addUrlShortParam(Parameters params, Collection<UrlShort> urlList) {
+        if (urlList != null && urlList.size() > 0) {
+            for (UrlShort urlShort : urlList) {
+                if (urlShort.isValid()) {
+                    params.add(URL_SHORT, urlShort.getValue());
+                }
+            }
         }
     }
 }
