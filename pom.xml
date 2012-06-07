@@ -11,6 +11,18 @@
   <description>Java library for Sina Weibo</description>
   <url>https://github.com/hoverruan/weiboclient4j</url>
 
+  <developers>
+    <developer>
+      <id>hoverruan</id>
+      <name>Hover Ruan</name>
+      <email>hoverruan@gmail.com</email>
+      <roles>
+        <role>Lead Developer</role>
+      </roles>
+      <timezone>+8</timezone>
+    </developer>
+  </developers>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -20,7 +32,8 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/hoverruan/weiboclient4j.git</url>
+    <url>https://github.com/hoverruan/weiboclient4j</url>
+    <connection>scm:git:https://github.com/hoverruan/weiboclient4j.git</connection>
   </scm>
 
   <properties>
@@ -57,6 +70,62 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Release Repository</name>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
