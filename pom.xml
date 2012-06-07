@@ -4,7 +4,7 @@
 
   <groupId>weiboclient4j</groupId>
   <artifactId>weiboclient4j</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
 
   <name>weiboclient4j</name>

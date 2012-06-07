@@ -162,9 +162,8 @@ public class WeiboClient2 {
         return service.getAuthorizationUrl(null);
     }
 
-    public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String state, String callback) {
+    public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String callback) {
         SinaWeibo2Api api = new SinaWeibo2Api(grantType);
-        api.setState(state);
 
         OAuthService service = new ServiceBuilder()
                 .apiKey(clientId)

@@ -76,7 +76,7 @@ public class OAuth2CommandLine {
         System.out.print("Input code: ");
         String code = in.readLine();
         String accessTokenCallback = "http://demo.localhost.weiboclient4j.org/callback";
-        SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code, state, accessTokenCallback);
+        SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code, accessTokenCallback);
         System.out.println();
         System.out.println("Access token: " + accessToken.getToken());
         System.out.println("Uid: " + accessToken.getUid());
