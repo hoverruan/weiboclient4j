@@ -19,7 +19,7 @@ Weiboclient4j
 在项目pom.xml里面加入依赖：
 
     <dependency>
-      <groupId>weiboclient4j</groupId>
+      <groupId>com.github.hoverruan</groupId>
       <artifactId>weiboclient4j</artifactId>
       <version>0.2.0</version>
       <scope>runtime</scope>
