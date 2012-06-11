@@ -9,19 +9,12 @@ Weiboclient4j
 通过maven引用weiboclient4j
 ---
 
-目前还没有真正发布公共的maven repository，所以你首先需要将代码下载到本地，执行install命令：
-
-    $ git clone git://github.com/hoverruan/weiboclient4j.git weiboclient4j
-
-    $ cd weiboclient4j
-    $ mvn install
-
 在项目pom.xml里面加入依赖：
 
     <dependency>
       <groupId>com.github.hoverruan</groupId>
       <artifactId>weiboclient4j</artifactId>
-      <version>0.2.0</version>
+      <version>0.2.1</version>
       <scope>runtime</scope>
     </dependency>
 
