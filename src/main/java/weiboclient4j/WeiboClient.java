@@ -32,6 +32,7 @@ import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,6 +65,11 @@ public class WeiboClient {
 
     private long userId;
 
+    private int connectTimeoutDuration = 30;
+    private TimeUnit connectTimeoutUnit = TimeUnit.SECONDS;
+    private int readTimeoutDuration = 30;
+    private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
+
     public WeiboClient(String apiKey, String apiSecret) {
         init(apiKey, apiSecret);
     }
@@ -86,6 +92,24 @@ public class WeiboClient {
      * For testing
      */
     WeiboClient() {
+    }
+
+    public long getConnectTimeout() {
+        return connectTimeoutUnit.toMillis(connectTimeoutDuration);
+    }
+
+    public void setConnectTimeout(int duration, TimeUnit unit) {
+        this.connectTimeoutDuration = duration;
+        this.connectTimeoutUnit = unit;
+    }
+
+    public long getReadTimeout() {
+        return readTimeoutUnit.toMillis(readTimeoutDuration);
+    }
+
+    public void setReadTimeout(int duration, TimeUnit unit) {
+        this.readTimeoutDuration = duration;
+        this.readTimeoutUnit = unit;
     }
 
     //=======================================================================
@@ -761,6 +785,8 @@ public class WeiboClient {
 
     private Response getContent(Verb verb, String path, Paging paging, Parameters params) {
         OAuthRequest request = new OAuthRequest(verb, BASE_URL + path + ".json");
+        request.setConnectTimeout(connectTimeoutDuration, connectTimeoutUnit);
+        request.setReadTimeout(readTimeoutDuration, readTimeoutUnit);
 
         params.add(paging);
         for (Parameters.Parameter parameter : params.getParameterList()) {

@@ -137,6 +137,11 @@ public class WeiboClient2 {
     private String clientSecret;
     private SinaWeibo2AccessToken accessToken;
 
+    private int connectTimeoutDuration = 30;
+    private TimeUnit connectTimeoutUnit = TimeUnit.SECONDS;
+    private int readTimeoutDuration = 30;
+    private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
+
     /**
      * Create api client v2.
      *
@@ -146,6 +151,24 @@ public class WeiboClient2 {
     public WeiboClient2(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+    }
+
+    public long getConnectTimeout() {
+        return connectTimeoutUnit.toMillis(connectTimeoutDuration);
+    }
+
+    public void setConnectTimeout(int duration, TimeUnit unit) {
+        this.connectTimeoutDuration = duration;
+        this.connectTimeoutUnit = unit;
+    }
+
+    public long getReadTimeout() {
+        return readTimeoutUnit.toMillis(readTimeoutDuration);
+    }
+
+    public void setReadTimeout(int duration, TimeUnit unit) {
+        this.readTimeoutDuration = duration;
+        this.readTimeoutUnit = unit;
     }
 
     public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state, String callback) {
@@ -1224,8 +1247,8 @@ public class WeiboClient2 {
 
     public OAuthRequest createGetRequest(String path) {
         OAuthRequest request = new OAuthRequest(Verb.GET, getFullPath(path));
-        request.setConnectTimeout(30, TimeUnit.SECONDS);
-        request.setReadTimeout(30, TimeUnit.SECONDS);
+        setRequestTimeout(request);
+
         request.addQuerystringParameter(ACCESS_TOKEN, accessToken.getToken());
 
         return request;
@@ -1233,11 +1256,16 @@ public class WeiboClient2 {
 
     public OAuthRequest createPostRequest(String path) {
         OAuthRequest request = new OAuthRequest(Verb.POST, getFullPath(path));
-        request.setConnectTimeout(30, TimeUnit.SECONDS);
-        request.setReadTimeout(30, TimeUnit.SECONDS);
+        setRequestTimeout(request);
+
         request.addBodyParameter(ACCESS_TOKEN, accessToken.getToken());
 
         return request;
+    }
+
+    private void setRequestTimeout(OAuthRequest request) {
+        request.setConnectTimeout(connectTimeoutDuration, connectTimeoutUnit);
+        request.setReadTimeout(readTimeoutDuration, readTimeoutUnit);
     }
 
     public String getFullPath(String path) {
