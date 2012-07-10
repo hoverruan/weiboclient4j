@@ -37,6 +37,7 @@ import weiboclient4j.model.User;
 import weiboclient4j.model.UserCount;
 import weiboclient4j.model.UserIdList;
 import weiboclient4j.model.UserList;
+import weiboclient4j.model.UserTagList;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
@@ -66,6 +67,7 @@ import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.SourceScreenName;
 import weiboclient4j.params.SourceUid;
 import weiboclient4j.params.Suid;
+import weiboclient4j.params.TagId;
 import weiboclient4j.params.TagName;
 import weiboclient4j.params.TargetScreenName;
 import weiboclient4j.params.TargetUid;
@@ -141,6 +143,7 @@ public class WeiboClient2 {
     public static final String URL_SHORT = "url_short";
     public static final String TREND_NAME = "trend_name";
     public static final String TREND_ID = "trend_id";
+    public static final String TAG_ID = "tag_id";
 
     private String clientId;
     private String clientSecret;
@@ -1365,6 +1368,71 @@ public class WeiboClient2 {
         return response.isResult();
     }
 
+    public List<Tag> getTags(Uid uid) throws WeiboClientException {
+        return getTags(uid, Paging.EMPTY);
+    }
+
+    public List<Tag> getTags(Uid uid, Paging paging) throws WeiboClientException {
+        ArrayNode arrayNode = doGet("tags",
+                paging,
+                withParams(
+                        uidParam(uid)),
+                ArrayNode.class);
+
+        return Tag.parseTags(arrayNode);
+    }
+
+    public List<UserTagList> getTagsBatch(Collection<Uid> uids) throws WeiboClientException {
+        ArrayNode arrayNode = doGet("tags/tags_batch",
+                withParams(
+                        uidsParam(uids)),
+                ArrayNode.class);
+
+        return UserTagList.parse(arrayNode);
+    }
+
+    public List<Tag> getTagsSuggestions() throws WeiboClientException {
+        return getTagsSuggestions(Paging.EMPTY);
+    }
+
+    public List<Tag> getTagsSuggestions(Paging paging) throws WeiboClientException {
+        List<LongIdStringValue> list = doGet("tags/suggestions", paging, TYPE_LONG_ID_STRING_VALUE_LIST);
+
+        List<Tag> tags = new ArrayList<Tag>(list.size());
+        for (LongIdStringValue value : list) {
+            tags.add(new Tag(value.getId(), value.getValue()));
+        }
+
+        return tags;
+    }
+
+    public List<Long> createTags(Collection<TagName> tagNames) throws WeiboClientException {
+        List<TagActionResponse> responseList = doPost("tags/create",
+                withParams(
+                        tagsParam(tagNames)),
+                TYPE_TAG_ACTION_RESPONSE_LIST);
+
+        return TagActionResponse.toLongList(responseList);
+    }
+
+    public boolean destroyTag(TagId tagId) throws WeiboClientException {
+        ResultResponse response = doPost("tags/destroy",
+                withParams(
+                        tagIdParam(tagId)),
+                ResultResponse.class);
+
+        return response.isResult();
+    }
+
+    public List<Long> destroyTagsBatch(Collection<TagId> tagIds) throws WeiboClientException {
+        List<TagActionResponse> responseList = doPost("tags/destroy_batch",
+                withParams(
+                        tagIdsParam(tagIds)),
+                TYPE_TAG_ACTION_RESPONSE_LIST);
+
+        return TagActionResponse.toLongList(responseList);
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -1395,6 +1463,10 @@ public class WeiboClient2 {
         return sendRequestAndGetResponseObject(createGetRequest(path), typeReference);
     }
 
+    public <T> List<T> doGet(String path, Paging paging, TypeReference<List<T>> typeReference) throws WeiboClientException {
+        return sendRequestAndGetResponseObject(createGetRequest(path), paging, typeReference);
+    }
+
     public <T> List<T> doGet(String path, Parameters params, TypeReference<List<T>> typeReference)
             throws WeiboClientException {
         return sendRequestAndGetResponseObject(createGetRequest(path), params, typeReference);
@@ -1420,6 +1492,11 @@ public class WeiboClient2 {
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
                                                        TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
+    }
+
+    public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Paging paging,
+                                                       TypeReference<List<T>> typeReference) throws WeiboClientException {
+        return sendRequestAndGetResponseObject(request, paging, Parameters.create(), typeReference);
     }
 
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params,
@@ -1493,6 +1570,56 @@ public class WeiboClient2 {
     public String getFullPath(String path) {
         return API2_URL + path + ".json";
     }
+
+    private static class TagActionResponse {
+        private long tagid;
+
+        public long getTagid() {
+            return tagid;
+        }
+
+        public void setTagid(long tagid) {
+            this.tagid = tagid;
+        }
+
+        public static List<Long> toLongList(List<TagActionResponse> responseList) {
+            List<Long> result = new ArrayList<Long>(responseList.size());
+            for (TagActionResponse response : responseList) {
+                result.add(response.getTagid());
+            }
+
+            return result;
+        }
+    }
+
+    private static final TypeReference<List<TagActionResponse>> TYPE_TAG_ACTION_RESPONSE_LIST =
+            new TypeReference<List<TagActionResponse>>() {
+            };
+
+    private static class LongIdStringValue {
+        private long id;
+        private String value;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    private static final TypeReference<List<LongIdStringValue>> TYPE_LONG_ID_STRING_VALUE_LIST =
+            new TypeReference<List<LongIdStringValue>>() {
+            };
 
     private static class FollowTrendResponse {
         private long topicid;
@@ -1806,6 +1933,21 @@ public class WeiboClient2 {
         };
     }
 
+    private ParameterAction tagIdsParam(final Collection<TagId> tagIds) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (tagIds != null && tagIds.size() > 0) {
+                    List<String> idStringList = new ArrayList<String>(tagIds.size());
+                    for (TagId tagId : tagIds) {
+                        idStringList.add(String.valueOf(tagId.getValue()));
+                    }
+                    String idsString = join(idStringList, ",");
+                    params.add(IDS, idsString);
+                }
+            }
+        };
+    }
+
     public ParameterAction isCommentParam(final IsComment isComment) {
         return new ParameterAction() {
             public void addParameter(Parameters params) {
@@ -2028,6 +2170,16 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (tagName != null && tagName.isValid()) {
                     params.add(TAG, tagName.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction tagIdParam(final TagId tagId) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (tagId != null && tagId.isValid()) {
+                    params.add(TAG_ID, tagId.getValue());
                 }
             }
         };

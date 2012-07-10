@@ -13,4 +13,9 @@ public class FloatParam {
     public float getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

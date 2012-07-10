@@ -14,16 +14,16 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Tag {
     private long id;
-    private String value;
     private String tag;
     private int count;
+    private int weight;
 
     public Tag() {
     }
 
-    public Tag(long id, String value) {
+    public Tag(long id, String tag) {
         this.id = id;
-        this.value = value;
+        this.tag = tag;
     }
 
     public static List<Tag> parseTags(JsonNode json) {
@@ -33,16 +33,28 @@ public class Tag {
         List<Tag> tags = new ArrayList<Tag>();
 
         for (JsonNode tagNode : (ArrayNode) json) {
-            Iterator<String> fieldNames = tagNode.getFieldNames();
-            if (fieldNames.hasNext()) {
-                String fieldName = fieldNames.next();
-                String value = tagNode.get(fieldName).getValueAsText();
-
-                tags.add(new Tag(Long.parseLong(fieldName), value));
-            }
+            tags.add(parseTag(tagNode));
         }
 
         return tags;
+    }
+
+    public static Tag parseTag(JsonNode tagNode) {
+        Tag tag = new Tag();
+
+        Iterator<String> fieldNames = tagNode.getFieldNames();
+        while (fieldNames.hasNext()) {
+            String fieldName = fieldNames.next();
+            JsonNode fieldValue = tagNode.get(fieldName);
+            if ("weight".equals(fieldName)) {
+                tag.setWeight(fieldValue.asInt());
+            } else {
+                tag.setId(Long.parseLong(fieldName));
+                tag.setTag(fieldValue.asText());
+            }
+        }
+
+        return tag;
     }
 
     public long getId() {
@@ -54,11 +66,7 @@ public class Tag {
     }
 
     public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+        return tag;
     }
 
     public String getTag() {
@@ -75,5 +83,13 @@ public class Tag {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }
