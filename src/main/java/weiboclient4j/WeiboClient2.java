@@ -38,6 +38,7 @@ import weiboclient4j.model.UserCount;
 import weiboclient4j.model.UserIdList;
 import weiboclient4j.model.UserList;
 import weiboclient4j.model.UserTagList;
+import weiboclient4j.model.VerifyNicknameResult;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
@@ -59,6 +60,7 @@ import weiboclient4j.params.Latitude;
 import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
+import weiboclient4j.params.Nickname;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
@@ -144,6 +146,7 @@ public class WeiboClient2 {
     public static final String TREND_NAME = "trend_name";
     public static final String TREND_ID = "trend_id";
     public static final String TAG_ID = "tag_id";
+    public static final String NICKNAME = "nickname";
 
     private String clientId;
     private String clientSecret;
@@ -1433,6 +1436,13 @@ public class WeiboClient2 {
         return TagActionResponse.toLongList(responseList);
     }
 
+    public VerifyNicknameResult verifyNickname(Nickname nickname) throws WeiboClientException {
+        return doGet("register/verify_nickname",
+                withParams(
+                        nicknameParam(nickname)),
+                VerifyNicknameResult.class);
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -1548,7 +1558,9 @@ public class WeiboClient2 {
         OAuthRequest request = new OAuthRequest(Verb.GET, getFullPath(path));
         setRequestTimeout(request);
 
-        request.addQuerystringParameter(ACCESS_TOKEN, accessToken.getToken());
+        if (accessToken != null) {
+            request.addQuerystringParameter(ACCESS_TOKEN, accessToken.getToken());
+        }
 
         return request;
     }
@@ -1557,7 +1569,9 @@ public class WeiboClient2 {
         OAuthRequest request = new OAuthRequest(Verb.POST, getFullPath(path));
         setRequestTimeout(request);
 
-        request.addBodyParameter(ACCESS_TOKEN, accessToken.getToken());
+        if (accessToken != null) {
+            request.addBodyParameter(ACCESS_TOKEN, accessToken.getToken());
+        }
 
         return request;
     }
@@ -2238,6 +2252,16 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (trendId != null && trendId.isValid()) {
                     params.add(TREND_ID, trendId.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction nicknameParam(final Nickname nickname) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (nickname != null && nickname.isValid()) {
+                    params.add(NICKNAME, nickname.getValue());
                 }
             }
         };
