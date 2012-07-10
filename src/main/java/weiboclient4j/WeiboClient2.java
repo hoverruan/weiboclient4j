@@ -19,6 +19,7 @@ import weiboclient4j.model.FavoritesIds;
 import weiboclient4j.model.FavoritesItem;
 import weiboclient4j.model.FavoritesTags;
 import weiboclient4j.model.Friendship;
+import weiboclient4j.model.GlobalTrendList;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.Privacy;
@@ -28,6 +29,8 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.Tag;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
+import weiboclient4j.model.Trend;
+import weiboclient4j.model.TrendStatus;
 import weiboclient4j.model.Url;
 import weiboclient4j.model.UrlInfo;
 import weiboclient4j.model.User;
@@ -67,6 +70,8 @@ import weiboclient4j.params.TagName;
 import weiboclient4j.params.TargetScreenName;
 import weiboclient4j.params.TargetUid;
 import weiboclient4j.params.Tid;
+import weiboclient4j.params.TrendId;
+import weiboclient4j.params.TrendName;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.UrlLong;
@@ -134,6 +139,8 @@ public class WeiboClient2 {
     public static final String TAG = "tag";
     public static final String URL_LONG = "url_long";
     public static final String URL_SHORT = "url_short";
+    public static final String TREND_NAME = "trend_name";
+    public static final String TREND_ID = "trend_id";
 
     private String clientId;
     private String clientSecret;
@@ -1286,6 +1293,78 @@ public class WeiboClient2 {
         return response.getUrls();
     }
 
+    public List<Trend> getTrends(Uid uid, Paging paging) throws WeiboClientException {
+        return doGet("trends",
+                paging,
+                withParams(
+                        uidParam(uid)),
+                WeiboClient.TYPE_TREND_LIST);
+    }
+
+    public TrendStatus getTrendStatus(TrendName trendName) throws WeiboClientException {
+        return doGet("trends/is_follow",
+                withParams(
+                        trendNameParam(trendName)),
+                TrendStatus.class);
+    }
+
+    public GlobalTrendList getTrendsHourly() throws WeiboClientException {
+        return getTrendsHourly(BaseApp.No);
+    }
+
+    public GlobalTrendList getTrendsHourly(BaseApp baseApp) throws WeiboClientException {
+        JsonNode json = doGet("trends/hourly",
+                withParams(
+                        baseAppParam(baseApp)),
+                JsonNode.class);
+
+        return new GlobalTrendList(json);
+    }
+
+    public GlobalTrendList getTrendsDaily() throws WeiboClientException {
+        return getTrendsDaily(BaseApp.No);
+    }
+
+    public GlobalTrendList getTrendsDaily(BaseApp baseApp) throws WeiboClientException {
+        JsonNode json = doGet("trends/daily",
+                withParams(
+                        baseAppParam(baseApp)),
+                JsonNode.class);
+
+        return new GlobalTrendList(json);
+    }
+
+    public GlobalTrendList getTrendsWeekly() throws WeiboClientException {
+        return getTrendsWeekly(BaseApp.No);
+    }
+
+    public GlobalTrendList getTrendsWeekly(BaseApp baseApp) throws WeiboClientException {
+        JsonNode json = doGet("trends/weekly",
+                withParams(
+                        baseAppParam(baseApp)),
+                JsonNode.class);
+
+        return new GlobalTrendList(json);
+    }
+
+    public long followTrend(TrendName trendName) throws WeiboClientException {
+        FollowTrendResponse response = doPost("trends/follow",
+                withParams(
+                        trendNameParam(trendName)),
+                FollowTrendResponse.class);
+
+        return response.getTopicid();
+    }
+
+    public boolean destroyTrend(TrendId trendId) throws WeiboClientException {
+        ResultResponse response = doPost("trends/destroy",
+                withParams(
+                        trendIdParam(trendId)),
+                ResultResponse.class);
+
+        return response.isResult();
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -1413,6 +1492,18 @@ public class WeiboClient2 {
 
     public String getFullPath(String path) {
         return API2_URL + path + ".json";
+    }
+
+    private static class FollowTrendResponse {
+        private long topicid;
+
+        public long getTopicid() {
+            return topicid;
+        }
+
+        public void setTopicid(long topicid) {
+            this.topicid = topicid;
+        }
     }
 
     private static class UrlInfoResponse {
@@ -1961,10 +2052,8 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (urlList != null && urlList.size() > 0) {
                     for (UrlShort urlShort : urlList) {
-                        if (urlShort != null) {
-                            if (urlShort.isValid()) {
-                                params.add(URL_SHORT, urlShort.getValue());
-                            }
+                        if (urlShort.isValid()) {
+                            params.add(URL_SHORT, urlShort.getValue());
                         }
                     }
                 }
@@ -1975,10 +2064,28 @@ public class WeiboClient2 {
     private ParameterAction urlShortParam(final UrlShort urlShort) {
         return new ParameterAction() {
             public void addParameter(Parameters params) {
-                if (urlShort != null) {
-                    if (urlShort.isValid()) {
-                        params.add(URL_SHORT, urlShort.getValue());
-                    }
+                if (urlShort != null && urlShort.isValid()) {
+                    params.add(URL_SHORT, urlShort.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction trendNameParam(final TrendName trendName) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (trendName != null && trendName.isValid()) {
+                    params.add(TREND_NAME, trendName.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction trendIdParam(final TrendId trendId) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (trendId != null && trendId.isValid()) {
+                    params.add(TREND_ID, trendId.getValue());
                 }
             }
         };
