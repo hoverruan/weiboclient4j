@@ -3,6 +3,7 @@ package weiboclient4j.model;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +14,9 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Tag {
+    public static final TypeReference<List<Tag>> TYPE_TAG_LIST = new TypeReference<List<Tag>>() {
+    };
+
     private long id;
     private String tag;
     private int count;

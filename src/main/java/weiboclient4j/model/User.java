@@ -1,14 +1,19 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hover Ruan
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
+    public static final TypeReference<List<User>> TYPE_USER_LIST = new TypeReference<List<User>>() {
+    };
+
     private long id;
     private String idstr;
     private String screenName;

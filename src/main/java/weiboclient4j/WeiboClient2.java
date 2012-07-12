@@ -11,9 +11,12 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
 import weiboclient4j.model.Comment;
+import static weiboclient4j.model.Comment.TYPE_COMMENT_LIST;
 import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Count;
+import static weiboclient4j.model.Count.TYPE_COUNT_LIST;
 import weiboclient4j.model.Emotion;
+import static weiboclient4j.model.Emotion.TYPE_EMOTION_LIST;
 import weiboclient4j.model.Favorites;
 import weiboclient4j.model.FavoritesIds;
 import weiboclient4j.model.FavoritesItem;
@@ -26,10 +29,12 @@ import weiboclient4j.model.Privacy;
 import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
+import static weiboclient4j.model.Status.TYPE_STATUS_LIST;
 import weiboclient4j.model.Tag;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.model.Trend;
+import static weiboclient4j.model.Trend.TYPE_TREND_LIST;
 import weiboclient4j.model.TrendStatus;
 import weiboclient4j.model.Url;
 import weiboclient4j.model.UrlInfo;
@@ -582,7 +587,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         baseAppParam(baseApp)),
-                WeiboClient.TYPE_STATUS_LIST);
+                TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotRepostWeekly() throws WeiboClientException {
@@ -598,7 +603,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         baseAppParam(baseApp)),
-                WeiboClient.TYPE_STATUS_LIST);
+                TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotCommentsDaily() throws WeiboClientException {
@@ -614,7 +619,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         baseAppParam(baseApp)),
-                WeiboClient.TYPE_STATUS_LIST);
+                TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotCommentsWeekly() throws WeiboClientException {
@@ -629,14 +634,14 @@ public class WeiboClient2 {
         return doGet("statuses/hot/comments_weekly",
                 paging,
                 withParams(baseAppParam(baseApp)),
-                WeiboClient.TYPE_STATUS_LIST);
+                TYPE_STATUS_LIST);
     }
 
     public List<Count> getStatusesCounts(Collection<Id> ids) throws WeiboClientException {
         return doGet("statuses/count",
                 withParams(
                         idsParam(ids)),
-                WeiboClient.TYPE_COUNT_LIST);
+                TYPE_COUNT_LIST);
     }
 
     public Status repostStatus(Id id, String status) throws WeiboClientException {
@@ -692,7 +697,7 @@ public class WeiboClient2 {
 //    }
 
     public List<Emotion> getEmotions() throws WeiboClientException {
-        return doGet("emotions", WeiboClient.TYPE_EMOTION_LIST);
+        return doGet("emotions", TYPE_EMOTION_LIST);
     }
 
     public CommentList getComments(Id id) throws WeiboClientException {
@@ -775,7 +780,7 @@ public class WeiboClient2 {
     public List<Comment> getCommentsBatch(Collection<Cid> cids) throws WeiboClientException {
         return doGet("comments/show_batch",
                 withParams(cidsParam(cids)),
-                WeiboClient.TYPE_COMMENT_LIST);
+                TYPE_COMMENT_LIST);
     }
 
     public Comment createComment(Id id, String comment) throws WeiboClientException {
@@ -807,7 +812,7 @@ public class WeiboClient2 {
         return doPost("comments/destroy_batch",
                 withParams(
                         idsParam(ids)),
-                WeiboClient.TYPE_COMMENT_LIST);
+                TYPE_COMMENT_LIST);
     }
 
     public Comment replyComment(Id id, Cid cid, String comment) throws WeiboClientException {
@@ -1304,7 +1309,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         uidParam(uid)),
-                WeiboClient.TYPE_TREND_LIST);
+                TYPE_TREND_LIST);
     }
 
     public TrendStatus getTrendStatus(TrendName trendName) throws WeiboClientException {

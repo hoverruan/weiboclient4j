@@ -1,11 +1,17 @@
 package weiboclient4j.model;
 
+import org.codehaus.jackson.type.TypeReference;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hover Ruan
  */
 public class Comment {
+    public static final TypeReference<List<Comment>> TYPE_COMMENT_LIST = new TypeReference<List<Comment>>() {
+    };
+
     private long id;
     private String text;
     private String source;

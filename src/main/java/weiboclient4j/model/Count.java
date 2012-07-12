@@ -1,12 +1,18 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.type.TypeReference;
+
+import java.util.List;
 
 /**
  * @author Hover Ruan
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Count {
+    public static final TypeReference<List<Count>> TYPE_COUNT_LIST = new TypeReference<List<Count>>() {
+    };
+
     private long id;
     private int comments;
     private int reposts;

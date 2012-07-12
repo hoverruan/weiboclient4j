@@ -1,6 +1,7 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.util.List;
 
@@ -9,6 +10,9 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Url {
+    public static final TypeReference<List<Url>> TYPE_URL_LIST = new TypeReference<List<Url>>() {
+    };
+
     private int type;
     private String urlShort;
     private String urlLong;

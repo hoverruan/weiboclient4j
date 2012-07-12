@@ -1,12 +1,18 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.type.TypeReference;
+
+import java.util.List;
 
 /**
  * @author hover.ruan
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Emotion {
+    public static final TypeReference<List<Emotion>> TYPE_EMOTION_LIST = new TypeReference<List<Emotion>>() {
+    };
+
     private String phrase;
     private String type;
     private String url;

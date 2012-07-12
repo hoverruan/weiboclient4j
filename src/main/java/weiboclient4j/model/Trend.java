@@ -1,12 +1,18 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.type.TypeReference;
+
+import java.util.List;
 
 /**
  * @author Hover Ruan
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Trend {
+    public static final TypeReference<List<Trend>> TYPE_TREND_LIST = new TypeReference<List<Trend>>() {
+    };
+
     private long trendId;
     private String hotword;
     private long num;

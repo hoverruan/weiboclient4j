@@ -11,17 +11,26 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.Comment;
+import static weiboclient4j.model.Comment.TYPE_COMMENT_LIST;
 import weiboclient4j.model.Count;
+import static weiboclient4j.model.Count.TYPE_COUNT_LIST;
 import weiboclient4j.model.Emotion;
+import static weiboclient4j.model.Emotion.TYPE_EMOTION_LIST;
 import weiboclient4j.model.GlobalTrendList;
 import weiboclient4j.model.IdList;
 import weiboclient4j.model.Status;
+import static weiboclient4j.model.Status.TYPE_STATUS_LIST;
 import weiboclient4j.model.SuggestedUser;
+import static weiboclient4j.model.SuggestedUser.TYPE_SUGGESTED_USER_LIST;
 import weiboclient4j.model.Tag;
+import static weiboclient4j.model.Tag.TYPE_TAG_LIST;
 import weiboclient4j.model.Trend;
+import static weiboclient4j.model.Trend.TYPE_TREND_LIST;
 import weiboclient4j.model.UnreadCount;
 import weiboclient4j.model.Url;
+import static weiboclient4j.model.Url.TYPE_URL_LIST;
 import weiboclient4j.model.User;
+import static weiboclient4j.model.User.TYPE_USER_LIST;
 import weiboclient4j.params.EmotionType;
 import weiboclient4j.params.Language;
 import weiboclient4j.params.Paging;
@@ -164,11 +173,8 @@ public class WeiboClient {
     //  Timeline API
     //=======================================================================
 
-    public static final TypeReference<List<Status>> TYPE_STATUS_LIST = new TypeReference<List<Status>>() {
-    };
-
     public List<Status> parseStatusList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_STATUS_LIST);
+        return parseJsonObject(json, Status.TYPE_STATUS_LIST);
     }
 
     //*****************************************************
@@ -276,9 +282,6 @@ public class WeiboClient {
     // statuses/comments_timeline
     //*****************************************************
 
-    public static final TypeReference<List<Comment>> TYPE_COMMENT_LIST = new TypeReference<List<Comment>>() {
-    };
-
     public List<Comment> parseCommentList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_COMMENT_LIST);
     }
@@ -339,9 +342,6 @@ public class WeiboClient {
     //*****************************************************
     //  statuses/counts
     //*****************************************************
-
-    public static final TypeReference<List<Count>> TYPE_COUNT_LIST = new TypeReference<List<Count>>() {
-    };
 
     public List<Count> parseCountList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_COUNT_LIST);
@@ -413,9 +413,6 @@ public class WeiboClient {
     //*****************************************************
     //  emotions
     //*****************************************************
-
-    public static final TypeReference<List<Emotion>> TYPE_EMOTION_LIST = new TypeReference<List<Emotion>>() {
-    };
 
     public List<Emotion> parseEmotionList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_EMOTION_LIST);
@@ -537,9 +534,6 @@ public class WeiboClient {
     //  users/hot
     //*****************************************************
 
-    public static final TypeReference<List<User>> TYPE_USER_LIST = new TypeReference<List<User>>() {
-    };
-
     public List<User> parseUserList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_USER_LIST);
     }
@@ -566,9 +560,6 @@ public class WeiboClient {
         return get("users/suggestions", TYPE_USER_LIST);
     }
 
-    public static final TypeReference<List<SuggestedUser>> TYPE_SUGGESTED_USER_LIST = new TypeReference<List<SuggestedUser>>() {
-    };
-
     public List<SuggestedUser> parseSuggestedUserList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_SUGGESTED_USER_LIST);
     }
@@ -586,9 +577,6 @@ public class WeiboClient {
     //*****************************************************
     //  trends
     //*****************************************************
-
-    public static final TypeReference<List<Trend>> TYPE_TREND_LIST = new TypeReference<List<Trend>>() {
-    };
 
     public List<Trend> parseTrendList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_TREND_LIST);
@@ -697,9 +685,6 @@ public class WeiboClient {
     //  tags
     //*****************************************************
 
-    public static final TypeReference<List<Tag>> TYPE_TAG_LIST = new TypeReference<List<Tag>>() {
-    };
-
     public List<Tag> parseTagList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_TAG_LIST);
     }
@@ -746,9 +731,6 @@ public class WeiboClient {
     //=======================================================================
     //  Short URL API
     //=======================================================================
-
-    public static final TypeReference<List<Url>> TYPE_URL_LIST = new TypeReference<List<Url>>() {
-    };
 
     public List<Url> parseUrlList(String json) throws WeiboClientException {
         return parseJsonObject(json, TYPE_URL_LIST);
