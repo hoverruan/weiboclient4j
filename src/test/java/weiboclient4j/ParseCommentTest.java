@@ -1,6 +1,7 @@
 package weiboclient4j;
 
 import org.junit.Test;
+import weiboclient4j.model.Comment;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**
@@ -12,6 +13,6 @@ public class ParseCommentTest extends AbstractParseJsonTest {
     public void testParseComments() throws Exception {
         String content = readResource("/weiboclient4j/comments.json");
 
-        parseJsonObject(content, WeiboClient.TYPE_COMMENT_LIST);
+        parseJsonObject(content, Comment.TYPE_COMMENT_LIST);
     }
 }

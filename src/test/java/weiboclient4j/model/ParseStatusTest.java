@@ -13,12 +13,12 @@ public class ParseStatusTest extends AbstractParseJsonTest {
     @Test
     public void testParseStatusList() throws Exception {
         String content = readResource("/weiboclient4j/model/statuses.json");
-        JsonUtils.parseJsonObject(content, WeiboClient.TYPE_STATUS_LIST);
+        JsonUtils.parseJsonObject(content, Status.TYPE_STATUS_LIST);
     }
 
     @Test
     public void testParseStatusesIncludingDeleted() throws Exception {
         String content = readResource("/weiboclient4j/model/statuses_including_deleted.json");
-        parseJsonObject(content, WeiboClient.TYPE_STATUS_LIST);
+        parseJsonObject(content, Status.TYPE_STATUS_LIST);
     }
 }

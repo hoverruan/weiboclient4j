@@ -24,6 +24,6 @@ public class ParseUserTest extends AbstractParseJsonTest {
     @Test
     public void testParseUserList() throws Exception {
         String content = readResource("/weiboclient4j/user_list.json");
-        parseJsonObject(content, WeiboClient.TYPE_USER_LIST);
+        parseJsonObject(content, User.TYPE_USER_LIST);
     }
 }
