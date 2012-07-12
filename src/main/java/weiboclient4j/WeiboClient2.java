@@ -11,12 +11,9 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.AccountUid;
 import weiboclient4j.model.Comment;
-import static weiboclient4j.model.Comment.TYPE_COMMENT_LIST;
 import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Count;
-import static weiboclient4j.model.Count.TYPE_COUNT_LIST;
 import weiboclient4j.model.Emotion;
-import static weiboclient4j.model.Emotion.TYPE_EMOTION_LIST;
 import weiboclient4j.model.Favorites;
 import weiboclient4j.model.FavoritesIds;
 import weiboclient4j.model.FavoritesItem;
@@ -28,13 +25,17 @@ import weiboclient4j.model.MidResponse;
 import weiboclient4j.model.Privacy;
 import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.RepostTimeline;
+import weiboclient4j.model.SearchSuggestionAppResult;
+import weiboclient4j.model.SearchSuggestionAtUserResult;
+import weiboclient4j.model.SearchSuggestionCompanyResult;
+import weiboclient4j.model.SearchSuggestionSchoolResult;
+import weiboclient4j.model.SearchSuggestionStatusResult;
+import weiboclient4j.model.SearchSuggestionUserResult;
 import weiboclient4j.model.Status;
-import static weiboclient4j.model.Status.TYPE_STATUS_LIST;
 import weiboclient4j.model.Tag;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.model.Trend;
-import static weiboclient4j.model.Trend.TYPE_TREND_LIST;
 import weiboclient4j.model.TrendStatus;
 import weiboclient4j.model.Url;
 import weiboclient4j.model.UrlInfo;
@@ -69,10 +70,14 @@ import weiboclient4j.params.Nickname;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
+import weiboclient4j.params.Query;
 import weiboclient4j.params.Remark;
+import weiboclient4j.params.SchoolType;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.SourceScreenName;
 import weiboclient4j.params.SourceUid;
+import weiboclient4j.params.SuggestionRange;
+import weiboclient4j.params.SuggestionType;
 import weiboclient4j.params.Suid;
 import weiboclient4j.params.TagId;
 import weiboclient4j.params.TagName;
@@ -152,6 +157,8 @@ public class WeiboClient2 {
     public static final String TREND_ID = "trend_id";
     public static final String TAG_ID = "tag_id";
     public static final String NICKNAME = "nickname";
+    public static final String Q = "q";
+    public static final String RANGE = "range";
 
     private String clientId;
     private String clientSecret;
@@ -587,7 +594,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         baseAppParam(baseApp)),
-                TYPE_STATUS_LIST);
+                Status.TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotRepostWeekly() throws WeiboClientException {
@@ -603,7 +610,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         baseAppParam(baseApp)),
-                TYPE_STATUS_LIST);
+                Status.TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotCommentsDaily() throws WeiboClientException {
@@ -619,7 +626,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         baseAppParam(baseApp)),
-                TYPE_STATUS_LIST);
+                Status.TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotCommentsWeekly() throws WeiboClientException {
@@ -634,14 +641,14 @@ public class WeiboClient2 {
         return doGet("statuses/hot/comments_weekly",
                 paging,
                 withParams(baseAppParam(baseApp)),
-                TYPE_STATUS_LIST);
+                Status.TYPE_STATUS_LIST);
     }
 
     public List<Count> getStatusesCounts(Collection<Id> ids) throws WeiboClientException {
         return doGet("statuses/count",
                 withParams(
                         idsParam(ids)),
-                TYPE_COUNT_LIST);
+                Count.TYPE_COUNT_LIST);
     }
 
     public Status repostStatus(Id id, String status) throws WeiboClientException {
@@ -697,7 +704,7 @@ public class WeiboClient2 {
 //    }
 
     public List<Emotion> getEmotions() throws WeiboClientException {
-        return doGet("emotions", TYPE_EMOTION_LIST);
+        return doGet("emotions", Emotion.TYPE_EMOTION_LIST);
     }
 
     public CommentList getComments(Id id) throws WeiboClientException {
@@ -780,7 +787,7 @@ public class WeiboClient2 {
     public List<Comment> getCommentsBatch(Collection<Cid> cids) throws WeiboClientException {
         return doGet("comments/show_batch",
                 withParams(cidsParam(cids)),
-                TYPE_COMMENT_LIST);
+                Comment.TYPE_COMMENT_LIST);
     }
 
     public Comment createComment(Id id, String comment) throws WeiboClientException {
@@ -812,7 +819,7 @@ public class WeiboClient2 {
         return doPost("comments/destroy_batch",
                 withParams(
                         idsParam(ids)),
-                TYPE_COMMENT_LIST);
+                Comment.TYPE_COMMENT_LIST);
     }
 
     public Comment replyComment(Id id, Cid cid, String comment) throws WeiboClientException {
@@ -1309,7 +1316,7 @@ public class WeiboClient2 {
                 paging,
                 withParams(
                         uidParam(uid)),
-                TYPE_TREND_LIST);
+                Trend.TYPE_TREND_LIST);
     }
 
     public TrendStatus getTrendStatus(TrendName trendName) throws WeiboClientException {
@@ -1446,6 +1453,111 @@ public class WeiboClient2 {
                 withParams(
                         nicknameParam(nickname)),
                 VerifyNicknameResult.class);
+    }
+
+    public List<SearchSuggestionUserResult> searchSuggestionUsers(Query query) throws WeiboClientException {
+        return searchSuggestionUsers(query, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionUserResult> searchSuggestionUsers(Query query, Paging paging) throws WeiboClientException {
+        return doGet("search/suggestions/users",
+                paging,
+                withParams(
+                        queryParam(query)),
+                SearchSuggestionUserResult.TYPE_SEARCH_SUGGESTION_USER_RESULT_LIST);
+    }
+
+    public List<SearchSuggestionStatusResult> searchSuggestionStatuses(Query query) throws WeiboClientException {
+        return searchSuggestionStatuses(query, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionStatusResult> searchSuggestionStatuses(Query query, Paging paging) throws WeiboClientException {
+        return doGet("search/suggestions/statuses",
+                paging,
+                withParams(queryParam(query)),
+                SearchSuggestionStatusResult.TYPE_SEARCH_SUGGESTION_STATUS_RESULT_LIST);
+    }
+
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query) throws WeiboClientException {
+        return searchSuggestionSchools(query, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, Paging paging) throws WeiboClientException {
+        return searchSuggestionSchools(query, SchoolType.All, paging);
+    }
+
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType) throws WeiboClientException {
+        return searchSuggestionSchools(query, schoolType, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType, Paging paging) throws WeiboClientException {
+        return doGet("search/suggestions/schools",
+                paging,
+                withParams(
+                        queryParam(query),
+                        schoolTypeParam(schoolType)),
+                SearchSuggestionSchoolResult.TYPE_SEARCH_SUGGESTION_SCHOOL_RESULT_LIST);
+    }
+
+    public List<SearchSuggestionCompanyResult> searchSuggestionCompanies(Query query) throws WeiboClientException {
+        return searchSuggestionCompanies(query, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionCompanyResult> searchSuggestionCompanies(Query query, Paging paging) throws WeiboClientException {
+        return doGet("search/suggestions/companies",
+                paging,
+                withParams(
+                        queryParam(query)),
+                SearchSuggestionCompanyResult.TYPE_SEARCH_SUGGESTION_COMPANY_RESULT_LIST);
+    }
+
+    public List<SearchSuggestionAppResult> searchSuggestionApps(Query query) throws WeiboClientException {
+        return searchSuggestionApps(query, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionAppResult> searchSuggestionApps(Query query, Paging paging) throws WeiboClientException {
+        return doGet("search/suggestions/apps",
+                paging,
+                withParams(
+                        queryParam(query)),
+                SearchSuggestionAppResult.TYPE_SEARCH_SUGGESTION_APP_RESULT_LIST);
+    }
+
+    public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type)
+            throws WeiboClientException {
+        return searchSuggestionAtUsers(query, type, SuggestionRange.All);
+    }
+
+    public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type, Paging paging)
+            throws WeiboClientException {
+        return searchSuggestionAtUsers(query, type, SuggestionRange.All, paging);
+    }
+
+    public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type, SuggestionRange range)
+            throws WeiboClientException {
+        return searchSuggestionAtUsers(query, type, range, Paging.EMPTY);
+    }
+
+    public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type,
+                                                                      SuggestionRange range, Paging paging) throws WeiboClientException {
+        return doGet("search/suggestions/at_users",
+                paging,
+                withParams(
+                        queryParam(query),
+                        suggestionTypeParam(type),
+                        suggestionRangeParam(range)),
+                SearchSuggestionAtUserResult.TYPE_SEARCH_SUGGESTION_AT_USER_RESULT_LIST);
+    }
+
+    public Timeline searchTopics(Query query) throws WeiboClientException {
+        return searchTopics(query, Paging.EMPTY);
+    }
+
+    public Timeline searchTopics(Query query, Paging paging) throws WeiboClientException {
+        return doGet("search/topics",
+                paging,
+                withParams(queryParam(query)),
+                Timeline.class);
     }
 
     public static Parameters withParams(ParameterAction... actions) {
@@ -2267,6 +2379,46 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (nickname != null && nickname.isValid()) {
                     params.add(NICKNAME, nickname.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction queryParam(final Query query) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (query != null && query.isValid()) {
+                    params.add(Q, query.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction schoolTypeParam(final SchoolType schoolType) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (schoolType != null && schoolType != SchoolType.All) {
+                    params.add(TYPE, schoolType.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction suggestionTypeParam(final SuggestionType suggestionType) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (suggestionType != null) {
+                    params.add(TYPE, suggestionType.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction suggestionRangeParam(final SuggestionRange suggestionRange) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (suggestionRange != null && suggestionRange != SuggestionRange.All) {
+                    params.add(RANGE, suggestionRange.getValue());
                 }
             }
         };
