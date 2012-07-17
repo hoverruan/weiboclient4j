@@ -11,27 +11,18 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.model.Comment;
-import static weiboclient4j.model.Comment.TYPE_COMMENT_LIST;
 import weiboclient4j.model.Count;
-import static weiboclient4j.model.Count.TYPE_COUNT_LIST;
 import weiboclient4j.model.Emotion;
-import static weiboclient4j.model.Emotion.TYPE_EMOTION_LIST;
 import weiboclient4j.model.GlobalTrendList;
 import weiboclient4j.model.IdList;
 import weiboclient4j.model.Result;
 import weiboclient4j.model.Status;
-import static weiboclient4j.model.Status.TYPE_STATUS_LIST;
 import weiboclient4j.model.SuggestedUser;
-import static weiboclient4j.model.SuggestedUser.TYPE_SUGGESTED_USER_LIST;
 import weiboclient4j.model.Tag;
-import static weiboclient4j.model.Tag.TYPE_TAG_LIST;
 import weiboclient4j.model.Trend;
-import static weiboclient4j.model.Trend.TYPE_TREND_LIST;
 import weiboclient4j.model.UnreadCount;
 import weiboclient4j.model.Url;
-import static weiboclient4j.model.Url.TYPE_URL_LIST;
 import weiboclient4j.model.User;
-import static weiboclient4j.model.User.TYPE_USER_LIST;
 import weiboclient4j.params.EmotionType;
 import weiboclient4j.params.Language;
 import weiboclient4j.params.Paging;
@@ -196,7 +187,7 @@ public class WeiboClient {
     }
 
     private List<Status> getPublicStatuses(Paging paging, Parameters params) throws WeiboClientException {
-        return get("statuses/public_timeline", TYPE_STATUS_LIST, paging, params);
+        return get("statuses/public_timeline", Status.TYPE_STATUS_LIST, paging, params);
     }
 
     //*****************************************************
@@ -218,7 +209,7 @@ public class WeiboClient {
             params.add(P_STATUS_TYPE, type.ordinal());
         }
 
-        return get("statuses/friends_timeline", TYPE_STATUS_LIST, paging, params);
+        return get("statuses/friends_timeline", Status.TYPE_STATUS_LIST, paging, params);
     }
 
     //*****************************************************
@@ -264,7 +255,7 @@ public class WeiboClient {
             params.add(P_STATUS_TYPE, type.ordinal());
         }
 
-        return get("statuses/user_timeline", TYPE_STATUS_LIST, paging, params);
+        return get("statuses/user_timeline", Status.TYPE_STATUS_LIST, paging, params);
     }
 
     //*****************************************************
@@ -276,7 +267,7 @@ public class WeiboClient {
     }
 
     public List<Status> getMentionsStatuses(Paging paging) throws WeiboClientException {
-        return get("statuses/mentions", TYPE_STATUS_LIST, paging);
+        return get("statuses/mentions", Status.TYPE_STATUS_LIST, paging);
     }
 
     //*****************************************************
@@ -284,7 +275,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Comment> parseCommentList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_COMMENT_LIST);
+        return parseJsonObject(json, Comment.TYPE_COMMENT_LIST);
     }
 
     public List<Comment> getMyComments() throws WeiboClientException {
@@ -292,7 +283,7 @@ public class WeiboClient {
     }
 
     public List<Comment> getMyComments(Paging paging) throws WeiboClientException {
-        return get("statuses/comments_timeline", TYPE_COMMENT_LIST, paging);
+        return get("statuses/comments_timeline", Comment.TYPE_COMMENT_LIST, paging);
     }
 
     //*****************************************************
@@ -304,7 +295,7 @@ public class WeiboClient {
     }
 
     public List<Comment> getCommentsByMe(Paging paging) throws WeiboClientException {
-        return get("statuses/comments_by_me", TYPE_COMMENT_LIST, paging);
+        return get("statuses/comments_by_me", Comment.TYPE_COMMENT_LIST, paging);
     }
 
     //*****************************************************
@@ -316,7 +307,7 @@ public class WeiboClient {
     }
 
     public List<Comment> getCommentsToMe(Paging paging) throws WeiboClientException {
-        return get("statuses/comments_to_me", TYPE_COMMENT_LIST, paging);
+        return get("statuses/comments_to_me", Comment.TYPE_COMMENT_LIST, paging);
     }
 
     //*****************************************************
@@ -337,7 +328,7 @@ public class WeiboClient {
     }
 
     private List<Comment> getComments(Paging paging, Parameters params) throws WeiboClientException {
-        return get("statuses/comments", TYPE_COMMENT_LIST, paging, params);
+        return get("statuses/comments", Comment.TYPE_COMMENT_LIST, paging, params);
     }
 
     //*****************************************************
@@ -345,13 +336,13 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Count> parseCountList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_COUNT_LIST);
+        return parseJsonObject(json, Count.TYPE_COUNT_LIST);
     }
 
     public List<Count> getCounts(long... ids) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_IDS, ids);
 
-        return get("statuses/counts", TYPE_COUNT_LIST, params);
+        return get("statuses/counts", Count.TYPE_COUNT_LIST, params);
     }
 
     //*****************************************************
@@ -365,7 +356,7 @@ public class WeiboClient {
     public List<Status> getRepostStatuses(long statusId, Paging paging) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_ID, statusId);
 
-        return get("statuses/repost_timeline", TYPE_STATUS_LIST, paging, params);
+        return get("statuses/repost_timeline", Status.TYPE_STATUS_LIST, paging, params);
     }
 
     //*****************************************************
@@ -379,7 +370,7 @@ public class WeiboClient {
     public List<Status> getRepostStatusesByUser(long userId, Paging paging) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_ID, userId);
 
-        return get("statuses/repost_by_me", TYPE_STATUS_LIST, paging, params);
+        return get("statuses/repost_by_me", Status.TYPE_STATUS_LIST, paging, params);
     }
 
     //*****************************************************
@@ -416,7 +407,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Emotion> parseEmotionList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_EMOTION_LIST);
+        return parseJsonObject(json, Emotion.TYPE_EMOTION_LIST);
     }
 
     public List<Emotion> getEmotions() throws WeiboClientException {
@@ -432,7 +423,7 @@ public class WeiboClient {
     }
 
     private List<Emotion> getEmotions(Parameters params) throws WeiboClientException {
-        return get("emotions", TYPE_EMOTION_LIST, params);
+        return get("emotions", Emotion.TYPE_EMOTION_LIST, params);
     }
 
     //=======================================================================
@@ -494,7 +485,7 @@ public class WeiboClient {
     }
 
     private List<User> getFriends(Paging paging, Parameters params) throws WeiboClientException {
-        return get("statuses/friends", TYPE_USER_LIST, paging, params);
+        return get("statuses/friends", User.TYPE_USER_LIST, paging, params);
     }
 
     //*****************************************************
@@ -528,7 +519,7 @@ public class WeiboClient {
     }
 
     private List<User> getFollowers(Paging paging, Parameters params) throws WeiboClientException {
-        return get("statuses/followers", TYPE_USER_LIST, paging, params);
+        return get("statuses/followers", User.TYPE_USER_LIST, paging, params);
     }
 
     //*****************************************************
@@ -536,7 +527,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<User> parseUserList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_USER_LIST);
+        return parseJsonObject(json, User.TYPE_USER_LIST);
     }
 
     public List<User> getHotUsers() throws WeiboClientException {
@@ -550,7 +541,7 @@ public class WeiboClient {
     }
 
     private List<User> getHotUsers(Parameters params) throws WeiboClientException {
-        return get("users/hot", TYPE_USER_LIST, params);
+        return get("users/hot", User.TYPE_USER_LIST, params);
     }
 
     //*****************************************************
@@ -558,17 +549,17 @@ public class WeiboClient {
     //*****************************************************
 
     public List<User> getSuggestedUsers() throws WeiboClientException {
-        return get("users/suggestions", TYPE_USER_LIST);
+        return get("users/suggestions", User.TYPE_USER_LIST);
     }
 
     public List<SuggestedUser> parseSuggestedUserList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_SUGGESTED_USER_LIST);
+        return parseJsonObject(json, SuggestedUser.TYPE_SUGGESTED_USER_LIST);
     }
 
     public List<SuggestedUser> getSuggestedUsersWithReason() throws WeiboClientException {
         Parameters params = Parameters.create().add(P_WITH_REASON, 1);
 
-        return get("users/suggestions", TYPE_SUGGESTED_USER_LIST, params);
+        return get("users/suggestions", SuggestedUser.TYPE_SUGGESTED_USER_LIST, params);
     }
 
     //=======================================================================
@@ -580,7 +571,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Trend> parseTrendList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_TREND_LIST);
+        return parseJsonObject(json, Trend.TYPE_TREND_LIST);
     }
 
     public List<Trend> getTrends(long userId) throws WeiboClientException {
@@ -597,7 +588,7 @@ public class WeiboClient {
     }
 
     private List<Trend> getTrends(Paging paging, Parameters params) throws WeiboClientException {
-        return get("trends", TYPE_TREND_LIST, paging, params);
+        return get("trends", Trend.TYPE_TREND_LIST, paging, params);
     }
 
     //*****************************************************
@@ -605,7 +596,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Status> getTrendStatuses(String trendName) throws WeiboClientException {
-        return get("trends/statuses", TYPE_STATUS_LIST, Parameters.create().add(P_TREND_NAME, trendName));
+        return get("trends/statuses", Status.TYPE_STATUS_LIST, Parameters.create().add(P_TREND_NAME, trendName));
     }
 
     //*****************************************************
@@ -687,7 +678,7 @@ public class WeiboClient {
     //*****************************************************
 
     public List<Tag> parseTagList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_TAG_LIST);
+        return parseJsonObject(json, Tag.TYPE_TAG_LIST);
     }
 
     public List<Tag> getTags(long userId) throws WeiboClientException {
@@ -726,7 +717,7 @@ public class WeiboClient {
     }
 
     private List<Status> getFavoriteStatuses(Paging paging) throws WeiboClientException {
-        return get("favorites", TYPE_STATUS_LIST, paging);
+        return get("favorites", Status.TYPE_STATUS_LIST, paging);
     }
 
     //=======================================================================
@@ -734,7 +725,7 @@ public class WeiboClient {
     //=======================================================================
 
     public List<Url> parseUrlList(String json) throws WeiboClientException {
-        return parseJsonObject(json, TYPE_URL_LIST);
+        return parseJsonObject(json, Url.TYPE_URL_LIST);
     }
 
     //*****************************************************
@@ -759,7 +750,7 @@ public class WeiboClient {
             params.add("url_short", shortUrl);
         }
 
-        return get("short_url/expand", TYPE_URL_LIST, params);
+        return get("short_url/expand", Url.TYPE_URL_LIST, params);
     }
 
     //=======================================================================
