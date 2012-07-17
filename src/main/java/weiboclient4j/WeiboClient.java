@@ -18,6 +18,7 @@ import weiboclient4j.model.Emotion;
 import static weiboclient4j.model.Emotion.TYPE_EMOTION_LIST;
 import weiboclient4j.model.GlobalTrendList;
 import weiboclient4j.model.IdList;
+import weiboclient4j.model.Result;
 import weiboclient4j.model.Status;
 import static weiboclient4j.model.Status.TYPE_STATUS_LIST;
 import weiboclient4j.model.SuggestedUser;
