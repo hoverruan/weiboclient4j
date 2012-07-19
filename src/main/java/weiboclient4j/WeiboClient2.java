@@ -32,6 +32,8 @@ import weiboclient4j.model.SearchSuggestionSchoolResult;
 import weiboclient4j.model.SearchSuggestionStatusResult;
 import weiboclient4j.model.SearchSuggestionUserResult;
 import weiboclient4j.model.Status;
+import weiboclient4j.model.StatusIdList;
+import weiboclient4j.model.StatusList;
 import weiboclient4j.model.Tag;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
@@ -53,6 +55,7 @@ import weiboclient4j.oauth2.SinaWeibo2Api;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Cid;
 import weiboclient4j.params.CommentOri;
+import weiboclient4j.params.Content;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.FilterByAuthor;
 import weiboclient4j.params.FilterBySource;
@@ -62,11 +65,13 @@ import weiboclient4j.params.InboxType;
 import weiboclient4j.params.IsBase62;
 import weiboclient4j.params.IsBatch;
 import weiboclient4j.params.IsComment;
+import weiboclient4j.params.IsPic;
 import weiboclient4j.params.Latitude;
 import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
 import weiboclient4j.params.Nickname;
+import weiboclient4j.params.Num;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
@@ -74,10 +79,13 @@ import weiboclient4j.params.Query;
 import weiboclient4j.params.Remark;
 import weiboclient4j.params.SchoolType;
 import weiboclient4j.params.ScreenName;
+import weiboclient4j.params.Section;
 import weiboclient4j.params.SourceScreenName;
 import weiboclient4j.params.SourceUid;
 import weiboclient4j.params.SuggestionRange;
+import weiboclient4j.params.SuggestionStatusType;
 import weiboclient4j.params.SuggestionType;
+import weiboclient4j.params.SuggestionUserCategory;
 import weiboclient4j.params.Suid;
 import weiboclient4j.params.TagId;
 import weiboclient4j.params.TagName;
@@ -159,6 +167,11 @@ public class WeiboClient2 {
     public static final String NICKNAME = "nickname";
     public static final String Q = "q";
     public static final String RANGE = "range";
+    public static final String CATEGORY = "category";
+    public static final String CONTENT = "content";
+    public static final String NUM = "num";
+    public static final String IS_PIC = "is_pic";
+    public static final String SECTION = "section";
 
     private String clientId;
     private String clientSecret;
@@ -1560,6 +1573,86 @@ public class WeiboClient2 {
                 Timeline.class);
     }
 
+    public List<User> getSuggestionUsersHot() throws WeiboClientException {
+        return getSuggestionUsersHot(SuggestionUserCategory.Default);
+    }
+
+    public List<User> getSuggestionUsersHot(SuggestionUserCategory category) throws WeiboClientException {
+        return doGet("suggestions/users/hot",
+                withParams(
+                        suggestionUserCategoryParam(category)),
+                User.TYPE_USER_LIST);
+    }
+
+    // TODO: implements getSuggestionUsersMayInterested
+//    public ArrayNode getSuggestionUsersMayInterested(Paging paging) throws WeiboClientException {
+//        return doGet("suggestions/users/may_interested", paging, ArrayNode.class);
+//    }
+
+    public UserList getSuggestionUsersByStatus(Content content) throws WeiboClientException {
+        return getSuggestionUsersByStatus(content, Num.EMPTY);
+    }
+
+    public UserList getSuggestionUsersByStatus(Content content, Num num) throws WeiboClientException {
+        return doGet("suggestions/users/by_status",
+                withParams(
+                        contentParam(content),
+                        numParam(num)),
+                UserList.class);
+    }
+
+    public StatusList getSuggestionStatusesHot(SuggestionStatusType type, IsPic isPic) throws WeiboClientException {
+        return getSuggestionStatusesHot(type, isPic, Paging.EMPTY);
+    }
+
+    public StatusList getSuggestionStatusesHot(SuggestionStatusType type, IsPic isPic, Paging paging) throws WeiboClientException {
+        return doGet("suggestions/statuses/hot",
+                paging,
+                withParams(
+                        suggestionStatusTypeParam(type),
+                        isPicParam(isPic)),
+                StatusList.class);
+    }
+
+    public StatusList getSuggestionStatusesReorder(Section section) throws WeiboClientException {
+        return getSuggestionStatusesReorder(section, Paging.EMPTY);
+    }
+
+    public StatusList getSuggestionStatusesReorder(Section section, Paging paging) throws WeiboClientException {
+        return doGet("suggestions/statuses/reorder",
+                paging,
+                withParams(
+                        sectionParam(section)),
+                StatusList.class);
+    }
+
+    public StatusIdList getSuggestionStatusIdsReorder(Section section) throws WeiboClientException {
+        return getSuggestionStatusIdsReorder(section, Paging.EMPTY);
+    }
+
+    public StatusIdList getSuggestionStatusIdsReorder(Section section, Paging paging) throws WeiboClientException {
+        return doGet("suggestions/statuses/reorder/ids",
+                paging,
+                withParams(
+                        sectionParam(section)),
+                StatusIdList.class);
+    }
+
+    public List<Status> getSuggestionFavoritesHot() throws WeiboClientException {
+        return getSuggestionFavoritesHot(Paging.EMPTY);
+    }
+
+    public List<Status> getSuggestionFavoritesHot(Paging paging) throws WeiboClientException {
+        return doGet("suggestions/favorites/hot", paging, Status.TYPE_STATUS_LIST);
+    }
+
+    public User setSuggestionUserNotInterested(Uid uid) throws WeiboClientException {
+        return doPost("suggestions/users/not_interested",
+                withParams(
+                        uidParam(uid)),
+                User.class);
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -2419,6 +2512,66 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (suggestionRange != null && suggestionRange != SuggestionRange.All) {
                     params.add(RANGE, suggestionRange.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction suggestionUserCategoryParam(final SuggestionUserCategory category) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (category != null && category != SuggestionUserCategory.Default) {
+                    params.add(CATEGORY, category.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction contentParam(final Content content) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (content != null && content.isValid()) {
+                    params.add(CONTENT, content.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction numParam(final Num num) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (num != null && num.isValid()) {
+                    params.add(NUM, num.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction suggestionStatusTypeParam(final SuggestionStatusType type) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (type != null) {
+                    params.add(TYPE, type.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction isPicParam(final IsPic isPic) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (isPic != null) {
+                    params.add(IS_PIC, isPic.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction sectionParam(final Section section) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (section != null) {
+                    params.add(SECTION, section.getValue());
                 }
             }
         };
