@@ -1,0 +1,16 @@
+{
+  "notification":{
+    "notification_id":12035,
+    "title":"test",
+    "content":"test",
+    "created_at":"Wed Jan 06 11:26:01 +0800 2010",
+    "sender_app":{
+      "appkey62":"4Gcqmc"
+    },
+    "sender_uid":1658122963
+  },
+  "failed_uid":[
+    "21485798475",
+    "21485798476"
+  ]
+}

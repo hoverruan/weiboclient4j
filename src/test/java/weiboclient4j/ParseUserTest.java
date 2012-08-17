@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import weiboclient4j.model.User;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
@@ -12,7 +13,9 @@ public class ParseUserTest extends AbstractParseJsonTest {
     @Test
     public void testParseUser() throws Exception {
         String content = readResource("/weiboclient4j/users.json");
-        parseJsonObject(content, User.class);
+        User user = parseJsonObject(content, User.class);
+
+        assertNotNull(user.getCreatedAt());
     }
 
     @Test

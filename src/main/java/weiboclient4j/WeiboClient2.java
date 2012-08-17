@@ -22,6 +22,7 @@ import weiboclient4j.model.Friendship;
 import weiboclient4j.model.GlobalTrendList;
 import weiboclient4j.model.IdResponse;
 import weiboclient4j.model.MidResponse;
+import weiboclient4j.model.NotificationResult;
 import weiboclient4j.model.Privacy;
 import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.RepostTimeline;
@@ -53,6 +54,7 @@ import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
+import weiboclient4j.params.ActionUrl;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Cid;
 import weiboclient4j.params.CommentOri;
@@ -93,6 +95,7 @@ import weiboclient4j.params.TagId;
 import weiboclient4j.params.TagName;
 import weiboclient4j.params.TargetScreenName;
 import weiboclient4j.params.TargetUid;
+import weiboclient4j.params.TemplateId;
 import weiboclient4j.params.Tid;
 import weiboclient4j.params.TrendId;
 import weiboclient4j.params.TrendName;
@@ -102,6 +105,7 @@ import weiboclient4j.params.UrlLong;
 import weiboclient4j.params.UrlShort;
 import weiboclient4j.params.WithoutMention;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
+import weiboclient4j.utils.StringUtils;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 import static weiboclient4j.utils.StringUtils.join;
 
@@ -174,6 +178,8 @@ public class WeiboClient2 {
     public static final String NUM = "num";
     public static final String IS_PIC = "is_pic";
     public static final String SECTION = "section";
+    public static final String TPL_ID = "tpl_id";
+    public static final String ACTION_URL = "action_url";
 
     private String clientId;
     private String clientSecret;
@@ -1676,6 +1682,106 @@ public class WeiboClient2 {
         return response.isResult();
     }
 
+    public NotificationResult sendNotification(Collection<Uid> uids, TemplateId templateId) throws WeiboClientException {
+        return sendNotification(uids, templateId, null);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids, TemplateId templateId, ActionUrl actionUrl)
+            throws WeiboClientException {
+        return sendNotification(uids, templateId, null, 0, actionUrl);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids,
+                                               TemplateId templateId,
+                                               final String objects1,
+                                               final int objects1Count) throws WeiboClientException {
+        return sendNotification(uids, templateId, objects1, objects1Count, null, 0);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids,
+                                               TemplateId templateId,
+                                               final String objects1,
+                                               final int objects1Count,
+                                               final String objects2,
+                                               final int objects2Count) throws WeiboClientException {
+        return sendNotification(uids, templateId, objects1, objects1Count, objects2, objects2Count, null, 0);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids,
+                                               TemplateId templateId,
+                                               final String objects1,
+                                               final int objects1Count,
+                                               final String objects2,
+                                               final int objects2Count,
+                                               final String objects3,
+                                               final int objects3Count) throws WeiboClientException {
+        return sendNotification(uids, templateId, objects1, objects1Count, objects2, objects2Count, objects3, objects3Count, ActionUrl.EMPTY);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids,
+                                               TemplateId templateId,
+                                               final String objects1,
+                                               final int objects1Count,
+                                               ActionUrl actionUrl) throws WeiboClientException {
+        return sendNotification(uids, templateId, objects1, objects1Count, null, 0, actionUrl);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids,
+                                               TemplateId templateId,
+                                               final String objects1,
+                                               final int objects1Count,
+                                               final String objects2,
+                                               final int objects2Count,
+                                               ActionUrl actionUrl) throws WeiboClientException {
+        return sendNotification(uids, templateId, objects1, objects1Count, objects2, objects2Count, null, 0, actionUrl);
+    }
+
+    public NotificationResult sendNotification(Collection<Uid> uids,
+                                               TemplateId templateId,
+                                               final String objects1,
+                                               final int objects1Count,
+                                               final String objects2,
+                                               final int objects2Count,
+                                               final String objects3,
+                                               final int objects3Count,
+                                               ActionUrl actionUrl) throws WeiboClientException {
+        ParameterAction objectsParamAction = new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (StringUtils.isNotBlank(objects1)) {
+                    params.add("objects1", objects1);
+                }
+
+                if (objects1Count > 0) {
+                    params.add("objects1_count", objects1Count);
+                }
+
+                if (StringUtils.isNotBlank(objects2)) {
+                    params.add("objects2", objects2);
+                }
+
+                if (objects2Count > 0) {
+                    params.add("objects2_count", objects2Count);
+                }
+
+                if (StringUtils.isNotBlank(objects3)) {
+                    params.add("objects3", objects3);
+                }
+
+                if (objects3Count > 0) {
+                    params.add("objects3_count", objects3Count);
+                }
+            }
+        };
+
+        return doPost("notification/send",
+                withParams(
+                        uidsParam(uids),
+                        templateIdParam(templateId),
+                        objectsParamAction,
+                        actionUrlParam(actionUrl)),
+                NotificationResult.class);
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -2609,6 +2715,26 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (type != null) {
                     params.add(TYPE, type.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction templateIdParam(final TemplateId templateId) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (templateId != null && templateId.isValid()) {
+                    params.add(TPL_ID, templateId.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction actionUrlParam(final ActionUrl actionUrl) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (actionUrl != null && actionUrl.isValid()) {
+                    params.add(ACTION_URL, actionUrl.getValue());
                 }
             }
         };
