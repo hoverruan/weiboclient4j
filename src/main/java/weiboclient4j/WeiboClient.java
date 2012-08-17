@@ -23,6 +23,7 @@ import weiboclient4j.model.Trend;
 import weiboclient4j.model.UnreadCount;
 import weiboclient4j.model.Url;
 import weiboclient4j.model.User;
+import weiboclient4j.params.CountTypeV1;
 import weiboclient4j.params.EmotionType;
 import weiboclient4j.params.Language;
 import weiboclient4j.params.Paging;
@@ -396,7 +397,7 @@ public class WeiboClient {
     //  statuses/reset_count
     //*****************************************************
 
-    public Result resetCount(CounterType type) throws WeiboClientException {
+    public Result resetCount(CountTypeV1 type) throws WeiboClientException {
         Parameters params = Parameters.create().add(P_TYPE, type.ordinal() + 1);
 
         return post("statuses/reset_count", Result.class, params);

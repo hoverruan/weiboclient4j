@@ -39,6 +39,7 @@ import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.model.Trend;
 import weiboclient4j.model.TrendStatus;
+import weiboclient4j.model.UnreadCount;
 import weiboclient4j.model.Url;
 import weiboclient4j.model.UrlInfo;
 import weiboclient4j.model.User;
@@ -56,6 +57,7 @@ import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Cid;
 import weiboclient4j.params.CommentOri;
 import weiboclient4j.params.Content;
+import weiboclient4j.params.CountType;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.FilterByAuthor;
 import weiboclient4j.params.FilterBySource;
@@ -1653,6 +1655,27 @@ public class WeiboClient2 {
                 User.class);
     }
 
+    public UnreadCount getUnreadCount() throws WeiboClientException {
+        Uid uid = new Uid(getAccountUid());
+        return getUnreadCount(uid);
+    }
+
+    public UnreadCount getUnreadCount(Uid uid) throws WeiboClientException {
+        return doGet("remind/unread_count",
+                withParams(
+                        uidParam(uid)),
+                UnreadCount.class);
+    }
+
+    public boolean resetCount(CountType type) throws WeiboClientException {
+        ResultResponse response = doPost("https://rm.api.weibo.com/2/remind/set_count.json",
+                withParams(
+                        countTypeParam(type)),
+                ResultResponse.class);
+
+        return response.isResult();
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -1792,7 +1815,11 @@ public class WeiboClient2 {
     }
 
     public String getFullPath(String path) {
-        return API2_URL + path + ".json";
+        if (path.startsWith("http://") || path.startsWith("https://")) {
+            return path;
+        } else {
+            return API2_URL + path + ".json";
+        }
     }
 
     private static class TagActionResponse {
@@ -2572,6 +2599,16 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (section != null) {
                     params.add(SECTION, section.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction countTypeParam(final CountType type) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (type != null) {
+                    params.add(TYPE, type.getValue());
                 }
             }
         };

@@ -1,8 +1,8 @@
-package weiboclient4j;
+package weiboclient4j.params;
 
 /**
  * @author Hover Ruan
  */
-public enum CounterType {
+public enum CountTypeV1 {
     COMMENT, AT_ME, PRIVATE_LETTER, FOLLOWERS
 }
