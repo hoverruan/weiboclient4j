@@ -25,7 +25,7 @@ import weiboclient4j.model.Url;
 import weiboclient4j.model.User;
 import weiboclient4j.params.CountTypeV1;
 import weiboclient4j.params.EmotionType;
-import weiboclient4j.params.Language;
+import weiboclient4j.params.LanguageV1;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
@@ -415,7 +415,7 @@ public class WeiboClient {
         return getEmotions(Parameters.create());
     }
 
-    public List<Emotion> getEmotions(EmotionType type, Language language) throws WeiboClientException {
+    public List<Emotion> getEmotions(EmotionType type, LanguageV1 language) throws WeiboClientException {
         Parameters params = Parameters.create()
                 .add(P_TYPE, type.name().toLowerCase())
                 .add(P_LANGUAGE, language.name().toLowerCase());
