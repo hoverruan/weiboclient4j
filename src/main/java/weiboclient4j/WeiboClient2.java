@@ -55,11 +55,14 @@ import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
 import weiboclient4j.params.ActionUrl;
+import weiboclient4j.params.AddressCode;
 import weiboclient4j.params.BaseApp;
+import weiboclient4j.params.CapitalLetter;
 import weiboclient4j.params.Cid;
 import weiboclient4j.params.CommentOri;
 import weiboclient4j.params.Content;
 import weiboclient4j.params.CountType;
+import weiboclient4j.params.Country;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.FilterByAuthor;
 import weiboclient4j.params.FilterBySource;
@@ -70,6 +73,7 @@ import weiboclient4j.params.IsBase62;
 import weiboclient4j.params.IsBatch;
 import weiboclient4j.params.IsComment;
 import weiboclient4j.params.IsPic;
+import weiboclient4j.params.Language;
 import weiboclient4j.params.Latitude;
 import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Mid;
@@ -79,6 +83,7 @@ import weiboclient4j.params.Num;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
+import weiboclient4j.params.Province;
 import weiboclient4j.params.Query;
 import weiboclient4j.params.Remark;
 import weiboclient4j.params.SchoolType;
@@ -180,6 +185,11 @@ public class WeiboClient2 {
     public static final String SECTION = "section";
     public static final String TPL_ID = "tpl_id";
     public static final String ACTION_URL = "action_url";
+    public static final String LANGUAGE = "language";
+    public static final String CAPITAL = "capital";
+    public static final String COUNTRY = "country";
+    public static final String PROVINCE = "province";
+    public static final String CODES = "codes";
 
     private String clientId;
     private String clientSecret;
@@ -1782,6 +1792,71 @@ public class WeiboClient2 {
                 NotificationResult.class);
     }
 
+    public Map<String, String> getTimezoneMap() throws WeiboClientException {
+        return getTimezoneMap(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getTimezoneMap(Language language) throws WeiboClientException {
+        return doGet("common/get_timezone",
+                withParams(
+                        languageParam(language)),
+                HashMap.class);
+    }
+
+    public Map<String, String> getCountryMap() throws WeiboClientException {
+        return getCountryMap(null, null);
+    }
+
+    public Map<String, String> getCountryMap(Language language, CapitalLetter capitalLetter) throws WeiboClientException {
+        List<Map<String, String>> response = doGet("common/get_country",
+                withParams(
+                        languageParam(language),
+                        capitalLetterParam(capitalLetter)),
+                LIST_MAP_S_S_TYPE_REFERENCE);
+
+        return mergeSingleItemMap(response);
+    }
+
+    public Map<String, String> getProvinceMap(Country country) throws WeiboClientException {
+        return getProvinceMap(country, null, null);
+    }
+
+    public Map<String, String> getProvinceMap(Country country, Language language, CapitalLetter capitalLetter) throws WeiboClientException {
+        List<Map<String, String>> response = doGet("common/get_province",
+                withParams(
+                        countryParam(country),
+                        languageParam(language),
+                        capitalLetterParam(capitalLetter)),
+                LIST_MAP_S_S_TYPE_REFERENCE);
+
+        return mergeSingleItemMap(response);
+    }
+
+    public Map<String, String> getCityMap(Province province) throws WeiboClientException {
+        return getCityMap(province, null, null);
+    }
+
+    public Map<String, String> getCityMap(Province province, Language language, CapitalLetter capitalLetter) throws WeiboClientException {
+        List<Map<String, String>> response = doGet("common/get_city",
+                withParams(
+                        provinceParam(province),
+                        languageParam(language),
+                        capitalLetterParam(capitalLetter)),
+                LIST_MAP_S_S_TYPE_REFERENCE);
+
+        return mergeSingleItemMap(response);
+    }
+
+    public Map<String, String> codeToLocation(Collection<AddressCode> codes) throws WeiboClientException {
+        List<Map<String, String>> response = doGet("common/code_to_location",
+                withParams(
+                        addressCodesParam(codes)),
+                LIST_MAP_S_S_TYPE_REFERENCE);
+
+        return mergeSingleItemMap(response);
+    }
+
     public static Parameters withParams(ParameterAction... actions) {
         Parameters params = Parameters.create();
 
@@ -2105,6 +2180,18 @@ public class WeiboClient2 {
         public void setUserLimit(int userLimit) {
             this.userLimit = userLimit;
         }
+    }
+
+    public static final TypeReference<List<Map<String, String>>> LIST_MAP_S_S_TYPE_REFERENCE = new TypeReference<List<Map<String, String>>>() {
+    };
+
+    private Map<String, String> mergeSingleItemMap(List<Map<String, String>> response) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Map<String, String> item : response) {
+            map.putAll(item);
+        }
+
+        return map;
     }
 
     private ParameterAction featureParam(final Feature feature) {
@@ -2735,6 +2822,60 @@ public class WeiboClient2 {
             public void addParameter(Parameters params) {
                 if (actionUrl != null && actionUrl.isValid()) {
                     params.add(ACTION_URL, actionUrl.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction languageParam(final Language language) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (language != null) {
+                    params.add(LANGUAGE, language.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction capitalLetterParam(final CapitalLetter capitalLetter) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (capitalLetter != null && capitalLetter.isValid()) {
+                    params.add(CAPITAL, capitalLetter.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction countryParam(final Country country) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (country != null && country.isValid()) {
+                    params.add(COUNTRY, country.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction provinceParam(final Province province) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (province != null && province.isValid()) {
+                    params.add(PROVINCE, province.getValue());
+                }
+            }
+        };
+    }
+
+    private ParameterAction addressCodesParam(final Collection<AddressCode> codes) {
+        return new ParameterAction() {
+            public void addParameter(Parameters params) {
+                if (codes != null && codes.size() > 0) {
+                    List<String> codeList = new ArrayList<String>(codes.size());
+                    for (AddressCode code : codes) {
+                        codeList.add(code.getValue());
+                    }
+                    params.add(CODES, StringUtils.join(codeList, ","));
                 }
             }
         };

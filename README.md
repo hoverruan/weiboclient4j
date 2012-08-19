@@ -14,7 +14,7 @@ Weiboclient4j
     <dependency>
       <groupId>com.github.hoverruan</groupId>
       <artifactId>weiboclient4j</artifactId>
-      <version>0.2.7</version>
+      <version>0.2.8</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -101,7 +101,7 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 <tr><td>提醒接口</td><td>完成</td></tr>
 <tr><td>短链接口</td><td>完成</td></tr>
 <tr><td>通知接口</td><td>完成</td></tr>
-<tr><td>公共服务接口</td><td> </td></tr>
+<tr><td>公共服务接口</td><td>完成</td></tr>
 <tr><td>位置服务接口</td><td> </td></tr>
 <tr><td>地理信息接口</td><td> </td></tr>
 </table>
