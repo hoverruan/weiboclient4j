@@ -16,7 +16,6 @@ public class RateLimitStatus {
     private Date resetTime;
     private int resetTimeInSeconds;
     private int userLimit;
-    private int apiRateLimits;
 
     public int getIpLimit() {
         return ipLimit;
@@ -72,13 +71,5 @@ public class RateLimitStatus {
 
     public void setUserLimit(int userLimit) {
         this.userLimit = userLimit;
-    }
-
-    public int getApiRateLimits() {
-        return apiRateLimits;
-    }
-
-    public void setApiRateLimits(int apiRateLimits) {
-        this.apiRateLimits = apiRateLimits;
     }
 }

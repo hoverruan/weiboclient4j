@@ -1,6 +1,7 @@
 package weiboclient4j;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.type.TypeReference;
 import org.scribe.builder.ServiceBuilder;
@@ -2103,6 +2104,7 @@ public class WeiboClient2 {
 
     private static SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class RawRateLimitStatus {
         private int ipLimit;
         private String limitTimeUnit;
