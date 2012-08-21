@@ -110,6 +110,7 @@ import weiboclient4j.params.Uid;
 import weiboclient4j.params.UrlLong;
 import weiboclient4j.params.UrlShort;
 import weiboclient4j.params.WithoutMention;
+import weiboclient4j.utils.CollectionUtils;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import weiboclient4j.utils.StringUtils;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
@@ -293,12 +294,37 @@ public class WeiboClient2 {
         return getFriendsTimeline(paging, BaseApp.No, Feature.All);
     }
 
+    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
+        return getFriendsTimeline(paging, baseApp, Feature.All);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging, Feature feature) throws WeiboClientException {
+        return getFriendsTimeline(paging, BaseApp.No, feature);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging, TrimUser trimUser) throws WeiboClientException {
+        return getFriendsTimeline(paging, BaseApp.No, trimUser);
+    }
+
     public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
+        return getFriendsTimeline(paging, baseApp, feature, TrimUser.No);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, TrimUser trimUser) throws WeiboClientException {
+        return getFriendsTimeline(paging, baseApp, Feature.All, trimUser);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging, Feature feature, TrimUser trimUser) throws WeiboClientException {
+        return getFriendsTimeline(paging, BaseApp.No, feature, trimUser);
+    }
+
+    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
         return doGet("statuses/friends_timeline",
                 paging,
                 withParams(
                         baseAppParam(baseApp),
-                        featureParam(feature)),
+                        featureParam(feature),
+                        trimUserParam(trimUser)),
                 Timeline.class);
     }
 
@@ -310,12 +336,37 @@ public class WeiboClient2 {
         return getHomeTimeline(paging, BaseApp.No, Feature.All);
     }
 
+    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
+        return getHomeTimeline(paging, baseApp, Feature.All);
+    }
+
+    public Timeline getHomeTimeline(Paging paging, Feature feature) throws WeiboClientException {
+        return getHomeTimeline(paging, BaseApp.No, feature);
+    }
+
+    public Timeline getHomeTimeline(Paging paging, TrimUser trimUser) throws WeiboClientException {
+        return getHomeTimeline(paging, BaseApp.No, trimUser);
+    }
+
     public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
+        return getHomeTimeline(paging, baseApp, feature, TrimUser.No);
+    }
+
+    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, TrimUser trimUser) throws WeiboClientException {
+        return getHomeTimeline(paging, baseApp, Feature.All, trimUser);
+    }
+
+    public Timeline getHomeTimeline(Paging paging, Feature feature, TrimUser trimUser) throws WeiboClientException {
+        return getHomeTimeline(paging, BaseApp.No, feature, trimUser);
+    }
+
+    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
         return doGet("statuses/home_timeline",
                 paging,
                 withParams(
                         baseAppParam(baseApp),
-                        featureParam(feature)),
+                        featureParam(feature),
+                        trimUserParam(trimUser)),
                 Timeline.class);
     }
 
@@ -344,12 +395,74 @@ public class WeiboClient2 {
         return getUserTimeline(Uid.EMPTY, screenName, paging);
     }
 
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp) throws WeiboClientException {
+        return getUserTimeline(screenName, paging, baseApp, Feature.All);
+    }
+
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, Feature feature) throws WeiboClientException {
+        return getUserTimeline(screenName, paging, BaseApp.No, feature);
+    }
+
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(screenName, paging, BaseApp.No, trimUser);
+    }
+
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, Feature feature, TrimUser trimUser)
+            throws WeiboClientException {
+        return getUserTimeline(screenName, paging, BaseApp.No, feature, trimUser);
+    }
+
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp, TrimUser trimUser)
+            throws WeiboClientException {
+        return getUserTimeline(screenName, paging, baseApp, Feature.All, trimUser);
+    }
+
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature)
+            throws WeiboClientException {
+        return getUserTimeline(screenName, paging, baseApp, feature, TrimUser.No);
+    }
+
+    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
+            throws WeiboClientException {
+        return getUserTimeline(Uid.EMPTY, screenName, paging, baseApp, feature, trimUser);
+    }
+
     public Timeline getUserTimeline(Uid uid) throws WeiboClientException {
         return getUserTimeline(uid, Paging.EMPTY);
     }
 
     public Timeline getUserTimeline(Uid uid, Paging paging) throws WeiboClientException {
         return getUserTimeline(uid, ScreenName.EMPTY, paging);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp) throws WeiboClientException {
+        return getUserTimeline(uid, paging, baseApp, Feature.All);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, Feature feature) throws WeiboClientException {
+        return getUserTimeline(uid, paging, BaseApp.No, feature);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(uid, paging, BaseApp.No, trimUser);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp, Feature feature)
+            throws WeiboClientException {
+        return getUserTimeline(uid, paging, baseApp, feature, TrimUser.No);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp, TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(uid, paging, baseApp, Feature.All, trimUser);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, Feature feature, TrimUser trimUser) throws WeiboClientException {
+        return getUserTimeline(uid, paging, BaseApp.No, feature, trimUser);
+    }
+
+    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
+            throws WeiboClientException {
+        return getUserTimeline(uid, ScreenName.EMPTY, paging, baseApp, feature, trimUser);
     }
 
     public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
@@ -1253,6 +1366,12 @@ public class WeiboClient2 {
         return response.isResult();
     }
 
+    public Url shortenUrl(UrlLong urlLong) throws WeiboClientException {
+        List<Url> result = shortenUrl(CollectionUtils.newArrayList(urlLong));
+
+        return result != null && result.size() > 0 ? result.get(0) : null;
+    }
+
     public List<Url> shortenUrl(Collection<UrlLong> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/shorten",
                 withParams(
@@ -1260,6 +1379,12 @@ public class WeiboClient2 {
                 UrlResponse.class);
 
         return response.getUrls();
+    }
+
+    public Url expandUrl(UrlShort urlShort) throws WeiboClientException {
+        List<Url> result = expandUrl(CollectionUtils.newArrayList(urlShort));
+
+        return result != null && result.size() > 0 ? result.get(0) : null;
     }
 
     public List<Url> expandUrl(Collection<UrlShort> urlList) throws WeiboClientException {
