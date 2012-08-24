@@ -7,4 +7,8 @@ public class Remark extends StringParam {
     public Remark(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "remark";
+    }
 }

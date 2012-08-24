@@ -9,4 +9,8 @@ public class ScreenName extends StringParam {
     public ScreenName(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "screen_name";
+    }
 }

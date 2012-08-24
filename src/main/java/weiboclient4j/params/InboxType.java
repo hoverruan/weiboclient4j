@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum InboxType {
+public enum InboxType implements ParameterAction {
     Outbox(0), Inbox(1);
 
     private static Map<Integer, InboxType> map = new HashMap<Integer, InboxType>();
@@ -29,5 +29,11 @@ public enum InboxType {
 
     public static InboxType fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != Outbox) {
+            params.add("inbox", getValue());
+        }
     }
 }

@@ -3,7 +3,7 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public enum SuggestionUserCategory {
+public enum SuggestionUserCategory implements ParameterAction {
     Default("default"),
     Ent("ent"),
     HkFamous("hk_famous"),
@@ -26,5 +26,11 @@ public enum SuggestionUserCategory {
 
     public String getValue() {
         return value;
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != Default) {
+            params.add("category", getValue());
+        }
     }
 }

@@ -9,4 +9,8 @@ public class TargetUid extends LongParam {
     public TargetUid(long value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "target_id";
+    }
 }

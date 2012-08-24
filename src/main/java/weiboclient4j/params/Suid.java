@@ -9,4 +9,8 @@ public class Suid extends LongParam {
     public Suid(long value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "suid";
+    }
 }

@@ -3,7 +3,7 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public enum BaseApp {
+public enum BaseApp implements ParameterAction {
     Yes(1), No(0);
 
     private int value;
@@ -24,5 +24,11 @@ public enum BaseApp {
         }
 
         return null;
+    }
+
+    public void addParameter(Parameters params) {
+        if (this == Yes) {
+            params.add("base_app", getValue());
+        }
     }
 }

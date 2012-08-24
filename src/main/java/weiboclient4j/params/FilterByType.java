@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum FilterByType {
+public enum FilterByType implements ParameterAction {
     All(0), Original(1);
 
     private static Map<Integer, FilterByType> map = new HashMap<Integer, FilterByType>();
@@ -29,5 +29,11 @@ public enum FilterByType {
 
     public static FilterByType fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != All) {
+            params.add("filter_by_type", getValue());
+        }
     }
 }

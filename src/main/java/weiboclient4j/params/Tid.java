@@ -7,4 +7,8 @@ public class Tid extends LongParam {
     public Tid(long value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "tid";
+    }
 }

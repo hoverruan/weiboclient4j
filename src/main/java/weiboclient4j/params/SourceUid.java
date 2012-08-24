@@ -9,4 +9,8 @@ public class SourceUid extends LongParam {
     public SourceUid(long value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "source_id";
+    }
 }

@@ -9,4 +9,8 @@ public class Num extends LongParam {
     public Num(long value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "num";
+    }
 }

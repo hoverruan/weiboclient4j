@@ -3,7 +3,7 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public enum SuggestionRange {
+public enum SuggestionRange implements ParameterAction {
     Name(0), Remark(1), All(2);
 
     private int value;
@@ -14,5 +14,11 @@ public enum SuggestionRange {
 
     public int getValue() {
         return value;
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != All) {
+            params.add("range", getValue());
+        }
     }
 }

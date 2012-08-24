@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum FilterBySource {
+public enum FilterBySource implements ParameterAction {
     All(0), FromWeibo(1), FromWeiqun(2);
 
     private static Map<Integer, FilterBySource> map = new HashMap<Integer, FilterBySource>();
@@ -29,5 +29,11 @@ public enum FilterBySource {
 
     public static FilterBySource fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != All) {
+            params.add("filter_by_source", getValue());
+        }
     }
 }

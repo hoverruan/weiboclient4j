@@ -7,4 +7,8 @@ public class Country extends StringParam {
     public Country(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "country";
+    }
 }

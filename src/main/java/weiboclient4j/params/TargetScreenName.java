@@ -9,4 +9,8 @@ public class TargetScreenName extends StringParam {
     public TargetScreenName(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "target_screen_name";
+    }
 }

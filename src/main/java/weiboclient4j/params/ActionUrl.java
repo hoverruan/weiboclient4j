@@ -9,4 +9,8 @@ public class ActionUrl extends StringParam {
     public ActionUrl(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "action_url";
+    }
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum FilterByAuthor {
+public enum FilterByAuthor implements ParameterAction {
     All(0), Friends(1), Stranger(2);
 
     private static Map<Integer, FilterByAuthor> map = new HashMap<Integer, FilterByAuthor>();
@@ -29,5 +29,11 @@ public enum FilterByAuthor {
 
     public static FilterByAuthor fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != All) {
+            params.add("filter_by_author", getValue());
+        }
     }
 }

@@ -3,8 +3,8 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public enum TrimUser {
-    Yes(1), No(0);
+public enum TrimUser implements ParameterAction {
+    Yes(1), No(0),;
 
     private int value;
 
@@ -23,6 +23,12 @@ public enum TrimUser {
             return No;
         } else {
             return null;
+        }
+    }
+
+    public void addParameter(Parameters params) {
+        if (this == Yes) {
+            params.add("trim_user", getValue());
         }
     }
 }

@@ -7,4 +7,8 @@ public class TrendName extends StringParam {
     public TrendName(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "trend_name";
+    }
 }

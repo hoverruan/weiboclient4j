@@ -7,4 +7,8 @@ public class Longitude extends FloatParam {
     public Longitude(float value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "long";
+    }
 }

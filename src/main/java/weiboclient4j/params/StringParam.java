@@ -5,7 +5,7 @@ import weiboclient4j.utils.StringUtils;
 /**
  * @author Hover Ruan
  */
-public class StringParam {
+public abstract class StringParam implements ParameterAction {
     private String value;
 
     public StringParam(String value) {
@@ -23,5 +23,13 @@ public class StringParam {
 
     public boolean isValid() {
         return StringUtils.isNotBlank(value);
+    }
+
+    protected abstract String paramKey();
+
+    public void addParameter(Parameters params) {
+        if (isValid()) {
+            params.add(paramKey(), getValue());
+        }
     }
 }

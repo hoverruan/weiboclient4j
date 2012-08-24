@@ -7,4 +7,8 @@ public class Query extends StringParam {
     public Query(String value) {
         super(value);
     }
+
+    protected String paramKey() {
+        return "q";
+    }
 }

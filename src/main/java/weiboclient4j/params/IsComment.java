@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum IsComment {
+public enum IsComment implements ParameterAction {
     No(0), Current(1), Original(2), Both(3);
 
     private static Map<Integer, IsComment> map = new HashMap<Integer, IsComment>();
@@ -29,5 +29,11 @@ public enum IsComment {
 
     public static IsComment fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != No) {
+            params.add("is_comment", getValue());
+        }
     }
 }

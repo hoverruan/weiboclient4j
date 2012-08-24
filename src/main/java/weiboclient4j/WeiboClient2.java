@@ -61,9 +61,11 @@ import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.CapitalLetter;
 import weiboclient4j.params.Cid;
 import weiboclient4j.params.CommentOri;
+import weiboclient4j.params.CommentParam;
 import weiboclient4j.params.Content;
 import weiboclient4j.params.CountType;
 import weiboclient4j.params.Country;
+import weiboclient4j.params.Domain;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.FilterByAuthor;
 import weiboclient4j.params.FilterBySource;
@@ -92,6 +94,7 @@ import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.Section;
 import weiboclient4j.params.SourceScreenName;
 import weiboclient4j.params.SourceUid;
+import weiboclient4j.params.StatusParam;
 import weiboclient4j.params.SuggestionRange;
 import weiboclient4j.params.SuggestionStatusType;
 import weiboclient4j.params.SuggestionType;
@@ -113,8 +116,6 @@ import weiboclient4j.params.WithoutMention;
 import weiboclient4j.utils.CollectionUtils;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import weiboclient4j.utils.StringUtils;
-import static weiboclient4j.utils.StringUtils.isNotBlank;
-import static weiboclient4j.utils.StringUtils.join;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -134,64 +135,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class WeiboClient2 {
     public static final String API2_URL = "https://api.weibo.com/2/";
-
     public static final String ACCESS_TOKEN = "access_token";
-    public static final String BASE_APP = "base_app";
-    public static final String FEATURE = "feature";
-    public static final String UID = "uid";
-    public static final String SCREEN_NAME = "screen_name";
-    public static final String TRIM_USER = "trim_user";
-    public static final String ID = "id";
-    public static final String FILTER_BY_AUTHOR = "filter_by_author";
-    public static final String FILTER_BY_SOURCE = "filter_by_source";
-    public static final String FILTER_BY_TYPE = "filter_by_type";
-    public static final String IS_BATCH = "is_batch";
-    public static final String TYPE = "type";
-    public static final String MID = "mid";
-    public static final String INBOX = "inbox";
-    public static final String IS_BASE_62 = "isBase62";
-    public static final String IDS = "ids";
-    public static final String STATUS = "status";
-    public static final String IS_COMMENT = "is_comment";
-    public static final String LONGITUDE = "long";
-    public static final String LATITUDE = "lat";
-    public static final String URL_ = "url";
-    public static final String CIDS = "cids";
-    public static final String COMMENT = "comment";
-    public static final String COMMENT_ORI = "comment_ori";
-    public static final String CID = "cid";
-    public static final String DOMAIN = "domain";
-    public static final String UIDS = "uids";
-    public static final String SOURCE_ID = "source_id";
-    public static final String SOURCE_SCREEN_NAME = "source_screen_name";
-    public static final String TARGET_ID = "target_id";
-    public static final String TARGET_SCREEN_NAME = "target_screen_name";
-    public static final String SUID = "suid";
-    public static final String WITHOUT_MENTION = "without_mention";
-    public static final String REMARK = "remark";
-    public static final String TID = "tid";
-    public static final String TAGS = "tags";
-    public static final String TAG = "tag";
-    public static final String URL_LONG = "url_long";
-    public static final String URL_SHORT = "url_short";
-    public static final String TREND_NAME = "trend_name";
-    public static final String TREND_ID = "trend_id";
-    public static final String TAG_ID = "tag_id";
-    public static final String NICKNAME = "nickname";
-    public static final String Q = "q";
-    public static final String RANGE = "range";
-    public static final String CATEGORY = "category";
-    public static final String CONTENT = "content";
-    public static final String NUM = "num";
-    public static final String IS_PIC = "is_pic";
-    public static final String SECTION = "section";
-    public static final String TPL_ID = "tpl_id";
-    public static final String ACTION_URL = "action_url";
-    public static final String LANGUAGE = "language";
-    public static final String CAPITAL = "capital";
-    public static final String COUNTRY = "country";
-    public static final String PROVINCE = "province";
-    public static final String CODES = "codes";
 
     private String clientId;
     private String clientSecret;
@@ -280,10 +224,7 @@ public class WeiboClient2 {
 
     public Timeline getPublicTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
         return doGet("statuses/public_timeline",
-                paging,
-                withParams(
-                        baseAppParam(baseApp)),
-                Timeline.class);
+                paging, withParams(baseApp), Timeline.class);
     }
 
     public Timeline getFriendsTimeline() throws WeiboClientException {
@@ -320,12 +261,7 @@ public class WeiboClient2 {
 
     public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
         return doGet("statuses/friends_timeline",
-                paging,
-                withParams(
-                        baseAppParam(baseApp),
-                        featureParam(feature),
-                        trimUserParam(trimUser)),
-                Timeline.class);
+                paging, withParams(baseApp, feature, trimUser), Timeline.class);
     }
 
     public Timeline getHomeTimeline() throws WeiboClientException {
@@ -362,12 +298,7 @@ public class WeiboClient2 {
 
     public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
         return doGet("statuses/home_timeline",
-                paging,
-                withParams(
-                        baseAppParam(baseApp),
-                        featureParam(feature),
-                        trimUserParam(trimUser)),
-                Timeline.class);
+                paging, withParams(baseApp, feature, trimUser), Timeline.class);
     }
 
     public TimelineIds getFriendsTimelineIds() throws WeiboClientException {
@@ -380,11 +311,7 @@ public class WeiboClient2 {
 
     public TimelineIds getFriendsTimelineIds(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
         return doGet("statuses/friends_timeline/ids",
-                paging,
-                withParams(
-                        baseAppParam(baseApp),
-                        featureParam(feature)),
-                TimelineIds.class);
+                paging, withParams(baseApp, feature), TimelineIds.class);
     }
 
     public Timeline getUserTimeline(ScreenName screenName) throws WeiboClientException {
@@ -493,14 +420,7 @@ public class WeiboClient2 {
     public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp,
                                     Feature feature, TrimUser trimUser) throws WeiboClientException {
         return doGet("statuses/user_timeline",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName),
-                        trimUserParam(trimUser),
-                        baseAppParam(baseApp),
-                        featureParam(feature)),
-                Timeline.class);
+                paging, withParams(uid, screenName, trimUser, baseApp, feature), Timeline.class);
     }
 
     public TimelineIds getUserTimelineIds(ScreenName screenName) throws WeiboClientException {
@@ -538,13 +458,7 @@ public class WeiboClient2 {
     public TimelineIds getUserTimelineIds(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature)
             throws WeiboClientException {
         return doGet("statuses/user_timeline/ids",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName),
-                        baseAppParam(baseApp),
-                        featureParam(feature)),
-                TimelineIds.class);
+                paging, withParams(uid, screenName, baseApp, feature), TimelineIds.class);
     }
 
     public RepostTimeline getRepostTimeline(Id id) throws WeiboClientException {
@@ -557,11 +471,7 @@ public class WeiboClient2 {
 
     public RepostTimeline getRepostTimeline(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
         return doGet("statuses/repost_timeline",
-                paging,
-                withParams(
-                        idParam(id),
-                        filterByAuthorParam(filterByAuthor)),
-                RepostTimeline.class);
+                paging, withParams(id, filterByAuthor), RepostTimeline.class);
     }
 
     public TimelineIds getRepostTimelineIds(Id id) throws WeiboClientException {
@@ -574,11 +484,7 @@ public class WeiboClient2 {
 
     public TimelineIds getRepostTimelineIds(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
         return doGet("statuses/repost_timeline/ids",
-                paging,
-                withParams(
-                        idParam(id),
-                        filterByAuthorParam(filterByAuthor)),
-                TimelineIds.class);
+                paging, withParams(id, filterByAuthor), TimelineIds.class);
     }
 
     public RepostTimeline getRepostByMe() throws WeiboClientException {
@@ -600,12 +506,7 @@ public class WeiboClient2 {
     public Timeline getMentions(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource, FilterByType filterByType)
             throws WeiboClientException {
         return doGet("statuses/mentions",
-                paging,
-                withParams(
-                        filterByAuthorParam(filterByAuthor),
-                        filterBySourceParam(filterBySource),
-                        filterByTypeParam(filterByType)),
-                Timeline.class);
+                paging, withParams(filterByAuthor, filterBySource, filterByType), Timeline.class);
     }
 
     public TimelineIds getMentionsIds() throws WeiboClientException {
@@ -619,12 +520,7 @@ public class WeiboClient2 {
     public TimelineIds getMentionsIds(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource,
                                       FilterByType filterByType) throws WeiboClientException {
         return doGet("statuses/mentions/ids",
-                paging,
-                withParams(
-                        filterByAuthorParam(filterByAuthor),
-                        filterBySourceParam(filterBySource),
-                        filterByTypeParam(filterByType)),
-                TimelineIds.class);
+                paging, withParams(filterByAuthor, filterBySource, filterByType), TimelineIds.class);
     }
 
     public Timeline getBilateralTimeline() throws WeiboClientException {
@@ -637,26 +533,16 @@ public class WeiboClient2 {
 
     public Timeline getBilateralTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
         return doGet("statuses/bilateral_timeline",
-                paging,
-                withParams(
-                        baseAppParam(baseApp),
-                        featureParam(feature)),
-                Timeline.class);
+                paging, withParams(baseApp, feature), Timeline.class);
     }
 
     public Status showStatus(Id id) throws WeiboClientException {
-        return doGet("statuses/show",
-                withParams(
-                        idParam(id)),
-                Status.class);
+        return doGet("statuses/show", withParams(id), Status.class);
     }
 
     public String queryMid(Id id, MidType midType) throws WeiboClientException {
         MidResponse midResponse = doGet("statuses/querymid",
-                withParams(
-                        idParam(id),
-                        midTypeParam(midType)),
-                MidResponse.class);
+                withParams(id, midType), MidResponse.class);
 
         return midResponse != null ? midResponse.getMid() : null;
     }
@@ -664,11 +550,8 @@ public class WeiboClient2 {
     public Map<Long, String> queryMidList(Collection<Id> idList, MidType midType) throws WeiboClientException {
         // [{"3436240135184587":"yfcLPlKKn"},{"3436255091659029":"yfd9X6XAx"}]
         ArrayNode arrayNode = doGet("statuses/querymid",
-                withParams(
-                        idListParam(idList),
-                        midTypeParam(midType),
-                        isBase62Param(IsBase62.Yes)),
-                ArrayNode.class);
+                withParams(Id.idParam(idList), midType, IsBase62.Yes), ArrayNode.class);
+
         Map<Long, String> map = new HashMap<Long, String>();
         for (int i = 0; i < arrayNode.size(); i++) {
             JsonNode node = arrayNode.get(i);
@@ -688,12 +571,7 @@ public class WeiboClient2 {
 
     public long queryId(Mid mid, MidType type, InboxType inboxType, IsBase62 isBase62) throws WeiboClientException {
         IdResponse idResponse = doGet("statuses/queryid",
-                withParams(
-                        midParam(mid),
-                        midTypeParam(type),
-                        inboxTypeParam(inboxType),
-                        isBase62Param(isBase62)),
-                IdResponse.class);
+                withParams(mid, type, inboxType, isBase62), IdResponse.class);
 
         return idResponse.getId();
     }
@@ -706,13 +584,8 @@ public class WeiboClient2 {
             throws WeiboClientException {
         // [{"yfcLPlKKn":"3436240135184587"},{"yfd9X6XAx":"3436255091659029"}]
         ArrayNode arrayNode = doGet("statuses/queryid",
-                withParams(
-                        midListParam(midList),
-                        midTypeParam(type),
-                        inboxTypeParam(inboxType),
-                        isBase62Param(isBase62),
-                        isBatchParam(IsBatch.Yes)),
-                ArrayNode.class);
+                withParams(Mid.midParam(midList), type, inboxType, isBase62, IsBatch.Yes), ArrayNode.class);
+
         Map<String, Long> map = new HashMap<String, Long>();
         for (int i = 0; i < arrayNode.size(); i++) {
             JsonNode node = arrayNode.get(i);
@@ -736,10 +609,7 @@ public class WeiboClient2 {
 
     public List<Status> getHotRepostDaily(Paging paging, BaseApp baseApp) throws WeiboClientException {
         return doGet("statuses/hot/repost_daily",
-                paging,
-                withParams(
-                        baseAppParam(baseApp)),
-                Status.TYPE_STATUS_LIST);
+                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotRepostWeekly() throws WeiboClientException {
@@ -752,10 +622,7 @@ public class WeiboClient2 {
 
     public List<Status> getHotRepostWeekly(Paging paging, BaseApp baseApp) throws WeiboClientException {
         return doGet("statuses/hot/repost_weekly",
-                paging,
-                withParams(
-                        baseAppParam(baseApp)),
-                Status.TYPE_STATUS_LIST);
+                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotCommentsDaily() throws WeiboClientException {
@@ -768,10 +635,7 @@ public class WeiboClient2 {
 
     public List<Status> getHotCommentsDaily(Paging paging, BaseApp baseApp) throws WeiboClientException {
         return doGet("statuses/hot/comments_daily",
-                paging,
-                withParams(
-                        baseAppParam(baseApp)),
-                Status.TYPE_STATUS_LIST);
+                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
     }
 
     public List<Status> getHotCommentsWeekly() throws WeiboClientException {
@@ -784,16 +648,12 @@ public class WeiboClient2 {
 
     public List<Status> getHotCommentsWeekly(Paging paging, BaseApp baseApp) throws WeiboClientException {
         return doGet("statuses/hot/comments_weekly",
-                paging,
-                withParams(baseAppParam(baseApp)),
-                Status.TYPE_STATUS_LIST);
+                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
     }
 
     public List<Count> getStatusesCounts(Collection<Id> ids) throws WeiboClientException {
         return doGet("statuses/count",
-                withParams(
-                        idsParam(ids)),
-                Count.TYPE_COUNT_LIST);
+                withParams(Id.idsParam(ids)), Count.TYPE_COUNT_LIST);
     }
 
     public Status repostStatus(Id id, String status) throws WeiboClientException {
@@ -801,12 +661,11 @@ public class WeiboClient2 {
     }
 
     public Status repostStatus(Id id, String status, IsComment isComment) throws WeiboClientException {
-        return doPost("statuses/repost",
-                withParams(
-                        idParam(id),
-                        statusParam(status),
-                        isCommentParam(isComment)),
-                Status.class);
+        return repostStatus(id, new StatusParam(status), isComment);
+    }
+
+    public Status repostStatus(Id id, StatusParam status, IsComment isComment) throws WeiboClientException {
+        return doPost("statuses/repost", withParams(id, status, isComment), Status.class);
     }
 
     public Status updateStatus(String status) throws WeiboClientException {
@@ -814,19 +673,15 @@ public class WeiboClient2 {
     }
 
     public Status updateStatus(String status, Latitude latitude, Longitude longitude) throws WeiboClientException {
-        return doPost("statuses/update",
-                withParams(
-                        statusParam(status),
-                        latitudeParam(latitude),
-                        longitudeParam(longitude)),
-                Status.class);
+        return updateStatus(new StatusParam(status), latitude, longitude);
+    }
+
+    public Status updateStatus(StatusParam status, Latitude latitude, Longitude longitude) throws WeiboClientException {
+        return doPost("statuses/update", withParams(status, latitude, longitude), Status.class);
     }
 
     public Status destroyStatus(Id id) throws WeiboClientException {
-        return doPost("statuses/destroy",
-                withParams(
-                        idParam(id)),
-                Status.class);
+        return doPost("statuses/destroy", withParams(id), Status.class);
     }
 
     public Status uploadImageUrl(String status, URL url) throws WeiboClientException {
@@ -834,13 +689,12 @@ public class WeiboClient2 {
     }
 
     public Status uploadImageUrl(String status, URL url, Latitude latitude, Longitude longitude) throws WeiboClientException {
+        return uploadImageUrl(new StatusParam(status), url, latitude, longitude);
+    }
+
+    public Status uploadImageUrl(StatusParam status, URL url, Latitude latitude, Longitude longitude) throws WeiboClientException {
         return doPost("statuses/upload_url_text",
-                withParams(
-                        statusParam(status),
-                        urlParam(url),
-                        latitudeParam(latitude),
-                        longitudeParam(longitude)),
-                Status.class);
+                withParams(status, urlParam(url), latitude, longitude), Status.class);
     }
 
 //    TODO implements update binary image
@@ -862,11 +716,7 @@ public class WeiboClient2 {
 
     public CommentList getComments(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
         return doGet("comments/show",
-                paging,
-                withParams(
-                        idParam(id),
-                        filterByAuthorParam(filterByAuthor)),
-                CommentList.class);
+                paging, withParams(id, filterByAuthor), CommentList.class);
     }
 
     public CommentList getCommentsByMe() throws WeiboClientException {
@@ -879,10 +729,7 @@ public class WeiboClient2 {
 
     public CommentList getCommentsByMe(Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
         return doGet("comments/by_me",
-                paging,
-                withParams(
-                        filterByAuthorParam(filterByAuthor)),
-                CommentList.class);
+                paging, withParams(filterByAuthor), CommentList.class);
     }
 
     public CommentList getCommentsToMe() throws WeiboClientException {
@@ -896,11 +743,7 @@ public class WeiboClient2 {
     public CommentList getCommentsToMe(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource)
             throws WeiboClientException {
         return doGet("comments/to_me",
-                paging,
-                withParams(
-                        filterByAuthorParam(filterByAuthor),
-                        filterBySourceParam(filterBySource)),
-                CommentList.class);
+                paging, withParams(filterByAuthor, filterBySource), CommentList.class);
     }
 
     public CommentList getCommentsTimeline() throws WeiboClientException {
@@ -922,37 +765,29 @@ public class WeiboClient2 {
     public CommentList getMentionsComments(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource)
             throws WeiboClientException {
         return doGet("comments/mentions",
-                paging,
-                withParams(
-                        filterByAuthorParam(filterByAuthor),
-                        filterBySourceParam(filterBySource)),
-                CommentList.class);
+                paging, withParams(filterByAuthor, filterBySource), CommentList.class);
     }
 
     public List<Comment> getCommentsBatch(Collection<Cid> cids) throws WeiboClientException {
         return doGet("comments/show_batch",
-                withParams(cidsParam(cids)),
-                Comment.TYPE_COMMENT_LIST);
+                withParams(Cid.cidsParam(cids)), Comment.TYPE_COMMENT_LIST);
     }
 
     public Comment createComment(Id id, String comment) throws WeiboClientException {
         return createComment(id, comment, CommentOri.No);
     }
 
-    public Comment createComment(Id id, String comment, CommentOri commentOri) throws WeiboClientException {
+    public Comment createComment(Id id, CommentParam comment, CommentOri commentOri) throws WeiboClientException {
         return doPost("comments/create",
-                withParams(
-                        idParam(id),
-                        commentParam(comment),
-                        commentOriParam(commentOri)),
-                Comment.class);
+                withParams(id, comment, commentOri), Comment.class);
+    }
+
+    public Comment createComment(Id id, String comment, CommentOri commentOri) throws WeiboClientException {
+        return createComment(id, new CommentParam(comment), commentOri);
     }
 
     public Comment destroyComment(Cid cid) throws WeiboClientException {
-        return doPost("comments/destroy",
-                withParams(
-                        cidParam(cid)),
-                Comment.class);
+        return doPost("comments/destroy", withParams(cid), Comment.class);
     }
 
     public List<Comment> destroyCommentBatch(Collection<Cid> cids) throws WeiboClientException {
@@ -962,9 +797,7 @@ public class WeiboClient2 {
         }
 
         return doPost("comments/destroy_batch",
-                withParams(
-                        idsParam(ids)),
-                Comment.TYPE_COMMENT_LIST);
+                withParams(Id.idsParam(ids)), Comment.TYPE_COMMENT_LIST);
     }
 
     public Comment replyComment(Id id, Cid cid, String comment) throws WeiboClientException {
@@ -973,14 +806,13 @@ public class WeiboClient2 {
 
     public Comment replyComment(Id id, Cid cid, String comment, WithoutMention withoutMention, CommentOri commentOri)
             throws WeiboClientException {
+        return replyComment(id, cid, new CommentParam(comment), withoutMention, commentOri);
+    }
+
+    public Comment replyComment(Id id, Cid cid, CommentParam comment, WithoutMention withoutMention, CommentOri commentOri)
+            throws WeiboClientException {
         return doPost("comments/reply",
-                withParams(
-                        idParam(id),
-                        cidParam(cid),
-                        commentParam(comment),
-                        withoutMentionParam(withoutMention),
-                        commentOriParam(commentOri)),
-                Comment.class);
+                withParams(id, cid, comment, withoutMention, commentOri), Comment.class);
     }
 
     public User showUser(ScreenName screenName) throws WeiboClientException {
@@ -992,25 +824,19 @@ public class WeiboClient2 {
     }
 
     private User showUser(Uid uid, ScreenName screenName) throws WeiboClientException {
-        return doGet("users/show",
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                User.class);
+        return doGet("users/show", withParams(uid, screenName), User.class);
+    }
+
+    public User showUserByDomain(Domain domain) throws WeiboClientException {
+        return doGet("users/domain_show", withParams(domain), User.class);
     }
 
     public User showUserByDomain(String domain) throws WeiboClientException {
-        return doGet("users/domain_show",
-                withParams(
-                        domainParam(domain)),
-                User.class);
+        return showUserByDomain(new Domain(domain));
     }
 
     public List<UserCount> getUsersCounts(Collection<Uid> uids) throws WeiboClientException {
-        return doGet("users/counts",
-                withParams(
-                        uidsParam(uids)),
-                UserCount.LIST_TYPE);
+        return doGet("users/counts", withParams(Uid.uidsParam(uids)), UserCount.LIST_TYPE);
     }
 
     public UserList getFriends(Uid uid) throws WeiboClientException {
@@ -1031,11 +857,7 @@ public class WeiboClient2 {
 
     private UserList getFriends(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
         return doGet("friendships/friends",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                UserList.class);
+                paging, withParams(uid, screenName), UserList.class);
     }
 
     public UserIdList getFriendsIds(Uid uid) throws WeiboClientException {
@@ -1056,11 +878,7 @@ public class WeiboClient2 {
 
     private UserIdList getFriendsIds(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
         return doGet("friendships/friends/ids",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                UserIdList.class);
+                paging, withParams(uid, screenName), UserIdList.class);
     }
 
     public UserList getFriendsInCommon(Uid uid) throws WeiboClientException {
@@ -1077,11 +895,7 @@ public class WeiboClient2 {
 
     public UserList getFriendsInCommon(Uid uid, Suid suid, Paging paging) throws WeiboClientException {
         return doGet("friendships/friends/in_common",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        suidParam(suid)),
-                UserList.class);
+                paging, withParams(uid, suid), UserList.class);
     }
 
     public UserList getFriendsBilateral(Uid uid) throws WeiboClientException {
@@ -1090,10 +904,7 @@ public class WeiboClient2 {
 
     public UserList getFriendsBilateral(Uid uid, Paging paging) throws WeiboClientException {
         return doGet("friendships/friends/bilateral",
-                paging,
-                withParams(
-                        uidParam(uid)),
-                UserList.class);
+                paging, withParams(uid), UserList.class);
     }
 
     public UserIdList getFriendsBilateralIds(Uid uid) throws WeiboClientException {
@@ -1102,10 +913,7 @@ public class WeiboClient2 {
 
     public UserIdList getFriendsBilateralIds(Uid uid, Paging paging) throws WeiboClientException {
         return doGet("friendships/friends/bilateral/ids",
-                paging,
-                withParams(
-                        uidParam(uid)),
-                UserIdList.class);
+                paging, withParams(uid), UserIdList.class);
     }
 
     public UserList getFollowers(ScreenName screenName) throws WeiboClientException {
@@ -1126,11 +934,7 @@ public class WeiboClient2 {
 
     public UserList getFollowers(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
         return doGet("friendships/followers",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                UserList.class);
+                paging, withParams(uid, screenName), UserList.class);
     }
 
     public UserIdList getFollowersIds(ScreenName screenName) throws WeiboClientException {
@@ -1151,11 +955,7 @@ public class WeiboClient2 {
 
     public UserIdList getFollowersIds(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
         return doGet("friendships/followers/ids",
-                paging,
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                UserIdList.class);
+                paging, withParams(uid, screenName), UserIdList.class);
     }
 
     public UserList getActiveFollowers(Uid uid) throws WeiboClientException {
@@ -1164,10 +964,7 @@ public class WeiboClient2 {
 
     public UserList getActiveFollowers(Uid uid, Paging paging) throws WeiboClientException {
         return doGet("friendships/followers/active",
-                paging,
-                withParams(
-                        uidParam(uid)),
-                UserList.class);
+                paging, withParams(uid), UserList.class);
     }
 
     public UserList getChainFollowers(Uid uid) throws WeiboClientException {
@@ -1176,10 +973,7 @@ public class WeiboClient2 {
 
     public UserList getChainFollowers(Uid uid, Paging paging) throws WeiboClientException {
         return doGet("friendships/friends_chain/followers",
-                paging,
-                withParams(
-                        uidParam(uid)),
-                UserList.class);
+                paging, withParams(uid), UserList.class);
     }
 
     public Friendship showFriendship(SourceUid sourceUid, TargetUid targetUid) throws WeiboClientException {
@@ -1194,12 +988,7 @@ public class WeiboClient2 {
     public Friendship showFriendship(SourceUid sourceUid, SourceScreenName sourceScreenName,
                                      TargetUid targetUid, TargetScreenName targetScreenName) throws WeiboClientException {
         return doGet("friendships/show",
-                withParams(
-                        sourceUidParam(sourceUid),
-                        sourceScreenNameParam(sourceScreenName),
-                        targetUidParam(targetUid),
-                        targetScreenNameParam(targetScreenName)),
-                Friendship.class);
+                withParams(sourceUid, sourceScreenName, targetUid, targetScreenName), Friendship.class);
     }
 
     public User createFriendship(Uid uid) throws WeiboClientException {
@@ -1212,10 +1001,7 @@ public class WeiboClient2 {
 
     public User createFriendship(Uid uid, ScreenName screenName) throws WeiboClientException {
         return doPost("friendships/create",
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                User.class);
+                withParams(uid, screenName), User.class);
     }
 
     public User destroyFriendship(Uid uid) throws WeiboClientException {
@@ -1228,18 +1014,12 @@ public class WeiboClient2 {
 
     public User destroyFriendship(Uid uid, ScreenName screenName) throws WeiboClientException {
         return doPost("friendships/destroy",
-                withParams(
-                        uidParam(uid),
-                        screenNameParam(screenName)),
-                User.class);
+                withParams(uid, screenName), User.class);
     }
 
     public User updateRemark(Uid uid, Remark remark) throws WeiboClientException {
         return doPost("friendships/remark/update",
-                withParams(
-                        uidParam(uid),
-                        remarkParam(remark)),
-                User.class);
+                withParams(uid, remark), User.class);
     }
 
     public Privacy getPrivacy() throws WeiboClientException {
@@ -1277,10 +1057,7 @@ public class WeiboClient2 {
     }
 
     public FavoritesItem showFavorites(Id id) throws WeiboClientException {
-        return doGet("favorites/show",
-                withParams(
-                        idParam(id)),
-                FavoritesItem.class);
+        return doGet("favorites/show", withParams(id), FavoritesItem.class);
     }
 
     public Favorites getFavoritesByTags(Tid tid) throws WeiboClientException {
@@ -1288,11 +1065,7 @@ public class WeiboClient2 {
     }
 
     public Favorites getFavoritesByTags(Tid tid, Paging paging) throws WeiboClientException {
-        return doGet("favorites/by_tags",
-                paging,
-                withParams(
-                        tidParam(tid)),
-                Favorites.class);
+        return doGet("favorites/by_tags", paging, withParams(tid), Favorites.class);
     }
 
     public FavoritesTags getFavoritesTags() throws WeiboClientException {
@@ -1308,32 +1081,20 @@ public class WeiboClient2 {
     }
 
     public FavoritesIds getFavoritesIdsByTags(Tid tid, Paging paging) throws WeiboClientException {
-        return doGet("favorites/by_tags/ids",
-                paging,
-                withParams(
-                        tidParam(tid)),
-                FavoritesIds.class);
+        return doGet("favorites/by_tags/ids", paging, withParams(tid), FavoritesIds.class);
     }
 
     public FavoritesItem createFavorites(Id id) throws WeiboClientException {
-        return doPost("favorites/create",
-                withParams(
-                        idParam(id)),
-                FavoritesItem.class);
+        return doPost("favorites/create", withParams(id), FavoritesItem.class);
     }
 
     public FavoritesItem destroyFavorites(Id id) throws WeiboClientException {
-        return doPost("favorites/destroy",
-                withParams(
-                        idParam(id)),
-                FavoritesItem.class);
+        return doPost("favorites/destroy", withParams(id), FavoritesItem.class);
     }
 
     public boolean destroyFavoritesBatch(Collection<Id> ids) throws WeiboClientException {
         ResultResponse response = doPost("favorites/destroy_batch",
-                withParams(
-                        idsParam(ids)),
-                ResultResponse.class);
+                withParams(Id.idsParam(ids)), ResultResponse.class);
 
         return response.isResult();
     }
@@ -1344,25 +1105,17 @@ public class WeiboClient2 {
 
     public FavoritesItem updateFavoritesTags(Id id, Collection<TagName> tags) throws WeiboClientException {
         return doPost("favorites/tags/update",
-                withParams(
-                        idParam(id),
-                        tagsParam(tags)),
-                FavoritesItem.class);
+                withParams(id, TagName.tagsParam(tags)), FavoritesItem.class);
     }
 
     public Tag updateFavoritesTagsBatch(Tid tid, TagName tagName) throws WeiboClientException {
         return doPost("favorites/tags/update_batch",
-                withParams(
-                        tidParam(tid),
-                        tagParam(tagName)),
-                Tag.class);
+                withParams(tid, tagName), Tag.class);
     }
 
     public boolean destroyFavoritesTagsBatch(Tid tid) throws WeiboClientException {
         ResultResponse response = doPost("favorites/tags/destroy_batch",
-                withParams(
-                        tidParam(tid)),
-                ResultResponse.class);
+                withParams(tid), ResultResponse.class);
         return response.isResult();
     }
 
@@ -1374,9 +1127,7 @@ public class WeiboClient2 {
 
     public List<Url> shortenUrl(Collection<UrlLong> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/shorten",
-                withParams(
-                        urlLongParam(urlList)),
-                UrlResponse.class);
+                withParams(UrlLong.urlLongParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
@@ -1389,41 +1140,29 @@ public class WeiboClient2 {
 
     public List<Url> expandUrl(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/expand",
-                withParams(
-                        urlShortParam(urlList)),
-                UrlResponse.class);
+                withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
 
     public List<Url> getShortUrlClicks(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/clicks",
-                withParams(
-                        urlShortParam(urlList)),
-                UrlResponse.class);
+                withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
 
     public Url getShortUrlReferers(UrlShort urlShort) throws WeiboClientException {
-        return doGet("short_url/referers",
-                withParams(
-                        urlShortParam(urlShort)),
-                Url.class);
+        return doGet("short_url/referers", withParams(urlShort), Url.class);
     }
 
     public Url getShortUrlLocations(UrlShort urlShort) throws WeiboClientException {
-        return doGet("short_url/locations",
-                withParams(
-                        urlShortParam(urlShort)),
-                Url.class);
+        return doGet("short_url/locations", withParams(urlShort), Url.class);
     }
 
     public List<Url> getShortUrlShareCounts(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/share/counts",
-                withParams(
-                        urlShortParam(urlList)),
-                UrlResponse.class);
+                withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
@@ -1434,17 +1173,12 @@ public class WeiboClient2 {
 
     public Url getShortUrlShareStatuses(UrlShort urlShort, Paging paging) throws WeiboClientException {
         return doGet("short_url/share/statuses",
-                paging,
-                withParams(
-                        urlShortParam(urlShort)),
-                Url.class);
+                paging, withParams(urlShort), Url.class);
     }
 
     public List<Url> getShortUrlCommentCounts(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/comment/counts",
-                withParams(
-                        urlShortParam(urlList)),
-                UrlResponse.class);
+                withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
@@ -1455,32 +1189,24 @@ public class WeiboClient2 {
 
     public Url getShortUrlComments(UrlShort urlShort, Paging paging) throws WeiboClientException {
         return doGet("short_url/comment/comments",
-                paging,
-                withParams(urlShortParam(urlShort)),
-                Url.class);
+                paging, withParams(urlShort), Url.class);
     }
 
     public List<UrlInfo> getShortUrlInfo(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlInfoResponse response = doGet("short_url/info",
-                withParams(urlShortParam(urlList)),
-                UrlInfoResponse.class);
+                withParams(UrlShort.urlShortParam(urlList)), UrlInfoResponse.class);
 
         return response.getUrls();
     }
 
     public List<Trend> getTrends(Uid uid, Paging paging) throws WeiboClientException {
         return doGet("trends",
-                paging,
-                withParams(
-                        uidParam(uid)),
-                Trend.TYPE_TREND_LIST);
+                paging, withParams(uid), Trend.TYPE_TREND_LIST);
     }
 
     public TrendStatus getTrendStatus(TrendName trendName) throws WeiboClientException {
         return doGet("trends/is_follow",
-                withParams(
-                        trendNameParam(trendName)),
-                TrendStatus.class);
+                withParams(trendName), TrendStatus.class);
     }
 
     public GlobalTrendList getTrendsHourly() throws WeiboClientException {
@@ -1489,9 +1215,7 @@ public class WeiboClient2 {
 
     public GlobalTrendList getTrendsHourly(BaseApp baseApp) throws WeiboClientException {
         JsonNode json = doGet("trends/hourly",
-                withParams(
-                        baseAppParam(baseApp)),
-                JsonNode.class);
+                withParams(baseApp), JsonNode.class);
 
         return new GlobalTrendList(json);
     }
@@ -1501,10 +1225,7 @@ public class WeiboClient2 {
     }
 
     public GlobalTrendList getTrendsDaily(BaseApp baseApp) throws WeiboClientException {
-        JsonNode json = doGet("trends/daily",
-                withParams(
-                        baseAppParam(baseApp)),
-                JsonNode.class);
+        JsonNode json = doGet("trends/daily", withParams(baseApp), JsonNode.class);
 
         return new GlobalTrendList(json);
     }
@@ -1514,28 +1235,21 @@ public class WeiboClient2 {
     }
 
     public GlobalTrendList getTrendsWeekly(BaseApp baseApp) throws WeiboClientException {
-        JsonNode json = doGet("trends/weekly",
-                withParams(
-                        baseAppParam(baseApp)),
-                JsonNode.class);
+        JsonNode json = doGet("trends/weekly", withParams(baseApp), JsonNode.class);
 
         return new GlobalTrendList(json);
     }
 
     public long followTrend(TrendName trendName) throws WeiboClientException {
         FollowTrendResponse response = doPost("trends/follow",
-                withParams(
-                        trendNameParam(trendName)),
-                FollowTrendResponse.class);
+                withParams(trendName), FollowTrendResponse.class);
 
         return response.getTopicid();
     }
 
     public boolean destroyTrend(TrendId trendId) throws WeiboClientException {
         ResultResponse response = doPost("trends/destroy",
-                withParams(
-                        trendIdParam(trendId)),
-                ResultResponse.class);
+                withParams(trendId), ResultResponse.class);
 
         return response.isResult();
     }
@@ -1545,20 +1259,14 @@ public class WeiboClient2 {
     }
 
     public List<Tag> getTags(Uid uid, Paging paging) throws WeiboClientException {
-        ArrayNode arrayNode = doGet("tags",
-                paging,
-                withParams(
-                        uidParam(uid)),
-                ArrayNode.class);
+        ArrayNode arrayNode = doGet("tags", paging, withParams(uid), ArrayNode.class);
 
         return Tag.parseTags(arrayNode);
     }
 
     public List<UserTagList> getTagsBatch(Collection<Uid> uids) throws WeiboClientException {
         ArrayNode arrayNode = doGet("tags/tags_batch",
-                withParams(
-                        uidsParam(uids)),
-                ArrayNode.class);
+                withParams(Uid.uidsParam(uids)), ArrayNode.class);
 
         return UserTagList.parse(arrayNode);
     }
@@ -1580,36 +1288,28 @@ public class WeiboClient2 {
 
     public List<Long> createTags(Collection<TagName> tagNames) throws WeiboClientException {
         List<TagActionResponse> responseList = doPost("tags/create",
-                withParams(
-                        tagsParam(tagNames)),
-                TYPE_TAG_ACTION_RESPONSE_LIST);
+                withParams(TagName.tagsParam(tagNames)), TYPE_TAG_ACTION_RESPONSE_LIST);
 
         return TagActionResponse.toLongList(responseList);
     }
 
     public boolean destroyTag(TagId tagId) throws WeiboClientException {
         ResultResponse response = doPost("tags/destroy",
-                withParams(
-                        tagIdParam(tagId)),
-                ResultResponse.class);
+                withParams(tagId), ResultResponse.class);
 
         return response.isResult();
     }
 
     public List<Long> destroyTagsBatch(Collection<TagId> tagIds) throws WeiboClientException {
         List<TagActionResponse> responseList = doPost("tags/destroy_batch",
-                withParams(
-                        tagIdsParam(tagIds)),
-                TYPE_TAG_ACTION_RESPONSE_LIST);
+                withParams(TagId.idsParam(tagIds)), TYPE_TAG_ACTION_RESPONSE_LIST);
 
         return TagActionResponse.toLongList(responseList);
     }
 
     public VerifyNicknameResult verifyNickname(Nickname nickname) throws WeiboClientException {
         return doGet("register/verify_nickname",
-                withParams(
-                        nicknameParam(nickname)),
-                VerifyNicknameResult.class);
+                withParams(nickname), VerifyNicknameResult.class);
     }
 
     public List<SearchSuggestionUserResult> searchSuggestionUsers(Query query) throws WeiboClientException {
@@ -1618,9 +1318,7 @@ public class WeiboClient2 {
 
     public List<SearchSuggestionUserResult> searchSuggestionUsers(Query query, Paging paging) throws WeiboClientException {
         return doGet("search/suggestions/users",
-                paging,
-                withParams(
-                        queryParam(query)),
+                paging, withParams(query),
                 SearchSuggestionUserResult.TYPE_SEARCH_SUGGESTION_USER_RESULT_LIST);
     }
 
@@ -1630,8 +1328,7 @@ public class WeiboClient2 {
 
     public List<SearchSuggestionStatusResult> searchSuggestionStatuses(Query query, Paging paging) throws WeiboClientException {
         return doGet("search/suggestions/statuses",
-                paging,
-                withParams(queryParam(query)),
+                paging, withParams(query),
                 SearchSuggestionStatusResult.TYPE_SEARCH_SUGGESTION_STATUS_RESULT_LIST);
     }
 
@@ -1649,10 +1346,7 @@ public class WeiboClient2 {
 
     public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType, Paging paging) throws WeiboClientException {
         return doGet("search/suggestions/schools",
-                paging,
-                withParams(
-                        queryParam(query),
-                        schoolTypeParam(schoolType)),
+                paging, withParams(query, schoolType),
                 SearchSuggestionSchoolResult.TYPE_SEARCH_SUGGESTION_SCHOOL_RESULT_LIST);
     }
 
@@ -1662,9 +1356,7 @@ public class WeiboClient2 {
 
     public List<SearchSuggestionCompanyResult> searchSuggestionCompanies(Query query, Paging paging) throws WeiboClientException {
         return doGet("search/suggestions/companies",
-                paging,
-                withParams(
-                        queryParam(query)),
+                paging, withParams(query),
                 SearchSuggestionCompanyResult.TYPE_SEARCH_SUGGESTION_COMPANY_RESULT_LIST);
     }
 
@@ -1674,9 +1366,7 @@ public class WeiboClient2 {
 
     public List<SearchSuggestionAppResult> searchSuggestionApps(Query query, Paging paging) throws WeiboClientException {
         return doGet("search/suggestions/apps",
-                paging,
-                withParams(
-                        queryParam(query)),
+                paging, withParams(query),
                 SearchSuggestionAppResult.TYPE_SEARCH_SUGGESTION_APP_RESULT_LIST);
     }
 
@@ -1698,11 +1388,7 @@ public class WeiboClient2 {
     public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type,
                                                                       SuggestionRange range, Paging paging) throws WeiboClientException {
         return doGet("search/suggestions/at_users",
-                paging,
-                withParams(
-                        queryParam(query),
-                        suggestionTypeParam(type),
-                        suggestionRangeParam(range)),
+                paging, withParams(query, type, range),
                 SearchSuggestionAtUserResult.TYPE_SEARCH_SUGGESTION_AT_USER_RESULT_LIST);
     }
 
@@ -1712,9 +1398,7 @@ public class WeiboClient2 {
 
     public Timeline searchTopics(Query query, Paging paging) throws WeiboClientException {
         return doGet("search/topics",
-                paging,
-                withParams(queryParam(query)),
-                Timeline.class);
+                paging, withParams(query), Timeline.class);
     }
 
     public List<User> getSuggestionUsersHot() throws WeiboClientException {
@@ -1723,9 +1407,7 @@ public class WeiboClient2 {
 
     public List<User> getSuggestionUsersHot(SuggestionUserCategory category) throws WeiboClientException {
         return doGet("suggestions/users/hot",
-                withParams(
-                        suggestionUserCategoryParam(category)),
-                User.TYPE_USER_LIST);
+                withParams(category), User.TYPE_USER_LIST);
     }
 
     // TODO: implements getSuggestionUsersMayInterested
@@ -1739,10 +1421,7 @@ public class WeiboClient2 {
 
     public UserList getSuggestionUsersByStatus(Content content, Num num) throws WeiboClientException {
         return doGet("suggestions/users/by_status",
-                withParams(
-                        contentParam(content),
-                        numParam(num)),
-                UserList.class);
+                withParams(content, num), UserList.class);
     }
 
     public StatusList getSuggestionStatusesHot(SuggestionStatusType type, IsPic isPic) throws WeiboClientException {
@@ -1751,11 +1430,7 @@ public class WeiboClient2 {
 
     public StatusList getSuggestionStatusesHot(SuggestionStatusType type, IsPic isPic, Paging paging) throws WeiboClientException {
         return doGet("suggestions/statuses/hot",
-                paging,
-                withParams(
-                        suggestionStatusTypeParam(type),
-                        isPicParam(isPic)),
-                StatusList.class);
+                paging, withParams(type, isPic), StatusList.class);
     }
 
     public StatusList getSuggestionStatusesReorder(Section section) throws WeiboClientException {
@@ -1764,10 +1439,7 @@ public class WeiboClient2 {
 
     public StatusList getSuggestionStatusesReorder(Section section, Paging paging) throws WeiboClientException {
         return doGet("suggestions/statuses/reorder",
-                paging,
-                withParams(
-                        sectionParam(section)),
-                StatusList.class);
+                paging, withParams(section), StatusList.class);
     }
 
     public StatusIdList getSuggestionStatusIdsReorder(Section section) throws WeiboClientException {
@@ -1776,10 +1448,7 @@ public class WeiboClient2 {
 
     public StatusIdList getSuggestionStatusIdsReorder(Section section, Paging paging) throws WeiboClientException {
         return doGet("suggestions/statuses/reorder/ids",
-                paging,
-                withParams(
-                        sectionParam(section)),
-                StatusIdList.class);
+                paging, withParams(section), StatusIdList.class);
     }
 
     public List<Status> getSuggestionFavoritesHot() throws WeiboClientException {
@@ -1792,9 +1461,7 @@ public class WeiboClient2 {
 
     public User setSuggestionUserNotInterested(Uid uid) throws WeiboClientException {
         return doPost("suggestions/users/not_interested",
-                withParams(
-                        uidParam(uid)),
-                User.class);
+                withParams(uid), User.class);
     }
 
     public UnreadCount getUnreadCount() throws WeiboClientException {
@@ -1803,17 +1470,12 @@ public class WeiboClient2 {
     }
 
     public UnreadCount getUnreadCount(Uid uid) throws WeiboClientException {
-        return doGet("remind/unread_count",
-                withParams(
-                        uidParam(uid)),
-                UnreadCount.class);
+        return doGet("remind/unread_count", withParams(uid), UnreadCount.class);
     }
 
     public boolean resetCount(CountType type) throws WeiboClientException {
         ResultResponse response = doPost("https://rm.api.weibo.com/2/remind/set_count.json",
-                withParams(
-                        countTypeParam(type)),
-                ResultResponse.class);
+                withParams(type), ResultResponse.class);
 
         return response.isResult();
     }
@@ -1910,12 +1572,7 @@ public class WeiboClient2 {
         };
 
         return doPost("notification/send",
-                withParams(
-                        uidsParam(uids),
-                        templateIdParam(templateId),
-                        objectsParamAction,
-                        actionUrlParam(actionUrl)),
-                NotificationResult.class);
+                withParams(Uid.uidsParam(uids), templateId, objectsParamAction, actionUrl), NotificationResult.class);
     }
 
     public Map<String, String> getTimezoneMap() throws WeiboClientException {
@@ -1925,9 +1582,7 @@ public class WeiboClient2 {
     @SuppressWarnings("unchecked")
     public Map<String, String> getTimezoneMap(Language language) throws WeiboClientException {
         return doGet("common/get_timezone",
-                withParams(
-                        languageParam(language)),
-                HashMap.class);
+                withParams(language), HashMap.class);
     }
 
     public Map<String, String> getCountryMap() throws WeiboClientException {
@@ -1936,10 +1591,7 @@ public class WeiboClient2 {
 
     public Map<String, String> getCountryMap(Language language, CapitalLetter capitalLetter) throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/get_country",
-                withParams(
-                        languageParam(language),
-                        capitalLetterParam(capitalLetter)),
-                LIST_MAP_S_S_TYPE_REFERENCE);
+                withParams(language, capitalLetter), LIST_MAP_S_S_TYPE_REFERENCE);
 
         return mergeSingleItemMap(response);
     }
@@ -1950,11 +1602,7 @@ public class WeiboClient2 {
 
     public Map<String, String> getProvinceMap(Country country, Language language, CapitalLetter capitalLetter) throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/get_province",
-                withParams(
-                        countryParam(country),
-                        languageParam(language),
-                        capitalLetterParam(capitalLetter)),
-                LIST_MAP_S_S_TYPE_REFERENCE);
+                withParams(country, language, capitalLetter), LIST_MAP_S_S_TYPE_REFERENCE);
 
         return mergeSingleItemMap(response);
     }
@@ -1965,20 +1613,14 @@ public class WeiboClient2 {
 
     public Map<String, String> getCityMap(Province province, Language language, CapitalLetter capitalLetter) throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/get_city",
-                withParams(
-                        provinceParam(province),
-                        languageParam(language),
-                        capitalLetterParam(capitalLetter)),
-                LIST_MAP_S_S_TYPE_REFERENCE);
+                withParams(province, language, capitalLetter), LIST_MAP_S_S_TYPE_REFERENCE);
 
         return mergeSingleItemMap(response);
     }
 
     public Map<String, String> codeToLocation(Collection<AddressCode> codes) throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/code_to_location",
-                withParams(
-                        addressCodesParam(codes)),
-                LIST_MAP_S_S_TYPE_REFERENCE);
+                withParams(AddressCode.codesParam(codes)), LIST_MAP_S_S_TYPE_REFERENCE);
 
         return mergeSingleItemMap(response);
     }
@@ -1987,7 +1629,9 @@ public class WeiboClient2 {
         Parameters params = Parameters.create();
 
         for (ParameterAction action : actions) {
-            action.addParameter(params);
+            if (action != null) {
+                action.addParameter(params);
+            }
         }
 
         return params;
@@ -2129,6 +1773,7 @@ public class WeiboClient2 {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class TagActionResponse {
         private long tagid;
 
@@ -2154,6 +1799,7 @@ public class WeiboClient2 {
             new TypeReference<List<TagActionResponse>>() {
             };
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class LongIdStringValue {
         private long id;
         private String value;
@@ -2179,6 +1825,7 @@ public class WeiboClient2 {
             new TypeReference<List<LongIdStringValue>>() {
             };
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class FollowTrendResponse {
         private long topicid;
 
@@ -2191,6 +1838,7 @@ public class WeiboClient2 {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class UrlInfoResponse {
         private List<UrlInfo> urls;
 
@@ -2203,6 +1851,7 @@ public class WeiboClient2 {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class UrlResponse {
         private List<Url> urls;
 
@@ -2215,6 +1864,7 @@ public class WeiboClient2 {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class ResultResponse {
         private boolean result;
 
@@ -2321,688 +1971,11 @@ public class WeiboClient2 {
         return map;
     }
 
-    private ParameterAction featureParam(final Feature feature) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (feature != null && feature != Feature.All) {
-                    params.add(FEATURE, feature.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction trimUserParam(final TrimUser trimUser) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (trimUser == TrimUser.Yes) {
-                    params.add(TRIM_USER, trimUser.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction screenNameParam(final ScreenName screenName) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (screenName != null && screenName.isValid()) {
-                    params.add(SCREEN_NAME, screenName.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction uidParam(final Uid uid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (uid != null && uid.isValid()) {
-                    params.add(UID, uid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction baseAppParam(final BaseApp baseApp) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (baseApp == BaseApp.Yes) {
-                    params.add(BASE_APP, baseApp.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction idParam(final Id id) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (id != null && id.isValid()) {
-                    params.add(ID, id.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction idListParam(final Collection<Id> idList) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (idList != null && idList.size() > 0) {
-                    List<String> idStringList = new ArrayList<String>(idList.size());
-                    for (Id id : idList) {
-                        idStringList.add(String.valueOf(id.getValue()));
-                    }
-                    params.add(ID, join(idStringList, ","));
-                }
-            }
-        };
-    }
-
-    private ParameterAction midListParam(final Collection<Mid> midList) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (midList != null && midList.size() > 0) {
-                    List<String> midStringList = new ArrayList<String>(midList.size());
-                    for (Mid mid : midList) {
-                        midStringList.add(mid.getValue());
-                    }
-                    params.add(MID, join(midStringList, ","));
-                }
-            }
-        };
-    }
-
-    private ParameterAction filterByAuthorParam(final FilterByAuthor filterByAuthor) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (filterByAuthor != null && filterByAuthor != FilterByAuthor.All) {
-                    params.add(FILTER_BY_AUTHOR, filterByAuthor.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction filterBySourceParam(final FilterBySource filterBySource) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (filterBySource != null && filterBySource != FilterBySource.All) {
-                    params.add(FILTER_BY_SOURCE, filterBySource.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction filterByTypeParam(final FilterByType filterByType) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (filterByType != null && filterByType != FilterByType.All) {
-                    params.add(FILTER_BY_TYPE, filterByType.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction midTypeParam(final MidType midType) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (midType != null && midType != MidType.Status) {
-                    params.add(TYPE, midType.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction isBatchParam(final IsBatch isBatch) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (isBatch != null && isBatch == IsBatch.Yes) {
-                    params.add(IS_BATCH, isBatch.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction isBase62Param(final IsBase62 isBase62) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (isBase62 != null && isBase62 == IsBase62.Yes) {
-                    params.add(IS_BASE_62, isBase62.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction inboxTypeParam(final InboxType inboxType) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (inboxType != null && inboxType == InboxType.Inbox) {
-                    params.add(INBOX, inboxType.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction midParam(final Mid mid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (mid != null && mid.isValid()) {
-                    params.add(MID, mid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction idsParam(final Collection<Id> ids) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (ids != null && ids.size() > 0) {
-                    List<String> idStringList = new ArrayList<String>(ids.size());
-                    for (Id id : ids) {
-                        idStringList.add(String.valueOf(id.getValue()));
-                    }
-                    String idsString = join(idStringList, ",");
-                    params.add(IDS, idsString);
-                }
-            }
-        };
-    }
-
-    private ParameterAction tagIdsParam(final Collection<TagId> tagIds) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (tagIds != null && tagIds.size() > 0) {
-                    List<String> idStringList = new ArrayList<String>(tagIds.size());
-                    for (TagId tagId : tagIds) {
-                        idStringList.add(String.valueOf(tagId.getValue()));
-                    }
-                    String idsString = join(idStringList, ",");
-                    params.add(IDS, idsString);
-                }
-            }
-        };
-    }
-
-    public ParameterAction isCommentParam(final IsComment isComment) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (isComment != null && isComment != IsComment.No) {
-                    params.add(IS_COMMENT, isComment.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction statusParam(final String status) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (isNotBlank(status)) {
-                    params.add(STATUS, status);
-                }
-            }
-        };
-    }
-
-    private ParameterAction longitudeParam(final Longitude longitude) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (longitude != null) {
-                    params.add(LONGITUDE, longitude.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction latitudeParam(final Latitude latitude) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (latitude != null) {
-                    params.add(LATITUDE, latitude.getValue());
-                }
-            }
-        };
-    }
-
     private ParameterAction urlParam(final URL url) {
         return new ParameterAction() {
             public void addParameter(Parameters params) {
                 if (url != null) {
-                    params.add(URL_, url.toExternalForm());
-                }
-            }
-        };
-    }
-
-    private ParameterAction cidsParam(final Collection<Cid> cids) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (cids != null && cids.size() > 0) {
-                    List<String> idList = new ArrayList<String>();
-                    for (Cid cid : cids) {
-                        if (cid.isValid()) {
-                            idList.add(String.valueOf(cid.getValue()));
-                        }
-                    }
-                    String idListString = join(idList, ",");
-                    params.add(CIDS, idListString);
-                }
-            }
-        };
-    }
-
-    public ParameterAction commentOriParam(final CommentOri commentOri) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (commentOri != null && commentOri == CommentOri.Yes) {
-                    params.add(COMMENT_ORI, commentOri.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction commentParam(final String comment) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (isNotBlank(comment)) {
-                    params.add(COMMENT, comment);
-                }
-            }
-        };
-    }
-
-    private ParameterAction cidParam(final Cid cid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (cid != null && cid.isValid()) {
-                    params.add(CID, cid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction domainParam(final String domain) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (domain != null) {
-                    params.add(DOMAIN, domain);
-                }
-            }
-        };
-    }
-
-    private ParameterAction uidsParam(final Collection<Uid> uids) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (uids != null && uids.size() > 0) {
-                    List<String> idList = new ArrayList<String>();
-                    for (Uid uid : uids) {
-                        idList.add(String.valueOf(uid.getValue()));
-                    }
-                    params.add(UIDS, join(idList, ","));
-                }
-            }
-        };
-    }
-
-    private ParameterAction suidParam(final Suid suid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (suid != null && suid.isValid()) {
-                    params.add(SUID, suid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction withoutMentionParam(final WithoutMention withoutMention) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (withoutMention != null && withoutMention == WithoutMention.Yes) {
-                    params.add(WITHOUT_MENTION, withoutMention.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction targetScreenNameParam(final TargetScreenName targetScreenName) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (targetScreenName != null && targetScreenName.isValid()) {
-                    params.add(TARGET_SCREEN_NAME, targetScreenName.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction targetUidParam(final TargetUid targetUid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (targetUid != null && targetUid.isValid()) {
-                    params.add(TARGET_ID, targetUid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction sourceScreenNameParam(final SourceScreenName sourceScreenName) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (sourceScreenName != null && sourceScreenName.isValid()) {
-                    params.add(SOURCE_SCREEN_NAME, sourceScreenName.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction sourceUidParam(final SourceUid sourceUid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (sourceUid != null && sourceUid.isValid()) {
-                    params.add(SOURCE_ID, sourceUid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction remarkParam(final Remark remark) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (remark != null && remark.isValid()) {
-                    params.add(REMARK, remark.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction tidParam(final Tid tid) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (tid != null && tid.isValid()) {
-                    params.add(TID, tid.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction tagsParam(final Collection<TagName> tags) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (tags != null && tags.size() > 0) {
-                    List<String> tagList = new ArrayList<String>(tags.size());
-                    for (TagName tag : tags) {
-                        if (tag.isValid()) {
-                            tagList.add(tag.getValue());
-                        }
-                    }
-                    params.add(TAGS, join(tagList, ","));
-                }
-            }
-        };
-    }
-
-    private ParameterAction tagParam(final TagName tagName) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (tagName != null && tagName.isValid()) {
-                    params.add(TAG, tagName.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction tagIdParam(final TagId tagId) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (tagId != null && tagId.isValid()) {
-                    params.add(TAG_ID, tagId.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction urlLongParam(final Collection<UrlLong> urlList) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (urlList != null && urlList.size() > 0) {
-                    for (UrlLong urlLong : urlList) {
-                        if (urlLong.isValid()) {
-                            params.add(URL_LONG, urlLong.getValue());
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    private ParameterAction urlShortParam(final Collection<UrlShort> urlList) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (urlList != null && urlList.size() > 0) {
-                    for (UrlShort urlShort : urlList) {
-                        if (urlShort.isValid()) {
-                            params.add(URL_SHORT, urlShort.getValue());
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    private ParameterAction urlShortParam(final UrlShort urlShort) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (urlShort != null && urlShort.isValid()) {
-                    params.add(URL_SHORT, urlShort.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction trendNameParam(final TrendName trendName) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (trendName != null && trendName.isValid()) {
-                    params.add(TREND_NAME, trendName.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction trendIdParam(final TrendId trendId) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (trendId != null && trendId.isValid()) {
-                    params.add(TREND_ID, trendId.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction nicknameParam(final Nickname nickname) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (nickname != null && nickname.isValid()) {
-                    params.add(NICKNAME, nickname.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction queryParam(final Query query) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (query != null && query.isValid()) {
-                    params.add(Q, query.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction schoolTypeParam(final SchoolType schoolType) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (schoolType != null && schoolType != SchoolType.All) {
-                    params.add(TYPE, schoolType.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction suggestionTypeParam(final SuggestionType suggestionType) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (suggestionType != null) {
-                    params.add(TYPE, suggestionType.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction suggestionRangeParam(final SuggestionRange suggestionRange) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (suggestionRange != null && suggestionRange != SuggestionRange.All) {
-                    params.add(RANGE, suggestionRange.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction suggestionUserCategoryParam(final SuggestionUserCategory category) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (category != null && category != SuggestionUserCategory.Default) {
-                    params.add(CATEGORY, category.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction contentParam(final Content content) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (content != null && content.isValid()) {
-                    params.add(CONTENT, content.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction numParam(final Num num) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (num != null && num.isValid()) {
-                    params.add(NUM, num.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction suggestionStatusTypeParam(final SuggestionStatusType type) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (type != null) {
-                    params.add(TYPE, type.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction isPicParam(final IsPic isPic) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (isPic != null) {
-                    params.add(IS_PIC, isPic.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction sectionParam(final Section section) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (section != null) {
-                    params.add(SECTION, section.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction countTypeParam(final CountType type) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (type != null) {
-                    params.add(TYPE, type.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction templateIdParam(final TemplateId templateId) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (templateId != null && templateId.isValid()) {
-                    params.add(TPL_ID, templateId.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction actionUrlParam(final ActionUrl actionUrl) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (actionUrl != null && actionUrl.isValid()) {
-                    params.add(ACTION_URL, actionUrl.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction languageParam(final Language language) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (language != null) {
-                    params.add(LANGUAGE, language.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction capitalLetterParam(final CapitalLetter capitalLetter) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (capitalLetter != null && capitalLetter.isValid()) {
-                    params.add(CAPITAL, capitalLetter.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction countryParam(final Country country) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (country != null && country.isValid()) {
-                    params.add(COUNTRY, country.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction provinceParam(final Province province) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (province != null && province.isValid()) {
-                    params.add(PROVINCE, province.getValue());
-                }
-            }
-        };
-    }
-
-    private ParameterAction addressCodesParam(final Collection<AddressCode> codes) {
-        return new ParameterAction() {
-            public void addParameter(Parameters params) {
-                if (codes != null && codes.size() > 0) {
-                    List<String> codeList = new ArrayList<String>(codes.size());
-                    for (AddressCode code : codes) {
-                        codeList.add(code.getValue());
-                    }
-                    params.add(CODES, StringUtils.join(codeList, ","));
+                    params.add("url", url.toExternalForm());
                 }
             }
         };

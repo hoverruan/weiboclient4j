@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum MidType {
+public enum MidType implements ParameterAction {
     Status(1), Comment(2), Message(3);
 
     private static Map<Integer, MidType> map = new HashMap<Integer, MidType>();
@@ -29,5 +29,11 @@ public enum MidType {
 
     public static MidType fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != Status) {
+            params.add("type", getValue());
+        }
     }
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum Feature {
+public enum Feature implements ParameterAction{
     All(0), Original(1), Picture(2), Video(3), Music(4);
 
     private static Map<Integer, Feature> map = new HashMap<Integer, Feature>();
@@ -29,5 +29,11 @@ public enum Feature {
 
     public static Feature fromValue(int value) {
         return map.get(value);
+    }
+
+    public void addParameter(Parameters params) {
+        if (this != All) {
+            params.add("feature", getValue());
+        }
     }
 }

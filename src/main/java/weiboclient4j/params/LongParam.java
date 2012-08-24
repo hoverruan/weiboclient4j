@@ -3,7 +3,7 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public class LongParam {
+public abstract class LongParam implements ParameterAction {
     private long value;
 
     public LongParam(long value) {
@@ -21,5 +21,13 @@ public class LongParam {
 
     public boolean isValid() {
         return value > 0;
+    }
+
+    protected abstract String paramKey();
+
+    public void addParameter(Parameters params) {
+        if (isValid()) {
+            params.add(paramKey(), getValue());
+        }
     }
 }

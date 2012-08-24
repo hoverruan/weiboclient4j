@@ -3,7 +3,7 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public enum WithoutMention {
+public enum WithoutMention implements ParameterAction {
     Yes(1), No(0);
 
     private int value;
@@ -14,5 +14,11 @@ public enum WithoutMention {
 
     public int getValue() {
         return value;
+    }
+
+    public void addParameter(Parameters params) {
+        if (this == Yes) {
+            params.add("without_mention", getValue());
+        }
     }
 }
