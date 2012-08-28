@@ -30,18 +30,18 @@ public class TagService extends AbstractService {
         return Tag.parseTags(arrayNode);
     }
 
-    public List<UserTagList> getTagsBatch(Collection<Uid> uids) throws WeiboClientException {
+    public List<UserTagList> getBatch(Collection<Uid> uids) throws WeiboClientException {
         ArrayNode arrayNode = doGet("tags/tags_batch",
                 withParams(Uid.uidsParam(uids)), ArrayNode.class);
 
         return UserTagList.parse(arrayNode);
     }
 
-    public List<Tag> getTagsSuggestions() throws WeiboClientException {
-        return getTagsSuggestions(Paging.EMPTY);
+    public List<Tag> getSuggestions() throws WeiboClientException {
+        return getSuggestions(Paging.EMPTY);
     }
 
-    public List<Tag> getTagsSuggestions(Paging paging) throws WeiboClientException {
+    public List<Tag> getSuggestions(Paging paging) throws WeiboClientException {
         List<LongIdStringValue> list = doGet("tags/suggestions", paging, TYPE_LONG_ID_STRING_VALUE_LIST);
 
         List<Tag> tags = new ArrayList<Tag>(list.size());
@@ -52,21 +52,21 @@ public class TagService extends AbstractService {
         return tags;
     }
 
-    public List<Long> createTags(Collection<TagName> tagNames) throws WeiboClientException {
+    public List<Long> create(Collection<TagName> tagNames) throws WeiboClientException {
         List<TagActionResponse> responseList = doPost("tags/create",
                 withParams(TagName.tagsParam(tagNames)), TYPE_TAG_ACTION_RESPONSE_LIST);
 
         return TagActionResponse.toLongList(responseList);
     }
 
-    public boolean destroyTag(TagId tagId) throws WeiboClientException {
+    public boolean destroy(TagId tagId) throws WeiboClientException {
         ResultResponse response = doPost("tags/destroy",
                 withParams(tagId), ResultResponse.class);
 
         return response.isResult();
     }
 
-    public List<Long> destroyTagsBatch(Collection<TagId> tagIds) throws WeiboClientException {
+    public List<Long> destroyBatch(Collection<TagId> tagIds) throws WeiboClientException {
         List<TagActionResponse> responseList = doPost("tags/destroy_batch",
                 withParams(TagId.idsParam(tagIds)), TYPE_TAG_ACTION_RESPONSE_LIST);
 

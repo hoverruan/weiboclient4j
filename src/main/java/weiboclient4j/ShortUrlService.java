@@ -44,54 +44,54 @@ public class ShortUrlService extends AbstractService {
         return response.getUrls();
     }
 
-    public List<Url> getShortUrlClicks(Collection<UrlShort> urlList) throws WeiboClientException {
+    public List<Url> getClicks(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/clicks",
                 withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
 
-    public Url getShortUrlReferers(UrlShort urlShort) throws WeiboClientException {
+    public Url getReferers(UrlShort urlShort) throws WeiboClientException {
         return doGet("short_url/referers", withParams(urlShort), Url.class);
     }
 
-    public Url getShortUrlLocations(UrlShort urlShort) throws WeiboClientException {
+    public Url getLocations(UrlShort urlShort) throws WeiboClientException {
         return doGet("short_url/locations", withParams(urlShort), Url.class);
     }
 
-    public List<Url> getShortUrlShareCounts(Collection<UrlShort> urlList) throws WeiboClientException {
+    public List<Url> getShareCounts(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/share/counts",
                 withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
 
-    public Url getShortUrlShareStatuses(UrlShort urlShort) throws WeiboClientException {
-        return getShortUrlShareStatuses(urlShort, Paging.EMPTY);
+    public Url getShareStatuses(UrlShort urlShort) throws WeiboClientException {
+        return getShareStatuses(urlShort, Paging.EMPTY);
     }
 
-    public Url getShortUrlShareStatuses(UrlShort urlShort, Paging paging) throws WeiboClientException {
+    public Url getShareStatuses(UrlShort urlShort, Paging paging) throws WeiboClientException {
         return doGet("short_url/share/statuses",
                 paging, withParams(urlShort), Url.class);
     }
 
-    public List<Url> getShortUrlCommentCounts(Collection<UrlShort> urlList) throws WeiboClientException {
+    public List<Url> getCommentCounts(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlResponse response = doGet("short_url/comment/counts",
                 withParams(UrlShort.urlShortParam(urlList)), UrlResponse.class);
 
         return response.getUrls();
     }
 
-    public Url getShortUrlComments(UrlShort urlShort) throws WeiboClientException {
-        return getShortUrlComments(urlShort, Paging.EMPTY);
+    public Url getComments(UrlShort urlShort) throws WeiboClientException {
+        return getComments(urlShort, Paging.EMPTY);
     }
 
-    public Url getShortUrlComments(UrlShort urlShort, Paging paging) throws WeiboClientException {
+    public Url getComments(UrlShort urlShort, Paging paging) throws WeiboClientException {
         return doGet("short_url/comment/comments",
                 paging, withParams(urlShort), Url.class);
     }
 
-    public List<UrlInfo> getShortUrlInfo(Collection<UrlShort> urlList) throws WeiboClientException {
+    public List<UrlInfo> getInfo(Collection<UrlShort> urlList) throws WeiboClientException {
         UrlInfoResponse response = doGet("short_url/info",
                 withParams(UrlShort.urlShortParam(urlList)), UrlInfoResponse.class);
 

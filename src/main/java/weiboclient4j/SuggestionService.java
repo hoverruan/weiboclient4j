@@ -24,65 +24,65 @@ public class SuggestionService extends AbstractService {
         super(client);
     }
 
-    public List<User> getSuggestionUsersHot() throws WeiboClientException {
-        return getSuggestionUsersHot(SuggestionUserCategory.Default);
+    public List<User> getUsersHot() throws WeiboClientException {
+        return getUsersHot(SuggestionUserCategory.Default);
     }
 
-    public List<User> getSuggestionUsersHot(SuggestionUserCategory category) throws WeiboClientException {
+    public List<User> getUsersHot(SuggestionUserCategory category) throws WeiboClientException {
         return doGet("suggestions/users/hot",
                 withParams(category), User.TYPE_USER_LIST);
     }
 
-    // TODO: implements getSuggestionUsersMayInterested
-//    public ArrayNode getSuggestionUsersMayInterested(Paging paging) throws WeiboClientException {
+    // TODO: implements getUsersMayInterested
+//    public ArrayNode getUsersMayInterested(Paging paging) throws WeiboClientException {
 //        return doGet("suggestions/users/may_interested", paging, ArrayNode.class);
 //    }
 
-    public UserList getSuggestionUsersByStatus(Content content) throws WeiboClientException {
-        return getSuggestionUsersByStatus(content, Num.EMPTY);
+    public UserList getUsersByStatus(Content content) throws WeiboClientException {
+        return getUsersByStatus(content, Num.EMPTY);
     }
 
-    public UserList getSuggestionUsersByStatus(Content content, Num num) throws WeiboClientException {
+    public UserList getUsersByStatus(Content content, Num num) throws WeiboClientException {
         return doGet("suggestions/users/by_status",
                 withParams(content, num), UserList.class);
     }
 
-    public StatusList getSuggestionStatusesHot(SuggestionStatusType type, IsPic isPic) throws WeiboClientException {
-        return getSuggestionStatusesHot(type, isPic, Paging.EMPTY);
+    public StatusList getStatusesHot(SuggestionStatusType type, IsPic isPic) throws WeiboClientException {
+        return getStatusesHot(type, isPic, Paging.EMPTY);
     }
 
-    public StatusList getSuggestionStatusesHot(SuggestionStatusType type, IsPic isPic, Paging paging) throws WeiboClientException {
+    public StatusList getStatusesHot(SuggestionStatusType type, IsPic isPic, Paging paging) throws WeiboClientException {
         return doGet("suggestions/statuses/hot",
                 paging, withParams(type, isPic), StatusList.class);
     }
 
-    public StatusList getSuggestionStatusesReorder(Section section) throws WeiboClientException {
-        return getSuggestionStatusesReorder(section, Paging.EMPTY);
+    public StatusList getStatusesReorder(Section section) throws WeiboClientException {
+        return getStatusesReorder(section, Paging.EMPTY);
     }
 
-    public StatusList getSuggestionStatusesReorder(Section section, Paging paging) throws WeiboClientException {
+    public StatusList getStatusesReorder(Section section, Paging paging) throws WeiboClientException {
         return doGet("suggestions/statuses/reorder",
                 paging, withParams(section), StatusList.class);
     }
 
-    public StatusIdList getSuggestionStatusIdsReorder(Section section) throws WeiboClientException {
-        return getSuggestionStatusIdsReorder(section, Paging.EMPTY);
+    public StatusIdList getStatusIdsReorder(Section section) throws WeiboClientException {
+        return getStatusIdsReorder(section, Paging.EMPTY);
     }
 
-    public StatusIdList getSuggestionStatusIdsReorder(Section section, Paging paging) throws WeiboClientException {
+    public StatusIdList getStatusIdsReorder(Section section, Paging paging) throws WeiboClientException {
         return doGet("suggestions/statuses/reorder/ids",
                 paging, withParams(section), StatusIdList.class);
     }
 
-    public List<Status> getSuggestionFavoritesHot() throws WeiboClientException {
-        return getSuggestionFavoritesHot(Paging.EMPTY);
+    public List<Status> getFavoritesHot() throws WeiboClientException {
+        return getFavoritesHot(Paging.EMPTY);
     }
 
-    public List<Status> getSuggestionFavoritesHot(Paging paging) throws WeiboClientException {
+    public List<Status> getFavoritesHot(Paging paging) throws WeiboClientException {
         return doGet("suggestions/favorites/hot", paging, Status.TYPE_STATUS_LIST);
     }
 
-    public User setSuggestionUserNotInterested(Uid uid) throws WeiboClientException {
+    public User setUserNotInterested(Uid uid) throws WeiboClientException {
         return doPost("suggestions/users/not_interested",
                 withParams(uid), User.class);
     }

@@ -18,69 +18,69 @@ public class NotificationService extends AbstractService {
         super(client);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids, TemplateId templateId) throws WeiboClientException {
-        return sendNotification(uids, templateId, null);
+    public NotificationResult send(Collection<Uid> uids, TemplateId templateId) throws WeiboClientException {
+        return send(uids, templateId, null);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids, TemplateId templateId, ActionUrl actionUrl)
+    public NotificationResult send(Collection<Uid> uids, TemplateId templateId, ActionUrl actionUrl)
             throws WeiboClientException {
-        return sendNotification(uids, templateId, null, 0, actionUrl);
+        return send(uids, templateId, null, 0, actionUrl);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids,
-                                               TemplateId templateId,
-                                               final String objects1,
-                                               final int objects1Count) throws WeiboClientException {
-        return sendNotification(uids, templateId, objects1, objects1Count, null, 0);
+    public NotificationResult send(Collection<Uid> uids,
+                                   TemplateId templateId,
+                                   final String objects1,
+                                   final int objects1Count) throws WeiboClientException {
+        return send(uids, templateId, objects1, objects1Count, null, 0);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids,
-                                               TemplateId templateId,
-                                               final String objects1,
-                                               final int objects1Count,
-                                               final String objects2,
-                                               final int objects2Count) throws WeiboClientException {
-        return sendNotification(uids, templateId, objects1, objects1Count, objects2, objects2Count, null, 0);
+    public NotificationResult send(Collection<Uid> uids,
+                                   TemplateId templateId,
+                                   final String objects1,
+                                   final int objects1Count,
+                                   final String objects2,
+                                   final int objects2Count) throws WeiboClientException {
+        return send(uids, templateId, objects1, objects1Count, objects2, objects2Count, null, 0);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids,
-                                               TemplateId templateId,
-                                               final String objects1,
-                                               final int objects1Count,
-                                               final String objects2,
-                                               final int objects2Count,
-                                               final String objects3,
-                                               final int objects3Count) throws WeiboClientException {
-        return sendNotification(uids, templateId, objects1, objects1Count, objects2, objects2Count, objects3, objects3Count, ActionUrl.EMPTY);
+    public NotificationResult send(Collection<Uid> uids,
+                                   TemplateId templateId,
+                                   final String objects1,
+                                   final int objects1Count,
+                                   final String objects2,
+                                   final int objects2Count,
+                                   final String objects3,
+                                   final int objects3Count) throws WeiboClientException {
+        return send(uids, templateId, objects1, objects1Count, objects2, objects2Count, objects3, objects3Count, ActionUrl.EMPTY);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids,
-                                               TemplateId templateId,
-                                               final String objects1,
-                                               final int objects1Count,
-                                               ActionUrl actionUrl) throws WeiboClientException {
-        return sendNotification(uids, templateId, objects1, objects1Count, null, 0, actionUrl);
+    public NotificationResult send(Collection<Uid> uids,
+                                   TemplateId templateId,
+                                   final String objects1,
+                                   final int objects1Count,
+                                   ActionUrl actionUrl) throws WeiboClientException {
+        return send(uids, templateId, objects1, objects1Count, null, 0, actionUrl);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids,
-                                               TemplateId templateId,
-                                               final String objects1,
-                                               final int objects1Count,
-                                               final String objects2,
-                                               final int objects2Count,
-                                               ActionUrl actionUrl) throws WeiboClientException {
-        return sendNotification(uids, templateId, objects1, objects1Count, objects2, objects2Count, null, 0, actionUrl);
+    public NotificationResult send(Collection<Uid> uids,
+                                   TemplateId templateId,
+                                   final String objects1,
+                                   final int objects1Count,
+                                   final String objects2,
+                                   final int objects2Count,
+                                   ActionUrl actionUrl) throws WeiboClientException {
+        return send(uids, templateId, objects1, objects1Count, objects2, objects2Count, null, 0, actionUrl);
     }
 
-    public NotificationResult sendNotification(Collection<Uid> uids,
-                                               TemplateId templateId,
-                                               final String objects1,
-                                               final int objects1Count,
-                                               final String objects2,
-                                               final int objects2Count,
-                                               final String objects3,
-                                               final int objects3Count,
-                                               ActionUrl actionUrl) throws WeiboClientException {
+    public NotificationResult send(Collection<Uid> uids,
+                                   TemplateId templateId,
+                                   final String objects1,
+                                   final int objects1Count,
+                                   final String objects2,
+                                   final int objects2Count,
+                                   final String objects3,
+                                   final int objects3Count,
+                                   ActionUrl actionUrl) throws WeiboClientException {
         ParameterAction objectsParamAction = new ParameterAction() {
             public void addParameter(Parameters params) {
                 if (StringUtils.isNotBlank(objects1)) {

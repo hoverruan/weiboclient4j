@@ -89,7 +89,7 @@ public class OAuth2CommandLine {
         accessToken = new SinaWeibo2AccessToken(accessToken.getToken());
         client.setAccessToken(accessToken);
         AccountService accountService = client.getAccountService();
-        long uid = accountService.getAccountUid();
+        long uid = accountService.getUid();
         System.out.println();
         System.out.println("Got account uid: " + uid);
 
@@ -140,7 +140,7 @@ public class OAuth2CommandLine {
 
         statusService.getBilateralTimeline();
 
-        statusService.showStatus(new Id(3436240135184587L));
+        statusService.show(new Id(3436240135184587L));
 
         statusService.queryMid(new Id(3436240135184587L), MidType.Status);
 
@@ -175,18 +175,18 @@ public class OAuth2CommandLine {
 
         statusService.getStatusesCounts(idList);
 
-        Status justPostStatus = statusService.updateStatus("Update status api test");
-        Status repostStatus = statusService.repostStatus(new Id(justPostStatus.getId()), "Repost test");
+        Status justPostStatus = statusService.update("Update status api test");
+        Status repostStatus = statusService.repost(new Id(justPostStatus.getId()), "Repost test");
         System.out.println();
         System.out.println("Just post: " + writeObjectAsString(justPostStatus));
         System.out.println("Repost: " + writeObjectAsString(repostStatus));
 
-        statusService.destroyStatus(new Id(repostStatus.getId()));
+        statusService.destroy(new Id(repostStatus.getId()));
 
         // Need advanced permission
         Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
                 new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
-        statusService.destroyStatus(new Id(uploadedStatusByImageUrl.getId()));
+        statusService.destroy(new Id(uploadedStatusByImageUrl.getId()));
 
         List<Emotion> emotions = statusService.getEmotions();
         System.out.println();
@@ -210,7 +210,7 @@ public class OAuth2CommandLine {
         commentService.destroyComment(new Cid(comment.getId()));
         commentService.destroyComment(new Cid(reply.getId()));
 
-        statusService.destroyStatus(new Id(justPostStatus.getId()));
+        statusService.destroy(new Id(justPostStatus.getId()));
         commentService.destroyCommentBatch(new ArrayList<Cid>());
     }
 }

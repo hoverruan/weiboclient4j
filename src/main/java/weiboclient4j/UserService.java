@@ -18,27 +18,27 @@ public class UserService extends AbstractService {
         super(client);
     }
 
-    public User showUser(ScreenName screenName) throws WeiboClientException {
-        return showUser(Uid.EMPTY, screenName);
+    public User show(ScreenName screenName) throws WeiboClientException {
+        return show(Uid.EMPTY, screenName);
     }
 
-    public User showUser(Uid uid) throws WeiboClientException {
-        return showUser(uid, ScreenName.EMPTY);
+    public User show(Uid uid) throws WeiboClientException {
+        return show(uid, ScreenName.EMPTY);
     }
 
-    private User showUser(Uid uid, ScreenName screenName) throws WeiboClientException {
+    private User show(Uid uid, ScreenName screenName) throws WeiboClientException {
         return doGet("users/show", withParams(uid, screenName), User.class);
     }
 
-    public User showUserByDomain(Domain domain) throws WeiboClientException {
+    public User showByDomain(Domain domain) throws WeiboClientException {
         return doGet("users/domain_show", withParams(domain), User.class);
     }
 
-    public User showUserByDomain(String domain) throws WeiboClientException {
-        return showUserByDomain(new Domain(domain));
+    public User showByDomain(String domain) throws WeiboClientException {
+        return showByDomain(new Domain(domain));
     }
 
-    public List<UserCount> getUsersCounts(Collection<Uid> uids) throws WeiboClientException {
+    public List<UserCount> getCounts(Collection<Uid> uids) throws WeiboClientException {
         return doGet("users/counts", withParams(Uid.uidsParam(uids)), UserCount.LIST_TYPE);
     }
 }

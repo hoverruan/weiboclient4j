@@ -160,43 +160,43 @@ public class FriendshipService extends AbstractService {
                 paging, withParams(uid), UserList.class);
     }
 
-    public Friendship showFriendship(SourceUid sourceUid, TargetUid targetUid) throws WeiboClientException {
-        return showFriendship(sourceUid, SourceScreenName.EMPTY, targetUid, TargetScreenName.EMPTY);
+    public Friendship show(SourceUid sourceUid, TargetUid targetUid) throws WeiboClientException {
+        return show(sourceUid, SourceScreenName.EMPTY, targetUid, TargetScreenName.EMPTY);
     }
 
-    public Friendship showFriendship(SourceScreenName sourceScreenName, TargetScreenName targetScreenName)
+    public Friendship show(SourceScreenName sourceScreenName, TargetScreenName targetScreenName)
             throws WeiboClientException {
-        return showFriendship(SourceUid.EMPTY, sourceScreenName, TargetUid.EMPTY, targetScreenName);
+        return show(SourceUid.EMPTY, sourceScreenName, TargetUid.EMPTY, targetScreenName);
     }
 
-    public Friendship showFriendship(SourceUid sourceUid, SourceScreenName sourceScreenName,
-                                     TargetUid targetUid, TargetScreenName targetScreenName) throws WeiboClientException {
+    public Friendship show(SourceUid sourceUid, SourceScreenName sourceScreenName,
+                           TargetUid targetUid, TargetScreenName targetScreenName) throws WeiboClientException {
         return doGet("friendships/show",
                 withParams(sourceUid, sourceScreenName, targetUid, targetScreenName), Friendship.class);
     }
 
-    public User createFriendship(Uid uid) throws WeiboClientException {
-        return createFriendship(uid, ScreenName.EMPTY);
+    public User create(Uid uid) throws WeiboClientException {
+        return create(uid, ScreenName.EMPTY);
     }
 
-    public User createFriendship(ScreenName screenName) throws WeiboClientException {
-        return createFriendship(Uid.EMPTY, screenName);
+    public User create(ScreenName screenName) throws WeiboClientException {
+        return create(Uid.EMPTY, screenName);
     }
 
-    public User createFriendship(Uid uid, ScreenName screenName) throws WeiboClientException {
+    public User create(Uid uid, ScreenName screenName) throws WeiboClientException {
         return doPost("friendships/create",
                 withParams(uid, screenName), User.class);
     }
 
-    public User destroyFriendship(Uid uid) throws WeiboClientException {
-        return destroyFriendship(uid, ScreenName.EMPTY);
+    public User destroy(Uid uid) throws WeiboClientException {
+        return destroy(uid, ScreenName.EMPTY);
     }
 
-    public User destroyFriendship(ScreenName screenName) throws WeiboClientException {
-        return destroyFriendship(Uid.EMPTY, screenName);
+    public User destroy(ScreenName screenName) throws WeiboClientException {
+        return destroy(Uid.EMPTY, screenName);
     }
 
-    public User destroyFriendship(Uid uid, ScreenName screenName) throws WeiboClientException {
+    public User destroy(Uid uid, ScreenName screenName) throws WeiboClientException {
         return doPost("friendships/destroy",
                 withParams(uid, screenName), User.class);
     }

@@ -15,7 +15,7 @@ public class RemindService extends AbstractService {
     public UnreadCount getUnreadCount() throws WeiboClientException {
         AccountService accountService = client.getAccountService();
 
-        Uid uid = new Uid(accountService.getAccountUid());
+        Uid uid = new Uid(accountService.getUid());
         return getUnreadCount(uid);
     }
 

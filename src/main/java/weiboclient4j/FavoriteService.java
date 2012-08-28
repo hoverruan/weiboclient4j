@@ -28,15 +28,15 @@ public class FavoriteService extends AbstractService {
         return doGet("favorites", paging, Favorites.class);
     }
 
-    public FavoritesIds getFavoritesIds() throws WeiboClientException {
-        return getFavoritesIds(Paging.EMPTY);
+    public FavoritesIds getIds() throws WeiboClientException {
+        return getIds(Paging.EMPTY);
     }
 
-    public FavoritesIds getFavoritesIds(Paging paging) throws WeiboClientException {
+    public FavoritesIds getIds(Paging paging) throws WeiboClientException {
         return doGet("favorites/ids", paging, FavoritesIds.class);
     }
 
-    public FavoritesItem showFavorites(Id id) throws WeiboClientException {
+    public FavoritesItem show(Id id) throws WeiboClientException {
         return doGet("favorites/show", withParams(id), FavoritesItem.class);
     }
 
@@ -48,52 +48,52 @@ public class FavoriteService extends AbstractService {
         return doGet("favorites/by_tags", paging, withParams(tid), Favorites.class);
     }
 
-    public FavoritesTags getFavoritesTags() throws WeiboClientException {
-        return getFavoritesTags(Paging.EMPTY);
+    public FavoritesTags getTags() throws WeiboClientException {
+        return getTags(Paging.EMPTY);
     }
 
-    public FavoritesTags getFavoritesTags(Paging paging) throws WeiboClientException {
+    public FavoritesTags getTags(Paging paging) throws WeiboClientException {
         return doGet("favorites/tags", paging, FavoritesTags.class);
     }
 
-    public FavoritesIds getFavoritesIdsByTags(Tid tid) throws WeiboClientException {
-        return getFavoritesIdsByTags(tid, Paging.EMPTY);
+    public FavoritesIds getIdsByTags(Tid tid) throws WeiboClientException {
+        return getIdsByTags(tid, Paging.EMPTY);
     }
 
-    public FavoritesIds getFavoritesIdsByTags(Tid tid, Paging paging) throws WeiboClientException {
+    public FavoritesIds getIdsByTags(Tid tid, Paging paging) throws WeiboClientException {
         return doGet("favorites/by_tags/ids", paging, withParams(tid), FavoritesIds.class);
     }
 
-    public FavoritesItem createFavorites(Id id) throws WeiboClientException {
+    public FavoritesItem create(Id id) throws WeiboClientException {
         return doPost("favorites/create", withParams(id), FavoritesItem.class);
     }
 
-    public FavoritesItem destroyFavorites(Id id) throws WeiboClientException {
+    public FavoritesItem destroy(Id id) throws WeiboClientException {
         return doPost("favorites/destroy", withParams(id), FavoritesItem.class);
     }
 
-    public boolean destroyFavoritesBatch(Collection<Id> ids) throws WeiboClientException {
+    public boolean destroyBatch(Collection<Id> ids) throws WeiboClientException {
         ResultResponse response = doPost("favorites/destroy_batch",
                 withParams(Id.idsParam(ids)), ResultResponse.class);
 
         return response.isResult();
     }
 
-    public FavoritesItem updateFavoritesTags(Id id) throws WeiboClientException {
-        return updateFavoritesTags(id, null);
+    public FavoritesItem updateTags(Id id) throws WeiboClientException {
+        return updateTags(id, null);
     }
 
-    public FavoritesItem updateFavoritesTags(Id id, Collection<TagName> tags) throws WeiboClientException {
+    public FavoritesItem updateTags(Id id, Collection<TagName> tags) throws WeiboClientException {
         return doPost("favorites/tags/update",
                 withParams(id, TagName.tagsParam(tags)), FavoritesItem.class);
     }
 
-    public Tag updateFavoritesTagsBatch(Tid tid, TagName tagName) throws WeiboClientException {
+    public Tag updateTagsBatch(Tid tid, TagName tagName) throws WeiboClientException {
         return doPost("favorites/tags/update_batch",
                 withParams(tid, tagName), Tag.class);
     }
 
-    public boolean destroyFavoritesTagsBatch(Tid tid) throws WeiboClientException {
+    public boolean destroyTagsBatch(Tid tid) throws WeiboClientException {
         ResultResponse response = doPost("favorites/tags/destroy_batch",
                 withParams(tid), ResultResponse.class);
         return response.isResult();

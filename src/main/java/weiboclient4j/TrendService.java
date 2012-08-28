@@ -25,50 +25,50 @@ public class TrendService extends AbstractService {
                 paging, withParams(uid), Trend.TYPE_TREND_LIST);
     }
 
-    public TrendStatus getTrendStatus(TrendName trendName) throws WeiboClientException {
+    public TrendStatus getStatus(TrendName trendName) throws WeiboClientException {
         return doGet("trends/is_follow",
                 withParams(trendName), TrendStatus.class);
     }
 
-    public GlobalTrendList getTrendsHourly() throws WeiboClientException {
-        return getTrendsHourly(BaseApp.No);
+    public GlobalTrendList getHourly() throws WeiboClientException {
+        return getHourly(BaseApp.No);
     }
 
-    public GlobalTrendList getTrendsHourly(BaseApp baseApp) throws WeiboClientException {
+    public GlobalTrendList getHourly(BaseApp baseApp) throws WeiboClientException {
         JsonNode json = doGet("trends/hourly",
                 withParams(baseApp), JsonNode.class);
 
         return new GlobalTrendList(json);
     }
 
-    public GlobalTrendList getTrendsDaily() throws WeiboClientException {
-        return getTrendsDaily(BaseApp.No);
+    public GlobalTrendList getDaily() throws WeiboClientException {
+        return getDaily(BaseApp.No);
     }
 
-    public GlobalTrendList getTrendsDaily(BaseApp baseApp) throws WeiboClientException {
+    public GlobalTrendList getDaily(BaseApp baseApp) throws WeiboClientException {
         JsonNode json = doGet("trends/daily", withParams(baseApp), JsonNode.class);
 
         return new GlobalTrendList(json);
     }
 
-    public GlobalTrendList getTrendsWeekly() throws WeiboClientException {
-        return getTrendsWeekly(BaseApp.No);
+    public GlobalTrendList getWeekly() throws WeiboClientException {
+        return getWeekly(BaseApp.No);
     }
 
-    public GlobalTrendList getTrendsWeekly(BaseApp baseApp) throws WeiboClientException {
+    public GlobalTrendList getWeekly(BaseApp baseApp) throws WeiboClientException {
         JsonNode json = doGet("trends/weekly", withParams(baseApp), JsonNode.class);
 
         return new GlobalTrendList(json);
     }
 
-    public long followTrend(TrendName trendName) throws WeiboClientException {
+    public long follow(TrendName trendName) throws WeiboClientException {
         FollowTrendResponse response = doPost("trends/follow",
                 withParams(trendName), FollowTrendResponse.class);
 
         return response.getTopicid();
     }
 
-    public boolean destroyTrend(TrendId trendId) throws WeiboClientException {
+    public boolean destroy(TrendId trendId) throws WeiboClientException {
         ResultResponse response = doPost("trends/destroy",
                 withParams(trendId), ResultResponse.class);
 

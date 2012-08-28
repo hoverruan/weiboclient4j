@@ -370,7 +370,7 @@ public class StatusService extends AbstractService {
                 paging, withParams(baseApp, feature), Timeline.class);
     }
 
-    public Status showStatus(Id id) throws WeiboClientException {
+    public Status show(Id id) throws WeiboClientException {
         return doGet("statuses/show", withParams(id), Status.class);
     }
 
@@ -490,31 +490,31 @@ public class StatusService extends AbstractService {
                 withParams(Id.idsParam(ids)), Count.TYPE_COUNT_LIST);
     }
 
-    public Status repostStatus(Id id, String status) throws WeiboClientException {
-        return repostStatus(id, status, IsComment.No);
+    public Status repost(Id id, String status) throws WeiboClientException {
+        return repost(id, status, IsComment.No);
     }
 
-    public Status repostStatus(Id id, String status, IsComment isComment) throws WeiboClientException {
-        return repostStatus(id, new StatusParam(status), isComment);
+    public Status repost(Id id, String status, IsComment isComment) throws WeiboClientException {
+        return repost(id, new StatusParam(status), isComment);
     }
 
-    public Status repostStatus(Id id, StatusParam status, IsComment isComment) throws WeiboClientException {
+    public Status repost(Id id, StatusParam status, IsComment isComment) throws WeiboClientException {
         return doPost("statuses/repost", withParams(id, status, isComment), Status.class);
     }
 
-    public Status updateStatus(String status) throws WeiboClientException {
-        return updateStatus(status, null, null);
+    public Status update(String status) throws WeiboClientException {
+        return update(status, null, null);
     }
 
-    public Status updateStatus(String status, Latitude latitude, Longitude longitude) throws WeiboClientException {
-        return updateStatus(new StatusParam(status), latitude, longitude);
+    public Status update(String status, Latitude latitude, Longitude longitude) throws WeiboClientException {
+        return update(new StatusParam(status), latitude, longitude);
     }
 
-    public Status updateStatus(StatusParam status, Latitude latitude, Longitude longitude) throws WeiboClientException {
+    public Status update(StatusParam status, Latitude latitude, Longitude longitude) throws WeiboClientException {
         return doPost("statuses/update", withParams(status, latitude, longitude), Status.class);
     }
 
-    public Status destroyStatus(Id id) throws WeiboClientException {
+    public Status destroy(Id id) throws WeiboClientException {
         return doPost("statuses/destroy", withParams(id), Status.class);
     }
 

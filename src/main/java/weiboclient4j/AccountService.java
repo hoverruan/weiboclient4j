@@ -15,7 +15,7 @@ public class AccountService extends AbstractService {
         super(client);
     }
 
-    public long getAccountUid() throws WeiboClientException {
+    public long getUid() throws WeiboClientException {
         AccountUid accountUid = doGet("account/get_uid", AccountUid.class);
 
         return accountUid.getUid();
