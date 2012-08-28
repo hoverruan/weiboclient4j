@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 /**
  * @author Hover Ruan
  */
+@Deprecated
 public class WeiboClient {
     private static final Logger log = Logger.getLogger("weibo_client");
 

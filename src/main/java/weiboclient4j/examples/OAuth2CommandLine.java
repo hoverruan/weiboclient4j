@@ -1,5 +1,8 @@
 package weiboclient4j.examples;
 
+import weiboclient4j.AccountService;
+import weiboclient4j.CommentService;
+import weiboclient4j.StatusService;
 import weiboclient4j.WeiboClient2;
 import weiboclient4j.model.Comment;
 import weiboclient4j.model.CommentList;
@@ -85,126 +88,129 @@ public class OAuth2CommandLine {
 
         accessToken = new SinaWeibo2AccessToken(accessToken.getToken());
         client.setAccessToken(accessToken);
-        long uid = client.getAccountUid();
+        AccountService accountService = client.getAccountService();
+        long uid = accountService.getAccountUid();
         System.out.println();
         System.out.println("Got account uid: " + uid);
 
-        Timeline publicTimeline = client.getPublicTimeline();
+        StatusService statusService = client.getStatusService();
+        Timeline publicTimeline = statusService.getPublicTimeline();
         System.out.println();
         System.out.println("Public timeline: " + writeObjectAsString(publicTimeline));
 
-        Timeline friendsTimeline = client.getFriendsTimeline();
+        Timeline friendsTimeline = statusService.getFriendsTimeline();
         System.out.println();
         System.out.println("Friends timeline: " + writeObjectAsString(friendsTimeline));
 
-        Timeline homeTimeline = client.getHomeTimeline();
+        Timeline homeTimeline = statusService.getHomeTimeline();
         System.out.println();
         System.out.println("Home timeline: " + writeObjectAsString(homeTimeline));
 
-        TimelineIds friendsTimelineIds = client.getFriendsTimelineIds();
+        TimelineIds friendsTimelineIds = statusService.getFriendsTimelineIds();
         System.out.println();
         System.out.println("Friends timeline ids: " + writeObjectAsString(friendsTimelineIds));
 
-        Timeline userTimeline = client.getUserTimeline();
+        Timeline userTimeline = statusService.getUserTimeline();
         System.out.println();
         System.out.println("User timeline: " + writeObjectAsString(userTimeline));
 
-        Timeline userTimelineTrimUser = client.getUserTimeline(TrimUser.No);
+        Timeline userTimelineTrimUser = statusService.getUserTimeline(TrimUser.No);
         System.out.println();
         System.out.println("User timeline that trim user: " + writeObjectAsString(userTimelineTrimUser));
 
-        client.getUserTimeline(ScreenName.EMPTY);
-        client.getUserTimeline(Uid.EMPTY);
-        client.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
+        statusService.getUserTimeline(ScreenName.EMPTY);
+        statusService.getUserTimeline(Uid.EMPTY);
+        statusService.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
 
-        Timeline userTimelineFor1834561765 = client.getUserTimeline(new Uid(1834561765L), null, null, BaseApp.No, Feature.All, TrimUser.No);
+        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(new Uid(1834561765L), null, null, BaseApp.No, Feature.All, TrimUser.No);
         System.out.println();
         System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
 
-        client.getUserTimelineIds(ScreenName.EMPTY);
-        client.getUserTimelineIds(Uid.EMPTY);
-        client.getUserTimelineIds();
+        statusService.getUserTimelineIds(ScreenName.EMPTY);
+        statusService.getUserTimelineIds(Uid.EMPTY);
+        statusService.getUserTimelineIds();
 
-        client.getRepostTimeline(new Id(3436240135184587L));
-        client.getRepostTimelineIds(new Id(3436240135184587L));
+        statusService.getRepostTimeline(new Id(3436240135184587L));
+        statusService.getRepostTimelineIds(new Id(3436240135184587L));
 
-        client.getRepostByMe();
+        statusService.getRepostByMe();
 
-        client.getMentions();
-        client.getMentionsIds();
+        statusService.getMentions();
+        statusService.getMentionsIds();
 
-        client.getBilateralTimeline();
+        statusService.getBilateralTimeline();
 
-        client.showStatus(new Id(3436240135184587L));
+        statusService.showStatus(new Id(3436240135184587L));
 
-        client.queryMid(new Id(3436240135184587L), MidType.Status);
+        statusService.queryMid(new Id(3436240135184587L), MidType.Status);
 
         List<Id> idList = new ArrayList<Id>(2);
         idList.add(new Id(3436240135184587L));
         idList.add(new Id(3436255091659029L));
-        Map<Long, String> midMap = client.queryMidList(idList, MidType.Status);
+        Map<Long, String> midMap = statusService.queryMidList(idList, MidType.Status);
         System.out.println();
         System.out.println("Mid " + 3436240135184587L + "=" + midMap.get(3436240135184587L) + ", " +
                 3436255091659029L + "=" + midMap.get(3436255091659029L));
 
-        client.queryId(new Mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
+        statusService.queryId(new Mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
 
         List<Mid> midList = new ArrayList<Mid>(2);
         midList.add(new Mid("yfcLPlKKn"));
         midList.add(new Mid("yfd9X6XAx"));
 
-        Map<String, Long> idMap = client.queryIdList(midList, MidType.Message, IsBase62.Yes);
+        Map<String, Long> idMap = statusService.queryIdList(midList, MidType.Message, IsBase62.Yes);
         System.out.println();
         System.out.println("Id yfcLPlKKn=" + idMap.get("yfcLPlKKn") + ", yfd9X6XAx=" + idMap.get("yfd9X6XAx"));
 
-        List<Status> hotRepostDaily = client.getHotRepostDaily();
+        List<Status> hotRepostDaily = statusService.getHotRepostDaily();
         System.out.println();
         System.out.println("Hot repost daily: " + writeObjectAsString(hotRepostDaily));
 
-        List<Status> hotRepostWeekly = client.getHotRepostWeekly();
+        List<Status> hotRepostWeekly = statusService.getHotRepostWeekly();
         System.out.println();
         System.out.println("Hot report weekly: " + writeObjectAsString(hotRepostWeekly));
 
-        client.getHotCommentsDaily();
-        client.getHotCommentsWeekly();
+        statusService.getHotCommentsDaily();
+        statusService.getHotCommentsWeekly();
 
-        client.getStatusesCounts(idList);
+        statusService.getStatusesCounts(idList);
 
-        Status justPostStatus = client.updateStatus("Update status api test");
-        Status repostStatus = client.repostStatus(new Id(justPostStatus.getId()), "Repost test");
+        Status justPostStatus = statusService.updateStatus("Update status api test");
+        Status repostStatus = statusService.repostStatus(new Id(justPostStatus.getId()), "Repost test");
         System.out.println();
         System.out.println("Just post: " + writeObjectAsString(justPostStatus));
         System.out.println("Repost: " + writeObjectAsString(repostStatus));
 
-        client.destroyStatus(new Id(repostStatus.getId()));
+        statusService.destroyStatus(new Id(repostStatus.getId()));
 
         // Need advanced permission
-        Status uploadedStatusByImageUrl = client.uploadImageUrl("Post image test",
+        Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
                 new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
-        client.destroyStatus(new Id(uploadedStatusByImageUrl.getId()));
+        statusService.destroyStatus(new Id(uploadedStatusByImageUrl.getId()));
 
-        List<Emotion> emotions = client.getEmotions();
+        List<Emotion> emotions = statusService.getEmotions();
         System.out.println();
         System.out.println("Emotions: " + writeObjectAsString(emotions));
 
-        client.getComments(new Id(3436240135184587L));
-        CommentList commentsByMe = client.getCommentsByMe();
+        CommentService commentService = client.getCommentService();
+        commentService.getComments(new Id(3436240135184587L));
+        CommentList commentsByMe = commentService.getCommentsByMe();
         long firstCommentId = commentsByMe.getComments().get(0).getId();
 
-        client.getCommentsToMe();
-        client.getCommentsTimeline();
-        client.getMentionsComments();
+        commentService.getCommentsToMe();
+        commentService.getCommentsTimeline();
+        commentService.getMentionsComments();
 
         ArrayList<Cid> batchCids = new ArrayList<Cid>();
         batchCids.add(new Cid(firstCommentId));
-        client.getCommentsBatch(batchCids);
+        commentService.getCommentsBatch(batchCids);
 
-        Comment comment = client.createComment(new Id(justPostStatus.getId()), "Create comment test");
-        Comment reply = client.replyComment(new Id(justPostStatus.getCommentsCount()), new Cid(comment.getId()), "Reply test");
-        client.destroyComment(new Cid(comment.getId()));
-        client.destroyComment(new Cid(reply.getId()));
+        Comment comment = commentService.createComment(new Id(justPostStatus.getId()), "Create comment test");
+        Comment reply = commentService.replyComment(new Id(justPostStatus.getCommentsCount()), new Cid(comment.getId()), "Reply test");
+        commentService.destroyComment(new Cid(comment.getId()));
+        commentService.destroyComment(new Cid(reply.getId()));
 
-        client.destroyStatus(new Id(justPostStatus.getId()));
-        client.destroyCommentBatch(new ArrayList<Cid>());
+        statusService.destroyStatus(new Id(justPostStatus.getId()));
+        commentService.destroyCommentBatch(new ArrayList<Cid>());
     }
 }
