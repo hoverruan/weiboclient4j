@@ -48,7 +48,8 @@ OAuth2例子：
 获取用户Timeline例子：
 
     client.setAccessToken(new SinaWeibo2AccessToken("..."));
-    Timeline friendsTimeline = client.getFriendsTimeline();
+    StatusService service = client.getStatusService();
+    Timeline friendsTimeline = service.getFriendsTimeline();
 
 更多的使用例子可以参考 `weiboclient4j.examples.OAuth2CommandLine`
 
@@ -63,12 +64,13 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 
 所有的参数对象在 `package weiboclient4j.params` 下面；举一个例子：
 
+    FriendshipService service = client.getFriendshipService();
     Friendship friendship;
 
-    friendship = client.getFriendship(new SourceUid(12345), new TargetUid(67890));
+    friendship = service.getFriendship(new SourceUid(12345), new TargetUid(67890));
 
     // 或者
-    friendship = client.getFriendship(new SourceScreenName("xxx"), new TargetScreenName("yyy"));
+    friendship = service.getFriendship(new SourceScreenName("xxx"), new TargetScreenName("yyy"));
 
 分页对象 Paging
 ---
@@ -79,7 +81,7 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
             .sinceId(12345)
             .count(25);
 
-    Timeline timeline = client.getFriendsTimeline(paging, BaseApp.No, Feature.All); // 后两个参数可省略
+    Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All); // 后两个参数可省略
 
 新浪微博API V2支持情况
 ---
@@ -87,23 +89,23 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 [API文档 V2](http://open.weibo.com/wiki/API%E6%96%87%E6%A1%A3_V2)
 
 <table>
-<tr><td>微博接口</td><td>完成</td></tr>
-<tr><td>评论接口</td><td>完成</td></tr>
-<tr><td>用户接口</td><td>完成</td></tr>
-<tr><td>关系接口</td><td>完成</td></tr>
-<tr><td>帐号接口</td><td>完成</td></tr>
-<tr><td>收藏接口</td><td>完成</td></tr>
-<tr><td>话题接口</td><td>完成</td></tr>
-<tr><td>标签接口</td><td>完成</td></tr>
-<tr><td>注册接口</td><td>完成</td></tr>
-<tr><td>搜索接口</td><td>完成</td></tr>
-<tr><td>推荐接口</td><td>施工中</td></tr>
-<tr><td>提醒接口</td><td>完成</td></tr>
-<tr><td>短链接口</td><td>完成</td></tr>
-<tr><td>通知接口</td><td>完成</td></tr>
-<tr><td>公共服务接口</td><td>完成</td></tr>
-<tr><td>位置服务接口</td><td> </td></tr>
-<tr><td>地理信息接口</td><td> </td></tr>
+<tr><td>微博接口</td><td>StatusService</td><td>完成</td></tr>
+<tr><td>评论接口</td><td>CommentService</td><td>完成</td></tr>
+<tr><td>用户接口</td><td>UserService</td><td>完成</td></tr>
+<tr><td>关系接口</td><td>FriendshipService</td><td>完成</td></tr>
+<tr><td>帐号接口</td><td>AccountService</td><td>完成</td></tr>
+<tr><td>收藏接口</td><td>FavoriteService</td><td>完成</td></tr>
+<tr><td>话题接口</td><td>TrendService</td><td>完成</td></tr>
+<tr><td>标签接口</td><td>TagService</td><td>完成</td></tr>
+<tr><td>注册接口</td><td>RegisterService</td><td>完成</td></tr>
+<tr><td>搜索接口</td><td>SearchService</td><td>完成</td></tr>
+<tr><td>推荐接口</td><td>SuggestionService</td><td>施工中</td></tr>
+<tr><td>提醒接口</td><td>RemindService</td><td>完成</td></tr>
+<tr><td>短链接口</td><td>ShortUrlService</td><td>完成</td></tr>
+<tr><td>通知接口</td><td>NotificationService</td><td>完成</td></tr>
+<tr><td>公共服务接口</td><td>CommonService</td><td>完成</td></tr>
+<tr><td>位置服务接口</td><td>PlaceService</td><td> </td></tr>
+<tr><td>地理信息接口</td><td>LocationService</td><td> </td></tr>
 </table>
 
 反馈
