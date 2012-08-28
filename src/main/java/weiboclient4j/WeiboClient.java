@@ -29,6 +29,7 @@ import weiboclient4j.params.LanguageV1;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.StatusType;
+import weiboclient4j.params.UserCategory;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import static weiboclient4j.utils.JsonUtils.readValue;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
