@@ -2,40 +2,14 @@ package weiboclient4j;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
-import weiboclient4j.model.Count;
-import weiboclient4j.model.Emotion;
-import weiboclient4j.model.IdResponse;
-import weiboclient4j.model.MidResponse;
-import weiboclient4j.model.RepostTimeline;
-import weiboclient4j.model.Status;
-import weiboclient4j.model.Timeline;
-import weiboclient4j.model.TimelineIds;
-import weiboclient4j.params.BaseApp;
-import weiboclient4j.params.Feature;
-import weiboclient4j.params.FilterByAuthor;
-import weiboclient4j.params.FilterBySource;
-import weiboclient4j.params.FilterByType;
-import weiboclient4j.params.Id;
-import weiboclient4j.params.InboxType;
-import weiboclient4j.params.IsBase62;
-import weiboclient4j.params.IsBatch;
-import weiboclient4j.params.IsComment;
-import weiboclient4j.params.Latitude;
-import weiboclient4j.params.Longitude;
-import weiboclient4j.params.Mid;
-import weiboclient4j.params.MidType;
-import weiboclient4j.params.Paging;
-import weiboclient4j.params.ScreenName;
-import weiboclient4j.params.StatusParam;
-import weiboclient4j.params.TrimUser;
-import weiboclient4j.params.Uid;
+import org.scribe.model.OAuthRequest;
+import weiboclient4j.model.*;
+import weiboclient4j.params.*;
+import weiboclient4j.utils.StreamUtils;
 
+import java.io.*;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Status API
@@ -531,10 +505,81 @@ public class StatusService extends AbstractService {
                 withParams(status, urlParam(url), latitude, longitude), Status.class);
     }
 
-//    TODO implements update binary image
-//    public Status uploadImageBinary() {
-//
-//    }
+    public Status uploadImageBinary(StatusParam status, Visible visible, ListId listId, File image, Latitude latitude,
+                                    Longitude longitude) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/upload");
+        Parameters params = withParams(status, visible, listId, latitude, longitude);
+
+        try {
+            buildUploadRequest(request, image, params);
+        } catch (IOException e) {
+            throw new WeiboClientException(e);
+        }
+
+        return sendRequestAndGetResponseObject(request, Status.class);
+    }
+
+    private void buildUploadRequest(OAuthRequest request, File imageFile, Parameters params) throws IOException {
+        String boundary = "----weiboclient4j-upload" + System.currentTimeMillis();
+        request.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+        boundary = "--" + boundary;
+
+        ByteArrayOutputStream baos = null;
+        OutputStream os = null;
+        DataOutputStream dos = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            os = new BufferedOutputStream(baos);
+            dos = new DataOutputStream(os);
+
+            StreamUtils.StreamWriter writer = StreamUtils.newStreamWriter(dos)
+                    .writeLine(boundary)
+                    .writeLine("Content-Disposition: form-data; name=\"pic\"; filename=\"" + imageFile.getName() +"\"")
+                    .writeLine("Content-Type: " + getContentTypeFromImage(imageFile))
+                    .writeLine()
+                    .writeFile(imageFile);
+
+            for (Parameters.Parameter param : params.getParameterList()) {
+                writer.writeLine(boundary)
+                        .writeLine("Content-Disposition: form-data; name=\"" + param.getKey() + "\"")
+                        .writeLine("Content-Type: text/plain; charset=UTF-8")
+                        .writeLine()
+                        .writeLine(param.getValue().getBytes("UTF-8"));
+            }
+
+            writer.writeLine(boundary + "--")
+                    .writeLine();
+
+            dos.flush();
+
+            byte[] bodyContent = baos.toByteArray();
+
+            System.out.println(new String(bodyContent));
+
+            request.addPayload(bodyContent);
+        } finally {
+            StreamUtils.close(dos);
+            StreamUtils.close(os);
+            StreamUtils.close(baos);
+        }
+    }
+
+    private String getContentTypeFromImage(File imageFile) {
+        String contentType = "image/jpeg";
+
+        String fileName = imageFile.getName();
+
+        if (fileName != null) {
+            String lowerCaseFileName = fileName.toLowerCase();
+            if (lowerCaseFileName.endsWith(".gif")) {
+                contentType = "image/gif";
+            } else if (lowerCaseFileName.endsWith(".png")) {
+                contentType = "image/png";
+            }
+        }
+
+        return contentType;
+    }
 
     public List<Emotion> getEmotions() throws WeiboClientException {
         return doGet("emotions", Emotion.TYPE_EMOTION_LIST);

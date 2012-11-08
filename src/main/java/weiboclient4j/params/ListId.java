@@ -3,12 +3,13 @@ package weiboclient4j.params;
 /**
  * @author Hover Ruan
  */
-public class StatusParam extends StringParam {
-    public StatusParam(String value) {
+public class ListId extends StringParam {
+    public ListId(String value) {
         super(value);
     }
 
+    @Override
     protected String paramKey() {
-        return "status";
+        return "list_id";
     }
 }
