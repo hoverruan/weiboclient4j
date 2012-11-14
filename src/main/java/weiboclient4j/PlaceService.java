@@ -2,6 +2,7 @@ package weiboclient4j;
 
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
+import weiboclient4j.model.UserLBS;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.EndTime;
 import weiboclient4j.params.FriendshipType;
@@ -112,5 +113,13 @@ public class PlaceService extends AbstractService {
 
     public Status showStatus(Id id) throws WeiboClientException {
         return doGet("place/statuses/show", withParams(id), Status.class);
+    }
+
+    public UserLBS showUser(Uid uid) throws WeiboClientException {
+        return showUser(uid, BaseApp.No);
+    }
+
+    public UserLBS showUser(Uid uid, BaseApp baseApp) throws WeiboClientException {
+        return doGet("place/users/show", withParams(uid, baseApp), UserLBS.class);
     }
 }
