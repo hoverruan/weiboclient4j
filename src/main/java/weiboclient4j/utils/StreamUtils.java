@@ -1,6 +1,12 @@
 package weiboclient4j.utils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author Hover Ruan
@@ -46,7 +52,10 @@ public class StreamUtils {
         }
 
         public StreamWriter writeLine(byte[] content) throws IOException {
-            stream.write(content);
+            if (content != null) {
+                stream.write(content);
+            }
+
             stream.writeBytes(CRLF);
 
             return this;

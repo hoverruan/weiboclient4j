@@ -12,7 +12,6 @@ import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
-import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -23,12 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static weiboclient4j.utils.JsonUtils.parseJsonObject;
+
 /**
  * @author Hover Ruan
  */
 public class AbstractService {
     public static final String API2_URL = "https://api.weibo.com/2/";
-    public static final String ACCESS_TOKEN = "access_token";
 
     protected WeiboClient2 client;
     private SinaWeibo2AccessToken accessToken;
@@ -178,23 +178,17 @@ public class AbstractService {
     }
 
     public OAuthRequest createGetRequest(String path) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, getFullPath(path));
-        setRequestTimeout(request);
-
-        if (accessToken != null) {
-            request.addQuerystringParameter(ACCESS_TOKEN, accessToken.getToken());
-        }
-
-        return request;
+        return createRequest(Verb.GET, path);
     }
 
     public OAuthRequest createPostRequest(String path) {
-        OAuthRequest request = new OAuthRequest(Verb.POST, getFullPath(path));
-        setRequestTimeout(request);
+        return createRequest(Verb.POST, path);
+    }
 
-        if (accessToken != null) {
-            request.addBodyParameter(ACCESS_TOKEN, accessToken.getToken());
-        }
+    private OAuthRequest createRequest(Verb verb, String path) {
+        OAuthRequest request = new OAuthRequest(verb, getFullPath(path));
+        setRequestTimeout(request);
+        setRequestAccessToken(request);
 
         return request;
     }
@@ -202,6 +196,12 @@ public class AbstractService {
     private void setRequestTimeout(OAuthRequest request) {
         request.setConnectTimeout(connectTimeoutDuration, connectTimeoutUnit);
         request.setReadTimeout(readTimeoutDuration, readTimeoutUnit);
+    }
+
+    private void setRequestAccessToken(OAuthRequest request) {
+        if (accessToken != null) {
+            request.addHeader("Authorization", "OAuth2 " + accessToken.getToken());
+        }
     }
 
     public String getFullPath(String path) {

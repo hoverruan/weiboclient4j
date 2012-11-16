@@ -25,9 +25,6 @@ import weiboclient4j.params.Paging;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
-import static weiboclient4j.utils.JsonUtils.writeObjectAsString;
-import static weiboclient4j.utils.StringUtils.isBlank;
-import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,6 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
+
+import static weiboclient4j.utils.JsonUtils.writeObjectAsString;
+import static weiboclient4j.utils.StringUtils.isBlank;
+import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 /**
  * @author Hover Ruan
@@ -88,12 +89,13 @@ public class OAuth2CommandLine {
 
         accessToken = new SinaWeibo2AccessToken(accessToken.getToken());
         client.setAccessToken(accessToken);
+        StatusService statusService = client.getStatusService();
+
         AccountService accountService = client.getAccountService();
         long uid = accountService.getUid();
         System.out.println();
         System.out.println("Got account uid: " + uid);
 
-        StatusService statusService = client.getStatusService();
         Timeline publicTimeline = statusService.getPublicTimeline();
         System.out.println();
         System.out.println("Public timeline: " + writeObjectAsString(publicTimeline));
