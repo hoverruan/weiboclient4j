@@ -99,7 +99,7 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 <tr><td>标签接口</td><td>TagService</td><td>完成</td></tr>
 <tr><td>注册接口</td><td>RegisterService</td><td>完成</td></tr>
 <tr><td>搜索接口</td><td>SearchService</td><td>完成</td></tr>
-<tr><td>推荐接口</td><td>SuggestionService</td><td>施工中</td></tr>
+<tr><td>推荐接口</td><td>SuggestionService</td><td>完成</td></tr>
 <tr><td>提醒接口</td><td>RemindService</td><td>完成</td></tr>
 <tr><td>短链接口</td><td>ShortUrlService</td><td>完成</td></tr>
 <tr><td>通知接口</td><td>NotificationService</td><td>完成</td></tr>
