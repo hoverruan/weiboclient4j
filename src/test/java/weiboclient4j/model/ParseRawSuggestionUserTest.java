@@ -29,7 +29,7 @@ public class ParseRawSuggestionUserTest extends AbstractParseJsonTest {
         assertThat(rawUser0.getUid(), is(FIRST_UID));
 
         RawSuggestionUser.Reason.Item item0 = rawUser0.getReason().getF();
-        assertThat(item0.getN(), is(2));
+        assertThat("item0.getN()", item0.getN(), is(2));
         assertThat(item0.getUid(), hasItem(1919667517L));
         assertThat(item0.getUid(), hasItem(1710369261L));
 
@@ -42,7 +42,7 @@ public class ParseRawSuggestionUserTest extends AbstractParseJsonTest {
 
         SuggestionUser.Reason reason0ForUser0 = user0.getReasonList().get(0);
         assertThat(reason0ForUser0.getType(), is(SuggestionUser.ReasonType.F));
-        assertThat(reason0ForUser0.getNumOfRelationship(), is(2));
+        assertThat("reason0ForUser0.getNumOfRelationship()", reason0ForUser0.getNumOfRelationship(), is(2));
 
         SuggestionUser user6 = suggestionUsers.get(6);
         assertThat(user6.getReasonList().size(), is(2));

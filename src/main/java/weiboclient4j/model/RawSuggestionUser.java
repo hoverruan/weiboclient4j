@@ -36,7 +36,6 @@ public class RawSuggestionUser {
     public static class Reason {
         private Item f;
         private Item h;
-        private Item n;
         private Item c;
         private Item s;
         private Item t;
@@ -71,14 +70,6 @@ public class RawSuggestionUser {
 
         public void setH(Item h) {
             this.h = h;
-        }
-
-        public Item getN() {
-            return n;
-        }
-
-        public void setN(Item n) {
-            this.n = n;
         }
 
         public Item getC() {
