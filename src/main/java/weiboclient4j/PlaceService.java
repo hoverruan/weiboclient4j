@@ -172,4 +172,20 @@ public class PlaceService extends AbstractService {
     public StatusList getUserTips(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
         return doGet("place/users/tips", paging, withParams(uid, baseApp), StatusList.class);
     }
+
+    public StatusList getUserTodos(Uid uid) throws WeiboClientException {
+        return getUserTodos(uid, Paging.EMPTY);
+    }
+
+    public StatusList getUserTodos(Uid uid, BaseApp baseApp) throws WeiboClientException {
+        return getUserTodos(uid, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getUserTodos(Uid uid, Paging paging) throws WeiboClientException {
+        return getUserTodos(uid, BaseApp.No, paging);
+    }
+
+    public StatusList getUserTodos(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
+        return doGet("place/users/todos", paging, withParams(uid, baseApp), StatusList.class);
+    }
 }
