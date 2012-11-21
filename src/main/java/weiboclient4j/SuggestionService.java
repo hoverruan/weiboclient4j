@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import weiboclient4j.model.RawSuggestionUser;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.StatusIdList;
 import weiboclient4j.model.StatusList;
@@ -39,7 +40,8 @@ public class SuggestionService extends AbstractService {
     }
 
     public List<SuggestionUser> getUsersMayInterested(Paging paging) throws WeiboClientException {
-        return doGet("suggestions/users/may_interested", paging, SuggestionUser.TYPE_SUGGESTION_USER_LIST);
+        List<RawSuggestionUser> rawSuggestionUsers = doGet("suggestions/users/may_interested", paging, RawSuggestionUser.TYPE_SUGGESTION_USER_LIST);
+        return SuggestionUser.convertFromRawSuggestionUserList(rawSuggestionUsers);
     }
 
     public UserList getUsersByStatus(Content content) throws WeiboClientException {
