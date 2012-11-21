@@ -2,6 +2,7 @@ package weiboclient4j;
 
 import weiboclient4j.model.PoiList;
 import weiboclient4j.model.Status;
+import weiboclient4j.model.StatusList;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.UserLBS;
 import weiboclient4j.params.BaseApp;
@@ -139,5 +140,22 @@ public class PlaceService extends AbstractService {
     public PoiList getUserCheckins(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
         return doGet("place/users/checkins", paging,
                 withParams(uid, baseApp), PoiList.class);
+    }
+
+    public StatusList getUserPhotos(Uid uid) throws WeiboClientException {
+        return getUserPhotos(uid, Paging.EMPTY);
+    }
+
+    public StatusList getUserPhotos(Uid uid, BaseApp baseApp) throws WeiboClientException {
+        return getUserPhotos(uid, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getUserPhotos(Uid uid, Paging paging) throws WeiboClientException {
+        return getUserPhotos(uid, BaseApp.No, paging);
+    }
+
+    public StatusList getUserPhotos(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
+        return doGet("place/users/photos", paging,
+                withParams(uid, baseApp), StatusList.class);
     }
 }

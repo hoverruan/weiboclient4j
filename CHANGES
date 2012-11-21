@@ -1,6 +1,7 @@
 weiboclient4j CHANGELOG
 
 *** 0.3.2 [PENDING]
+ * 实现位置接口中的"获取用户的照片列表"接口
  * 实现位置接口中的"获取用户签到过的地点列表"接口
  * 实现推荐接口中的"获取用户可能感兴趣的人"接口
  * 将 Access Token 放到 HTTP Header 中
