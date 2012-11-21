@@ -138,8 +138,7 @@ public class PlaceService extends AbstractService {
     }
 
     public PoiList getUserCheckins(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
-        return doGet("place/users/checkins", paging,
-                withParams(uid, baseApp), PoiList.class);
+        return doGet("place/users/checkins", paging, withParams(uid, baseApp), PoiList.class);
     }
 
     public StatusList getUserPhotos(Uid uid) throws WeiboClientException {
@@ -155,7 +154,22 @@ public class PlaceService extends AbstractService {
     }
 
     public StatusList getUserPhotos(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
-        return doGet("place/users/photos", paging,
-                withParams(uid, baseApp), StatusList.class);
+        return doGet("place/users/photos", paging, withParams(uid, baseApp), StatusList.class);
+    }
+
+    public StatusList getUserTips(Uid uid) throws WeiboClientException {
+        return getUserTips(uid, Paging.EMPTY);
+    }
+
+    public StatusList getUserTips(Uid uid, BaseApp baseApp) throws WeiboClientException {
+        return getUserTips(uid, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getUserTips(Uid uid, Paging paging) throws WeiboClientException {
+        return getUserTips(uid, BaseApp.No, paging);
+    }
+
+    public StatusList getUserTips(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
+        return doGet("place/users/tips", paging, withParams(uid, baseApp), StatusList.class);
     }
 }
