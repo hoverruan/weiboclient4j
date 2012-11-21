@@ -9,8 +9,8 @@ import java.util.List;
  * @author Hover Ruan
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SuggestionUser {
-    public static final TypeReference<List<SuggestionUser>> TYPE_SUGGESTION_USER_LIST = new TypeReference<List<SuggestionUser>>() {
+public class RawSuggestionUser {
+    public static final TypeReference<List<RawSuggestionUser>> TYPE_SUGGESTION_USER_LIST = new TypeReference<List<RawSuggestionUser>>() {
     };
 
     private long uid;
