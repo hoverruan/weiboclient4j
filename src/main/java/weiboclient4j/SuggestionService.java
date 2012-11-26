@@ -18,6 +18,8 @@ import weiboclient4j.params.Uid;
 
 import java.util.List;
 
+import static weiboclient4j.model.SuggestionUser.convertFromRawSuggestionUserList;
+
 /**
  * @author Hover Ruan
  */
@@ -40,8 +42,11 @@ public class SuggestionService extends AbstractService {
     }
 
     public List<SuggestionUser> getUsersMayInterested(Paging paging) throws WeiboClientException {
-        List<RawSuggestionUser> rawSuggestionUsers = doGet("suggestions/users/may_interested", paging, RawSuggestionUser.TYPE_SUGGESTION_USER_LIST);
-        return SuggestionUser.convertFromRawSuggestionUserList(rawSuggestionUsers);
+        List<RawSuggestionUser> rawSuggestionUsers =
+                doGet("suggestions/users/may_interested", paging,
+                        RawSuggestionUser.TYPE_SUGGESTION_USER_LIST);
+
+        return convertFromRawSuggestionUserList(rawSuggestionUsers);
     }
 
     public UserList getUsersByStatus(Content content) throws WeiboClientException {
