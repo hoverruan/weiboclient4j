@@ -29,9 +29,13 @@ public class Poi {
     private String rid;
     private String categorys;
     private String categoryName;
+    private int checkinNum;
     private int checkinUserNum;
     @JsonDeserialize(using = SimpleDateDeserializer.class)
     private Date checkinTime;
+    private int tipNum;
+    private int photoNum;
+    private int todoNum;
 
     public String getPoiid() {
         return poiid;
@@ -191,5 +195,37 @@ public class Poi {
 
     public void setCheckinTime(Date checkinTime) {
         this.checkinTime = checkinTime;
+    }
+
+    public int getCheckinNum() {
+        return checkinNum;
+    }
+
+    public void setCheckinNum(int checkinNum) {
+        this.checkinNum = checkinNum;
+    }
+
+    public int getTipNum() {
+        return tipNum;
+    }
+
+    public void setTipNum(int tipNum) {
+        this.tipNum = tipNum;
+    }
+
+    public int getPhotoNum() {
+        return photoNum;
+    }
+
+    public void setPhotoNum(int photoNum) {
+        this.photoNum = photoNum;
+    }
+
+    public int getTodoNum() {
+        return todoNum;
+    }
+
+    public void setTodoNum(int todoNum) {
+        this.todoNum = todoNum;
     }
 }

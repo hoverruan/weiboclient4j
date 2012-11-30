@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import weiboclient4j.model.Poi;
 import weiboclient4j.model.PoiList;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.StatusList;
@@ -187,5 +188,13 @@ public class PlaceService extends AbstractService {
 
     public StatusList getUserTodos(Uid uid, BaseApp baseApp, Paging paging) throws WeiboClientException {
         return doGet("place/users/todos", paging, withParams(uid, baseApp), StatusList.class);
+    }
+
+    public Poi showPoi(PoiId poiId) throws WeiboClientException {
+        return showPoi(poiId, BaseApp.No);
+    }
+
+    public Poi showPoi(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
+        return doGet("place/pois/show", withParams(poiId, baseApp), Poi.class);
     }
 }
