@@ -17,6 +17,7 @@ import weiboclient4j.params.LocSortType;
 import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.PoiId;
+import weiboclient4j.params.PoiSortType;
 import weiboclient4j.params.StartTime;
 import weiboclient4j.params.Uid;
 
@@ -213,5 +214,38 @@ public class PlaceService extends AbstractService {
 
     public UserList getPoiUsers(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
         return doGet("place/pois/users", paging, withParams(poiId, baseApp), UserList.class);
+    }
+
+    public StatusList getPoiTips(PoiId poiId) throws WeiboClientException {
+        return getPoiTips(poiId, Paging.EMPTY);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, Paging paging) throws WeiboClientException {
+        return getPoiTips(poiId, BaseApp.No, paging);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
+        return getPoiTips(poiId, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType) throws WeiboClientException {
+        return getPoiTips(poiId, sortType, Paging.EMPTY);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
+        return getPoiTips(poiId, PoiSortType.Time, baseApp, paging);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType, Paging paging) throws WeiboClientException {
+        return getPoiTips(poiId, sortType, BaseApp.No, paging);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType, BaseApp baseApp) throws WeiboClientException {
+        return getPoiTips(poiId, sortType, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType, BaseApp baseApp, Paging paging)
+            throws WeiboClientException {
+        return doGet("place/pois/tips", paging, withParams(poiId, sortType, baseApp), StatusList.class);
     }
 }
