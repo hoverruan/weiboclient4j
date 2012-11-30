@@ -248,4 +248,37 @@ public class PlaceService extends AbstractService {
             throws WeiboClientException {
         return doGet("place/pois/tips", paging, withParams(poiId, sortType, baseApp), StatusList.class);
     }
+
+    public StatusList getPoiPhotos(PoiId poiId) throws WeiboClientException {
+        return getPoiPhotos(poiId, Paging.EMPTY);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, Paging paging) throws WeiboClientException {
+        return getPoiPhotos(poiId, BaseApp.No, paging);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType) throws WeiboClientException {
+        return getPoiPhotos(poiId, sortType, Paging.EMPTY);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
+        return getPoiPhotos(poiId, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
+        return getPoiPhotos(poiId, PoiSortType.Time, baseApp, paging);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, Paging paging) throws WeiboClientException {
+        return getPoiPhotos(poiId, sortType, BaseApp.No, paging);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, BaseApp baseApp) throws WeiboClientException {
+        return getPoiPhotos(poiId, sortType, baseApp, Paging.EMPTY);
+    }
+
+    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, BaseApp baseApp, Paging paging)
+            throws WeiboClientException {
+        return doGet("place/pois/photos", paging, withParams(poiId, sortType, baseApp), StatusList.class);
+    }
 }
