@@ -23,7 +23,7 @@ public class Poi {
     private String url;
     private String phone;
     private String postcode;
-    private String weibo_id;
+    private String weiboId;
     private String icon;
     private String extra;
     private String rid;
@@ -133,12 +133,12 @@ public class Poi {
         this.postcode = postcode;
     }
 
-    public String getWeibo_id() {
-        return weibo_id;
+    public String getWeiboId() {
+        return weiboId;
     }
 
-    public void setWeibo_id(String weibo_id) {
-        this.weibo_id = weibo_id;
+    public void setWeiboId(String weiboId) {
+        this.weiboId = weiboId;
     }
 
     public String getIcon() {

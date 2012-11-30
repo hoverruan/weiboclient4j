@@ -22,14 +22,16 @@ public class ParsePoiTest extends AbstractParseJsonTest {
         assertThat(poi.getLat(), is(39.98437));
         assertThat(poi.getCategory(), is("46"));
         assertThat(poi.getCity(), is("0010"));
-        assertThat(poi.getPhone(), is("010-82625868"));
+        assertThat(poi.getPhone(), is("010-82607123"));
         assertThat(poi.getPostcode(), is("100000"));
+        assertThat(poi.getWeiboId(), is("2513895201"));
+        assertThat(poi.getIcon(), is("http://u1.sinaimg.cn/upload/lbs/poi/icon/88/46.png"));
+        assertThat(poi.getRid(), is("46"));
         assertThat(poi.getCategorys(), is("44 46"));
-        assertThat(poi.getIcon(), is("http://u1.sinaimg.cn/upload/2012/03/23/1/lyjg.png"));
-        assertThat(poi.getCheckinNum(), is(54484));
-        assertThat(poi.getCheckinUserNum(), is(55));
-        assertThat(poi.getTipNum(), is(54420));
-        assertThat(poi.getPhotoNum(), is(14));
-        assertThat(poi.getTodoNum(), is(9));
+        assertThat(poi.getCheckinNum(), is(3114));
+        assertThat(poi.getCheckinUserNum(), is(1315));
+        assertThat(poi.getTipNum(), is(3080));
+        assertThat(poi.getPhotoNum(), is(1119));
+        assertThat(poi.getTodoNum(), is(106));
     }
 }
