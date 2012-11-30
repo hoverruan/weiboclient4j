@@ -6,6 +6,7 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.StatusList;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.UserLBS;
+import weiboclient4j.model.UserList;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.EndTime;
 import weiboclient4j.params.FriendshipType;
@@ -196,5 +197,21 @@ public class PlaceService extends AbstractService {
 
     public Poi showPoi(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
         return doGet("place/pois/show", withParams(poiId, baseApp), Poi.class);
+    }
+
+    public UserList getPoiUsers(PoiId poiId) throws WeiboClientException {
+        return getPoiUsers(poiId, Paging.EMPTY);
+    }
+
+    public UserList getPoiUsers(PoiId poiId, Paging paging) throws WeiboClientException {
+        return getPoiUsers(poiId, BaseApp.No, paging);
+    }
+
+    public UserList getPoiUsers(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
+        return getPoiUsers(poiId, baseApp, Paging.EMPTY);
+    }
+
+    public UserList getPoiUsers(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
+        return doGet("place/pois/users", paging, withParams(poiId, baseApp), UserList.class);
     }
 }
