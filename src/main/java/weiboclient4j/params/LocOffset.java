@@ -1,7 +1,4 @@
-package weiboclient4j;
-
-import weiboclient4j.params.ParameterAction;
-import weiboclient4j.params.Parameters;
+package weiboclient4j.params;
 
 /**
  * @author Hover Ruan

@@ -5,6 +5,7 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.StatusIdList;
 import weiboclient4j.model.StatusList;
 import weiboclient4j.model.SuggestionUser;
+import static weiboclient4j.model.SuggestionUser.convertFromRawSuggestionUserList;
 import weiboclient4j.model.User;
 import weiboclient4j.model.UserList;
 import weiboclient4j.params.Content;
@@ -17,8 +18,6 @@ import weiboclient4j.params.SuggestionUserCategory;
 import weiboclient4j.params.Uid;
 
 import java.util.List;
-
-import static weiboclient4j.model.SuggestionUser.convertFromRawSuggestionUserList;
 
 /**
  * @author Hover Ruan

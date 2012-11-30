@@ -12,6 +12,7 @@ import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
+import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -21,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**
  * @author Hover Ruan
