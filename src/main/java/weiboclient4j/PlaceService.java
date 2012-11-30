@@ -8,9 +8,12 @@ import weiboclient4j.model.Timeline;
 import weiboclient4j.model.UserLBS;
 import weiboclient4j.model.UserList;
 import weiboclient4j.params.BaseApp;
+import weiboclient4j.params.Category;
+import weiboclient4j.params.City;
 import weiboclient4j.params.EndTime;
 import weiboclient4j.params.FriendshipType;
 import weiboclient4j.params.Id;
+import weiboclient4j.params.Keyword;
 import weiboclient4j.params.Latitude;
 import weiboclient4j.params.LocRange;
 import weiboclient4j.params.LocSortType;
@@ -280,5 +283,37 @@ public class PlaceService extends AbstractService {
     public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, BaseApp baseApp, Paging paging)
             throws WeiboClientException {
         return doGet("place/pois/photos", paging, withParams(poiId, sortType, baseApp), StatusList.class);
+    }
+
+    public PoiList searchPois(Keyword keyword) throws WeiboClientException {
+        return searchPois(keyword, Paging.EMPTY);
+    }
+
+    public PoiList searchPois(Keyword keyword, Paging paging) throws WeiboClientException {
+        return searchPois(keyword, null, null, paging);
+    }
+
+    public PoiList searchPois(Keyword keyword, Category category) throws WeiboClientException {
+        return searchPois(keyword, category, Paging.EMPTY);
+    }
+
+    public PoiList searchPois(Keyword keyword, City city) throws WeiboClientException {
+        return searchPois(keyword, city, Paging.EMPTY);
+    }
+
+    public PoiList searchPois(Keyword keyword, Category category, Paging paging) throws WeiboClientException {
+        return searchPois(keyword, null, category, paging);
+    }
+
+    public PoiList searchPois(Keyword keyword, City city, Paging paging) throws WeiboClientException {
+        return searchPois(keyword, city, null, paging);
+    }
+
+    public PoiList searchPois(Keyword keyword, City city, Category category) throws WeiboClientException {
+        return searchPois(keyword, city, category, Paging.EMPTY);
+    }
+
+    public PoiList searchPois(Keyword keyword, City city, Category category, Paging paging) throws WeiboClientException {
+        return doGet("place/pois/search", paging, withParams(keyword, city, category), PoiList.class);
     }
 }
