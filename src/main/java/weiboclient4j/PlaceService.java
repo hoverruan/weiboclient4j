@@ -1,6 +1,7 @@
 package weiboclient4j;
 
 import weiboclient4j.model.Poi;
+import weiboclient4j.model.PoiCategory;
 import weiboclient4j.model.PoiList;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.StatusList;
@@ -19,10 +20,14 @@ import weiboclient4j.params.LocRange;
 import weiboclient4j.params.LocSortType;
 import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Paging;
+import weiboclient4j.params.Pid;
+import weiboclient4j.params.PoiCategoryFlag;
 import weiboclient4j.params.PoiId;
 import weiboclient4j.params.PoiSortType;
 import weiboclient4j.params.StartTime;
 import weiboclient4j.params.Uid;
+
+import java.util.List;
 
 /**
  * @author Hover Ruan
@@ -315,5 +320,21 @@ public class PlaceService extends AbstractService {
 
     public PoiList searchPois(Keyword keyword, City city, Category category, Paging paging) throws WeiboClientException {
         return doGet("place/pois/search", paging, withParams(keyword, city, category), PoiList.class);
+    }
+
+    public List<PoiCategory> getPoiCategories() throws WeiboClientException {
+        return getPoiCategories(PoiCategoryFlag.CurrentLevel);
+    }
+
+    public List<PoiCategory> getPoiCategories(PoiCategoryFlag flag) throws WeiboClientException {
+        return getPoiCategories(null, flag);
+    }
+
+    public List<PoiCategory> getPoiCategories(Pid pid) throws WeiboClientException {
+        return getPoiCategories(pid, PoiCategoryFlag.CurrentLevel);
+    }
+
+    public List<PoiCategory> getPoiCategories(Pid pid, PoiCategoryFlag flag) throws WeiboClientException {
+        return doGet("place/pois/category", withParams(pid, flag), PoiCategory.POI_CATEGORY_LIST);
     }
 }
