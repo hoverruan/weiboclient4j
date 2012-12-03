@@ -22,6 +22,7 @@ import weiboclient4j.params.LocSortType;
 import weiboclient4j.params.Longitude;
 import weiboclient4j.params.NearbySortType;
 import weiboclient4j.params.Paging;
+import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Pid;
 import weiboclient4j.params.PoiCategoryFlag;
 import weiboclient4j.params.PoiId;
@@ -35,6 +36,7 @@ import java.util.List;
 /**
  * @author Hover Ruan
  */
+@SuppressWarnings("unchecked")
 public class PlaceService extends AbstractService {
     public PlaceService(WeiboClient2 client) {
         super(client);
@@ -211,372 +213,108 @@ public class PlaceService extends AbstractService {
         return doGet("place/pois/show", withParams(poiId, baseApp), Poi.class);
     }
 
+    public static interface GetPoiUsersParam extends ParameterAction {
+    }
+
     public UserList getPoiUsers(PoiId poiId) throws WeiboClientException {
         return getPoiUsers(poiId, Paging.EMPTY);
     }
 
-    public UserList getPoiUsers(PoiId poiId, Paging paging) throws WeiboClientException {
-        return getPoiUsers(poiId, BaseApp.No, paging);
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetPoiUsersParam> UserList getPoiUsers(PoiId poiId, Paging paging, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/pois/users", paging, buildParams(optionalParams, poiId), UserList.class);
     }
 
-    public UserList getPoiUsers(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
-        return getPoiUsers(poiId, baseApp, Paging.EMPTY);
-    }
-
-    public UserList getPoiUsers(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
-        return doGet("place/pois/users", paging, withParams(poiId, baseApp), UserList.class);
+    public static interface GetPoiTipsParam extends ParameterAction {
     }
 
     public StatusList getPoiTips(PoiId poiId) throws WeiboClientException {
         return getPoiTips(poiId, Paging.EMPTY);
     }
 
-    public StatusList getPoiTips(PoiId poiId, Paging paging) throws WeiboClientException {
-        return getPoiTips(poiId, BaseApp.No, paging);
-    }
-
-    public StatusList getPoiTips(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
-        return getPoiTips(poiId, baseApp, Paging.EMPTY);
-    }
-
-    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType) throws WeiboClientException {
-        return getPoiTips(poiId, sortType, Paging.EMPTY);
-    }
-
-    public StatusList getPoiTips(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
-        return getPoiTips(poiId, PoiSortType.Time, baseApp, paging);
-    }
-
-    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType, Paging paging) throws WeiboClientException {
-        return getPoiTips(poiId, sortType, BaseApp.No, paging);
-    }
-
-    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType, BaseApp baseApp) throws WeiboClientException {
-        return getPoiTips(poiId, sortType, baseApp, Paging.EMPTY);
-    }
-
-    public StatusList getPoiTips(PoiId poiId, PoiSortType sortType, BaseApp baseApp, Paging paging)
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link PoiSortType}
+     */
+    public <T extends GetPoiTipsParam> StatusList getPoiTips(PoiId poiId, Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return doGet("place/pois/tips", paging, withParams(poiId, sortType, baseApp), StatusList.class);
+        return doGet("place/pois/tips", paging, buildParams(optionalParams, poiId), StatusList.class);
+    }
+
+    public static interface GetPoiPhotosParam extends ParameterAction {
     }
 
     public StatusList getPoiPhotos(PoiId poiId) throws WeiboClientException {
         return getPoiPhotos(poiId, Paging.EMPTY);
     }
 
-    public StatusList getPoiPhotos(PoiId poiId, Paging paging) throws WeiboClientException {
-        return getPoiPhotos(poiId, BaseApp.No, paging);
-    }
-
-    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType) throws WeiboClientException {
-        return getPoiPhotos(poiId, sortType, Paging.EMPTY);
-    }
-
-    public StatusList getPoiPhotos(PoiId poiId, BaseApp baseApp) throws WeiboClientException {
-        return getPoiPhotos(poiId, baseApp, Paging.EMPTY);
-    }
-
-    public StatusList getPoiPhotos(PoiId poiId, BaseApp baseApp, Paging paging) throws WeiboClientException {
-        return getPoiPhotos(poiId, PoiSortType.Time, baseApp, paging);
-    }
-
-    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, Paging paging) throws WeiboClientException {
-        return getPoiPhotos(poiId, sortType, BaseApp.No, paging);
-    }
-
-    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, BaseApp baseApp) throws WeiboClientException {
-        return getPoiPhotos(poiId, sortType, baseApp, Paging.EMPTY);
-    }
-
-    public StatusList getPoiPhotos(PoiId poiId, PoiSortType sortType, BaseApp baseApp, Paging paging)
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link PoiSortType}
+     */
+    public <T extends GetPoiPhotosParam> StatusList getPoiPhotos(PoiId poiId, Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return doGet("place/pois/photos", paging, withParams(poiId, sortType, baseApp), StatusList.class);
+        return doGet("place/pois/photos", paging, buildParams(optionalParams, poiId), StatusList.class);
+    }
+
+    public static interface SearchPoisParam extends ParameterAction {
     }
 
     public PoiList searchPois(Keyword keyword) throws WeiboClientException {
         return searchPois(keyword, Paging.EMPTY);
     }
 
-    public PoiList searchPois(Keyword keyword, Paging paging) throws WeiboClientException {
-        return searchPois(keyword, null, null, paging);
-    }
-
-    public PoiList searchPois(Keyword keyword, Category category) throws WeiboClientException {
-        return searchPois(keyword, category, Paging.EMPTY);
-    }
-
-    public PoiList searchPois(Keyword keyword, City city) throws WeiboClientException {
-        return searchPois(keyword, city, Paging.EMPTY);
-    }
-
-    public PoiList searchPois(Keyword keyword, Category category, Paging paging) throws WeiboClientException {
-        return searchPois(keyword, null, category, paging);
-    }
-
-    public PoiList searchPois(Keyword keyword, City city, Paging paging) throws WeiboClientException {
-        return searchPois(keyword, city, null, paging);
-    }
-
-    public PoiList searchPois(Keyword keyword, City city, Category category) throws WeiboClientException {
-        return searchPois(keyword, city, category, Paging.EMPTY);
-    }
-
-    public PoiList searchPois(Keyword keyword, City city, Category category, Paging paging) throws WeiboClientException {
-        return doGet("place/pois/search", paging, withParams(keyword, city, category), PoiList.class);
-    }
-
-    public List<PoiCategory> getPoiCategories() throws WeiboClientException {
-        return getPoiCategories(PoiCategoryFlag.CurrentLevel);
-    }
-
-    public List<PoiCategory> getPoiCategories(PoiCategoryFlag flag) throws WeiboClientException {
-        return getPoiCategories(null, flag);
-    }
-
-    public List<PoiCategory> getPoiCategories(Pid pid) throws WeiboClientException {
-        return getPoiCategories(pid, PoiCategoryFlag.CurrentLevel);
-    }
-
-    public List<PoiCategory> getPoiCategories(Pid pid, PoiCategoryFlag flag) throws WeiboClientException {
-        return doGet("place/pois/category", withParams(pid, flag), PoiCategory.POI_CATEGORY_LIST);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Paging paging) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, null, null, null, NearbySortType.Weight, paging);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Category category) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, category, Paging.EMPTY);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Category category, Paging paging)
+    /**
+     * Optional parameter types: {@link City} and {@link Category}
+     */
+    public <T extends SearchPoisParam> PoiList searchPois(Keyword keyword, Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, null, null, category, paging);
+        return doGet("place/pois/search", paging, buildParams(optionalParams, keyword), PoiList.class);
     }
 
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Query query) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, query, Paging.EMPTY);
+    public static interface GetPoiCategoriesParam extends ParameterAction {
     }
 
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Query query, Paging paging) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, null, query, paging);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, Paging.EMPTY);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Paging paging)
+    /**
+     * Optional parameter types: {@link Pid} and {@link PoiCategoryFlag}
+     */
+    public <T extends GetPoiCategoriesParam> List<PoiCategory> getPoiCategories(T... optionalParams)
             throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, null, null, paging);
+        return doGet("place/pois/category", buildParams(optionalParams), PoiCategory.POI_CATEGORY_LIST);
     }
 
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Category category)
+    public static interface GetNearbyPoisParam extends ParameterAction {
+    }
+
+    public PoiList getNearbyPois(Latitude latitude, Longitude longitude) throws WeiboClientException {
+        return getNearbyPois(latitude, longitude, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link Query}, {@link Category}, {@link NearbySortType} and
+     * {@link LocOffset}
+     */
+    public <T extends GetNearbyPoisParam> PoiList getNearbyPois(
+            Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, category, Paging.EMPTY);
+        return doGet("place/nearby/pois", paging, buildParams(optionalParams, latitude, longitude), PoiList.class);
     }
 
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Category category, Paging paging)
-            throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, null, category, paging);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Query query, Category category)
-            throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, query, category, Paging.EMPTY);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, Query query, Category category, Paging paging)
-            throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, null, query, category, paging);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Query query)
-            throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, query, Paging.EMPTY);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Query query, Paging paging)
-            throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, query, null, paging);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Query query, Category category)
-            throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, query, category, Paging.EMPTY);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Query query, Category category,
-                                 Paging paging) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, query, category, null, paging);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Query query, Category category,
-                                 NearbySortType sortType) throws WeiboClientException {
-        return getNearbyPois(latitude, longitude, range, query, category, sortType, Paging.EMPTY);
-    }
-
-    public PoiList getNearbyPois(Latitude latitude, Longitude longitude, LocRange range, Query query, Category category,
-                                 NearbySortType sortType, Paging paging) throws WeiboClientException {
-        return doGet("place/nearby/pois", paging, withParams(latitude, longitude, range, query, category, sortType),
-                PoiList.class);
+    public static interface GetNearbyUsersParam extends ParameterAction {
     }
 
     public UserList getNearbyUsers(Latitude latitude, Longitude longitude) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, null, null, Paging.EMPTY);
+        return getNearbyUsers(latitude, longitude, Paging.EMPTY);
     }
 
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, null, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime)
+    /**
+     * Optional parameter types: {@link LocRange}, {@link StartTime}, {@link EndTime},{@link NearbySortType} and
+     * {@link LocOffset}
+     */
+    public <T extends GetNearbyUsersParam> UserList getNearbyUsers(
+            Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, null, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, null, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude,
-                                   NearbySortType sortType) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, sortType, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range,
-                                   NearbySortType sortType) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, sortType, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime,
-                                   NearbySortType sortType) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, sortType, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, NearbySortType sortType) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, sortType, null, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, null, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range,
-                                   LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, null, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime,
-                                   LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, null, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, null, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, NearbySortType sortType,
-                                   LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, sortType, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, NearbySortType sortType,
-                                   LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, sortType, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime,
-                                   NearbySortType sortType, LocOffset offset) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, sortType, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, NearbySortType sortType, LocOffset offset)
-            throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, sortType, offset, Paging.EMPTY);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, null, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range,
-                                   Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, null, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, null, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, null, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, NearbySortType sortType,
-                                   Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, sortType, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, NearbySortType sortType,
-                                   Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, sortType, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime,
-                                   NearbySortType sortType, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, sortType, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, NearbySortType sortType, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, sortType, null, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocOffset offset,
-                                   Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, null, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, LocOffset offset,
-                                   Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, null, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime,
-                                   LocOffset offset, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, null, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, LocOffset offset, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, startTime, endTime, null, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, NearbySortType sortType, LocOffset offset,
-                                   Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, null, null, sortType, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, NearbySortType sortType,
-                                   LocOffset offset, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, range, null, null, sortType, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, StartTime startTime, EndTime endTime,
-                                   NearbySortType sortType, LocOffset offset, Paging paging) throws WeiboClientException {
-        return getNearbyUsers(latitude, longitude, null, startTime, endTime, sortType, offset, paging);
-    }
-
-    public UserList getNearbyUsers(Latitude latitude, Longitude longitude, LocRange range, StartTime startTime,
-                                   EndTime endTime, NearbySortType sortType, LocOffset offset, Paging paging)
-            throws WeiboClientException {
-        return doGet("place/nearby/users", paging, withParams(latitude, longitude, range, startTime, endTime,
-                sortType, offset), UserList.class);
+        return doGet("place/nearby/users", paging, buildParams(optionalParams, latitude, longitude), UserList.class);
     }
 }

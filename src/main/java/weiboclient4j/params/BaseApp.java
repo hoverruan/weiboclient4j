@@ -1,9 +1,14 @@
 package weiboclient4j.params;
 
+import weiboclient4j.PlaceService;
+
 /**
  * @author Hover Ruan
  */
-public enum BaseApp implements ParameterAction {
+public enum BaseApp implements
+        PlaceService.GetPoiPhotosParam,
+        PlaceService.GetPoiTipsParam,
+        PlaceService.GetPoiUsersParam {
     Yes(1), No(0);
 
     private int value;

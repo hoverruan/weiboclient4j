@@ -114,14 +114,6 @@ public class Paging {
         return params;
     }
 
-    private static void appendParameter(StringBuilder buf, String key, String value) {
-        if (buf.length() > 0) {
-            buf.append('&');
-        }
-
-        buf.append(key).append('=').append(value);
-    }
-
     public int getPage() {
         return page;
     }

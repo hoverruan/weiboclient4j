@@ -1,9 +1,13 @@
 package weiboclient4j.params;
 
+import weiboclient4j.PlaceService;
+
 /**
  * @author Hover Ruan
  */
-public enum LocOffset implements ParameterAction{
+public enum LocOffset implements
+        PlaceService.GetNearbyUsersParam,
+        PlaceService.GetNearbyPoisParam {
     Original(0), Transformed(1);
 
     private int value;

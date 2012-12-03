@@ -1,9 +1,12 @@
 package weiboclient4j.params;
 
+import weiboclient4j.PlaceService;
+
 /**
  * @author Hover Ruan
  */
-public enum PoiCategoryFlag implements ParameterAction {
+public enum PoiCategoryFlag implements
+        PlaceService.GetPoiCategoriesParam {
     CurrentLevel(0), All(1),;
 
     private int value;

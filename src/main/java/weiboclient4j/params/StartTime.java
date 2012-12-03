@@ -1,9 +1,11 @@
 package weiboclient4j.params;
 
+import weiboclient4j.PlaceService;
+
 /**
  * @author Hover Ruan
  */
-public class StartTime extends LongParam {
+public class StartTime extends LongParam implements PlaceService.GetNearbyUsersParam {
     public StartTime(long value) {
         super(value);
     }

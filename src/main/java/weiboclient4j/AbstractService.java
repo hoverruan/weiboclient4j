@@ -64,15 +64,11 @@ public class AbstractService {
     }
 
     public static Parameters withParams(ParameterAction... actions) {
-        Parameters params = Parameters.create();
+        return Parameters.create().addAll(actions);
+    }
 
-        for (ParameterAction action : actions) {
-            if (action != null) {
-                action.addParameter(params);
-            }
-        }
-
-        return params;
+    public static Parameters buildParams(ParameterAction[] optionalParams, ParameterAction... requireParams) {
+        return Parameters.create().addAll(optionalParams).addAll(requireParams);
     }
 
     public <T> T doGet(String path, Paging paging, Parameters params, Class<T> clazz) throws WeiboClientException {

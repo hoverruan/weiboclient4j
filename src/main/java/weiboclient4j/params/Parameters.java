@@ -99,6 +99,16 @@ public class Parameters {
         }
     }
 
+    public Parameters addAll(ParameterAction[] actions) {
+        for (ParameterAction action : actions) {
+            if (action != null) {
+                action.addParameter(this);
+            }
+        }
+
+        return this;
+    }
+
     public static class Parameter {
         private String key;
         private String value;
