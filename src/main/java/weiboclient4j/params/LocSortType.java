@@ -1,9 +1,12 @@
 package weiboclient4j.params;
 
+import weiboclient4j.PlaceService;
+
 /**
  * @author Hover Ruan
  */
-public enum LocSortType implements ParameterAction {
+public enum LocSortType implements
+        PlaceService.GetNearbyPhotosParam {
     Time(0), Dis(1);
 
     private int value;

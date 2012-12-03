@@ -7,7 +7,8 @@ import weiboclient4j.PlaceService;
  */
 public enum LocOffset implements
         PlaceService.GetNearbyUsersParam,
-        PlaceService.GetNearbyPoisParam {
+        PlaceService.GetNearbyPoisParam,
+        PlaceService.GetNearbyPhotosParam {
     Original(0), Transformed(1);
 
     private int value;

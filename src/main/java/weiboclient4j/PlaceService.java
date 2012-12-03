@@ -317,4 +317,21 @@ public class PlaceService extends AbstractService {
             throws WeiboClientException {
         return doGet("place/nearby/users", paging, buildParams(optionalParams, latitude, longitude), UserList.class);
     }
+
+    public static interface GetNearbyPhotosParam extends ParameterAction {
+    }
+
+    public StatusList getNearbyPhotos(Latitude latitude, Longitude longitude) throws WeiboClientException {
+        return getNearbyPhotos(latitude, longitude, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link StartTime}, {@link EndTime}, {@link LocSortType}
+     * and {@link LocOffset}
+     */
+    public <T extends GetNearbyPhotosParam> StatusList getNearbyPhotos(
+            Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby/photos", paging, buildParams(optionalParams, latitude, longitude), StatusList.class);
+    }
 }
