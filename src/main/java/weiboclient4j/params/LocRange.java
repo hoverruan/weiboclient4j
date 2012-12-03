@@ -9,7 +9,9 @@ public class LocRange extends LongParam implements
         PlaceService.GetNearbyUsersParam,
         PlaceService.GetNearbyPoisParam,
         PlaceService.GetNearbyPhotosParam,
-        PlaceService.GetNearbyUsersListParam {
+        PlaceService.GetNearbyUsersListParam,
+        PlaceService.GetNearbyTimelineParam {
+
     public LocRange(long value) {
         super(value);
     }

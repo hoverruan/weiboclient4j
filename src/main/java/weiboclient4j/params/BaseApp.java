@@ -8,8 +8,17 @@ import weiboclient4j.PlaceService;
 public enum BaseApp implements
         PlaceService.GetPoiPhotosParam,
         PlaceService.GetPoiTipsParam,
-        PlaceService.GetPoiUsersParam {
-    Yes(1), No(0);
+        PlaceService.GetPoiUsersParam,
+        PlaceService.GetPublishTimelineParam,
+        PlaceService.GetUserTimelineParam,
+        PlaceService.GetPoiTimelineParam,
+        PlaceService.GetNearbyTimelineParam,
+        PlaceService.GetUserCheckinsParam,
+        PlaceService.GetUserPhotosParam,
+        PlaceService.GetUserTipsParam,
+        PlaceService.GetUserTodosParam {
+
+    Yes(1), No(0),;
 
     private int value;
 

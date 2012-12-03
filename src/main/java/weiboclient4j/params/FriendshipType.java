@@ -1,9 +1,13 @@
 package weiboclient4j.params;
 
+import weiboclient4j.PlaceService;
+
 /**
  * @author Hover Ruan
  */
-public enum FriendshipType implements ParameterAction{
+public enum FriendshipType implements
+        PlaceService.GetFriendsTimelineParam {
+
     Followed(0), Friends(1);
 
     private int value;

@@ -7,7 +7,9 @@ import weiboclient4j.PlaceService;
  */
 public class EndTime extends LongParam implements
         PlaceService.GetNearbyUsersParam,
-        PlaceService.GetNearbyPhotosParam {
+        PlaceService.GetNearbyPhotosParam,
+        PlaceService.GetNearbyTimelineParam {
+
     public EndTime(long value) {
         super(value);
     }

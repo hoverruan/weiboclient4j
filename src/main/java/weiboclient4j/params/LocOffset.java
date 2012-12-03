@@ -9,8 +9,10 @@ public enum LocOffset implements
         PlaceService.GetNearbyUsersParam,
         PlaceService.GetNearbyPoisParam,
         PlaceService.GetNearbyPhotosParam,
-        PlaceService.GetNearbyUsersListParam {
-    Original(0), Transformed(1);
+        PlaceService.GetNearbyUsersListParam,
+        PlaceService.GetNearbyTimelineParam {
+
+    Original(0), Transformed(1),;
 
     private int value;
 

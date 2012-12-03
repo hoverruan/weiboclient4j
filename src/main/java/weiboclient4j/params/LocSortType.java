@@ -7,8 +7,10 @@ import weiboclient4j.PlaceService;
  */
 public enum LocSortType implements
         PlaceService.GetNearbyPhotosParam,
-        PlaceService.GetNearbyUsersListParam {
-    Time(0), Dis(1), SocialRelationship(2);
+        PlaceService.GetNearbyUsersListParam,
+        PlaceService.GetNearbyTimelineParam {
+
+    Time(0), Dis(1), SocialRelationship(2),;
 
     private int value;
 
