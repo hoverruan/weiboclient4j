@@ -8,7 +8,8 @@ import weiboclient4j.PlaceService;
 public class LocRange extends LongParam implements
         PlaceService.GetNearbyUsersParam,
         PlaceService.GetNearbyPoisParam,
-        PlaceService.GetNearbyPhotosParam {
+        PlaceService.GetNearbyPhotosParam,
+        PlaceService.GetNearbyUsersListParam {
     public LocRange(long value) {
         super(value);
     }

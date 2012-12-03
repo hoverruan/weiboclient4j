@@ -5,22 +5,16 @@ import weiboclient4j.PlaceService;
 /**
  * @author Hover Ruan
  */
-public enum LocSortType implements
-        PlaceService.GetNearbyPhotosParam,
+public enum GenderType implements
         PlaceService.GetNearbyUsersListParam {
-    Time(0), Dis(1), SocialRelationship(2);
-
+    All(0), Male(1), Female(2);
     private int value;
 
-    LocSortType(int value) {
+    GenderType(int value) {
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public void addParameter(Parameters params) {
-        params.add("sort", getValue());
+        params.add("gender", value);
     }
 }

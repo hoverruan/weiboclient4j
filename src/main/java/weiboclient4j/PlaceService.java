@@ -11,8 +11,10 @@ import weiboclient4j.model.UserList;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Category;
 import weiboclient4j.params.City;
+import weiboclient4j.params.EndBirth;
 import weiboclient4j.params.EndTime;
 import weiboclient4j.params.FriendshipType;
+import weiboclient4j.params.GenderType;
 import weiboclient4j.params.Id;
 import weiboclient4j.params.Keyword;
 import weiboclient4j.params.Latitude;
@@ -28,8 +30,11 @@ import weiboclient4j.params.PoiCategoryFlag;
 import weiboclient4j.params.PoiId;
 import weiboclient4j.params.PoiSortType;
 import weiboclient4j.params.Query;
+import weiboclient4j.params.RelationshipFilter;
+import weiboclient4j.params.StartBirth;
 import weiboclient4j.params.StartTime;
 import weiboclient4j.params.Uid;
+import weiboclient4j.params.UserLevel;
 
 import java.util.List;
 
@@ -333,5 +338,22 @@ public class PlaceService extends AbstractService {
             Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("place/nearby/photos", paging, buildParams(optionalParams, latitude, longitude), StatusList.class);
+    }
+
+    public static interface GetNearbyUsersListParam extends ParameterAction {
+    }
+
+    public UserList getNearbyUsersList(Latitude latitude, Longitude longitude) throws WeiboClientException {
+        return getNearbyUsersList(latitude, longitude, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link LocSortType}, {@link RelationshipFilter}, {@link GenderType},
+     * {@link UserLevel}, {@link StartBirth}, {@link EndBirth} and {@link LocOffset}
+     */
+    public <T extends GetNearbyUsersListParam> UserList getNearbyUsersList(
+            Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby_users/list", paging, buildParams(optionalParams, latitude, longitude), UserList.class);
     }
 }
