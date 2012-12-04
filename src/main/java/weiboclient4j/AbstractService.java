@@ -318,6 +318,19 @@ public class AbstractService {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    protected static class StatusResponse {
+        private int status;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+    }
+
     protected static SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @JsonIgnoreProperties(ignoreUnknown = true)

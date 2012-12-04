@@ -434,4 +434,11 @@ public class PlaceService extends AbstractService {
     public Status addTodo(PoiId poiId, StatusParam status, IsPublic isPublic) throws WeiboClientException {
         return doPost("place/pois/add_todo", withParams(poiId, status, isPublic), Status.class);
     }
+
+    public int createNearbyUser(Latitude latitude, Longitude longitude) throws WeiboClientException {
+        StatusResponse response = doPost("place/nearby_users/create",
+                withParams(latitude, longitude), StatusResponse.class);
+
+        return response.getStatus();
+    }
 }
