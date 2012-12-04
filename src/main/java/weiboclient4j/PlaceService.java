@@ -426,4 +426,12 @@ public class PlaceService extends AbstractService {
     public Status addTip(PoiId poiId, StatusParam status, IsPublic isPublic) throws WeiboClientException {
         return doPost("place/pois/add_tip", withParams(poiId, status, isPublic), Status.class);
     }
+
+    public Status addTodo(PoiId poiId, StatusParam status) throws WeiboClientException {
+        return addTodo(poiId, status, null);
+    }
+
+    public Status addTodo(PoiId poiId, StatusParam status, IsPublic isPublic) throws WeiboClientException {
+        return doPost("place/pois/add_todo", withParams(poiId, status, isPublic), Status.class);
+    }
 }
