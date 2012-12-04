@@ -120,6 +120,10 @@ public class AbstractService {
         return sendRequestAndGetResponseObject(createPostRequest(path), params, clazz);
     }
 
+    public <T> T doPost(String path, Class<T> clazz) throws WeiboClientException {
+        return doPost(path, Parameters.create(), clazz);
+    }
+
     public <T> List<T> doPost(String path, Parameters params, TypeReference<List<T>> typeReference) throws WeiboClientException {
         return sendRequestAndGetResponseObject(createPostRequest(path), params, typeReference);
     }

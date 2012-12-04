@@ -441,4 +441,10 @@ public class PlaceService extends AbstractService {
 
         return response.getStatus();
     }
+
+    public int destroyNearbyUser() throws WeiboClientException {
+        StatusResponse response = doPost("place/nearby_users/destroy", StatusResponse.class);
+
+        return response.getStatus();
+    }
 }
