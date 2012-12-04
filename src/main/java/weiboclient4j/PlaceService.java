@@ -398,4 +398,24 @@ public class PlaceService extends AbstractService {
 
         return sendRequestAndGetResponseObject(request, Status.class);
     }
+
+    public Status addPhoto(PoiId poiId, StatusParam status, File image) throws WeiboClientException {
+        return addPhoto(poiId, status, image, null);
+    }
+
+    public Status addPhoto(PoiId poiId, StatusParam status, File image, IsPublic isPublic)
+            throws WeiboClientException {
+        OAuthRequest request = createPostRequest("place/pois/add_photo");
+        Parameters params = withParams(poiId, status, isPublic);
+
+        if (image != null) {
+            try {
+                buildUploadRequest(request, image, params);
+            } catch (IOException e) {
+                throw new WeiboClientException(e);
+            }
+        }
+
+        return sendRequestAndGetResponseObject(request, Status.class);
+    }
 }
