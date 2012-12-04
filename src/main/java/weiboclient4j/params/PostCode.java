@@ -5,14 +5,14 @@ import weiboclient4j.PlaceService;
 /**
  * @author Hover Ruan
  */
-public class Country extends StringParam implements
+public class PostCode extends StringParam implements
         PlaceService.CreatePoiParam {
 
-    public Country(String value) {
+    public PostCode(String value) {
         super(value);
     }
 
     protected String paramKey() {
-        return "country";
+        return "postcode";
     }
 }

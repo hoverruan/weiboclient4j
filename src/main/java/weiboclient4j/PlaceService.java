@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import weiboclient4j.model.CreatePoiResponse;
 import weiboclient4j.model.Poi;
 import weiboclient4j.model.PoiCategory;
 import weiboclient4j.model.PoiList;
@@ -8,11 +9,14 @@ import weiboclient4j.model.StatusList;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.UserLBS;
 import weiboclient4j.model.UserList;
+import weiboclient4j.params.Address;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Category;
 import weiboclient4j.params.City;
+import weiboclient4j.params.Country;
 import weiboclient4j.params.EndBirth;
 import weiboclient4j.params.EndTime;
+import weiboclient4j.params.Extra;
 import weiboclient4j.params.FriendshipType;
 import weiboclient4j.params.GenderType;
 import weiboclient4j.params.Id;
@@ -25,14 +29,18 @@ import weiboclient4j.params.Longitude;
 import weiboclient4j.params.NearbySortType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
+import weiboclient4j.params.Phone;
 import weiboclient4j.params.Pid;
 import weiboclient4j.params.PoiCategoryFlag;
 import weiboclient4j.params.PoiId;
 import weiboclient4j.params.PoiSortType;
+import weiboclient4j.params.PostCode;
+import weiboclient4j.params.Province;
 import weiboclient4j.params.Query;
 import weiboclient4j.params.RelationshipFilter;
 import weiboclient4j.params.StartBirth;
 import weiboclient4j.params.StartTime;
+import weiboclient4j.params.Title;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.UserLevel;
 
@@ -341,5 +349,19 @@ public class PlaceService extends AbstractService {
             Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("place/nearby_users/list", paging, buildParams(optionalParams, latitude, longitude), UserList.class);
+    }
+
+    public static interface CreatePoiParam extends ParameterAction {
+    }
+
+    /**
+     * Optional parameter types: {@link Address}, {@link Province}, {@link Country}, {@link Phone}, {@link PostCode}
+     * and {@link Extra}
+     */
+    public <T extends CreatePoiParam> CreatePoiResponse createPoi(
+            Title title, Category category, Latitude latitude, Longitude longitude, City city, T... optionalParams)
+            throws WeiboClientException {
+        return doPost("place/pois/create", buildParams(optionalParams, title, category, latitude, longitude, city),
+                CreatePoiResponse.class);
     }
 }
