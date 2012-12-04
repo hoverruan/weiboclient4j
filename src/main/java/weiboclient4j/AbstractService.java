@@ -13,7 +13,14 @@ import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
+import weiboclient4j.utils.StreamUtils;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -413,5 +420,71 @@ public class AbstractService {
                 }
             }
         };
+    }
+
+    protected static void buildUploadRequest(OAuthRequest request, File imageFile, Parameters params) throws IOException {
+        ByteArrayOutputStream baos = null;
+        OutputStream os = null;
+        DataOutputStream dos = null;
+
+        try {
+            baos = new ByteArrayOutputStream();
+            os = new BufferedOutputStream(baos);
+            dos = new DataOutputStream(os);
+
+            StreamUtils.StreamWriter writer = StreamUtils.newStreamWriter(dos);
+
+            String boundary = "----weiboclient4j-upload" + System.currentTimeMillis();
+            request.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+            boundary = "--" + boundary;
+
+            writeFile(writer, boundary, imageFile);
+            writeParameters(writer, boundary, params);
+            writer.writeLine(boundary + "--").writeLine();
+
+            dos.flush();
+
+            request.addPayload(baos.toByteArray());
+        } finally {
+            StreamUtils.close(dos);
+            StreamUtils.close(os);
+            StreamUtils.close(baos);
+        }
+    }
+
+    protected static void writeFile(StreamUtils.StreamWriter writer, String boundary, File imageFile) throws IOException {
+        writer.writeLine(boundary)
+                .writeLine("Content-Disposition: form-data; name=\"pic\"; filename=\"" + imageFile.getName() + "\"")
+                .writeLine("Content-Type: " + getContentTypeFromImage(imageFile))
+                .writeLine()
+                .writeFile(imageFile);
+    }
+
+    protected static void writeParameters(StreamUtils.StreamWriter writer, String boundary,
+                                          Parameters params) throws IOException {
+        for (Parameters.Parameter param : params.getParameterList()) {
+            writer.writeLine(boundary)
+                    .writeLine("Content-Disposition: form-data; name=\"" + param.getKey() + "\"")
+                    .writeLine("Content-Type: text/plain; charset=UTF-8")
+                    .writeLine()
+                    .writeLine(param.getValue().getBytes("UTF-8"));
+        }
+    }
+
+    protected static String getContentTypeFromImage(File imageFile) {
+        String contentType = "image/jpeg";
+
+        String fileName = imageFile.getName();
+
+        if (fileName != null) {
+            String lowerCaseFileName = fileName.toLowerCase();
+            if (lowerCaseFileName.endsWith(".gif")) {
+                contentType = "image/gif";
+            } else if (lowerCaseFileName.endsWith(".png")) {
+                contentType = "image/png";
+            }
+        }
+
+        return contentType;
     }
 }

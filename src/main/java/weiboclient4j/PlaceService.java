@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import org.scribe.model.OAuthRequest;
 import weiboclient4j.model.CreatePoiResponse;
 import weiboclient4j.model.Poi;
 import weiboclient4j.model.PoiCategory;
@@ -20,6 +21,7 @@ import weiboclient4j.params.Extra;
 import weiboclient4j.params.FriendshipType;
 import weiboclient4j.params.GenderType;
 import weiboclient4j.params.Id;
+import weiboclient4j.params.IsPublic;
 import weiboclient4j.params.Keyword;
 import weiboclient4j.params.Latitude;
 import weiboclient4j.params.LocOffset;
@@ -29,6 +31,7 @@ import weiboclient4j.params.Longitude;
 import weiboclient4j.params.NearbySortType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
+import weiboclient4j.params.Parameters;
 import weiboclient4j.params.Phone;
 import weiboclient4j.params.Pid;
 import weiboclient4j.params.PoiCategoryFlag;
@@ -40,10 +43,13 @@ import weiboclient4j.params.Query;
 import weiboclient4j.params.RelationshipFilter;
 import weiboclient4j.params.StartBirth;
 import weiboclient4j.params.StartTime;
+import weiboclient4j.params.StatusParam;
 import weiboclient4j.params.Title;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.UserLevel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -363,5 +369,33 @@ public class PlaceService extends AbstractService {
             throws WeiboClientException {
         return doPost("place/pois/create", buildParams(optionalParams, title, category, latitude, longitude, city),
                 CreatePoiResponse.class);
+    }
+
+    public Status addCheckin(PoiId poiId, StatusParam status) throws WeiboClientException {
+        return addCheckin(poiId, status, null, null);
+    }
+
+    public Status addCheckin(PoiId poiId, StatusParam status, IsPublic isPublic) throws WeiboClientException {
+        return addCheckin(poiId, status, null, isPublic);
+    }
+
+    public Status addCheckin(PoiId poiId, StatusParam status, File image) throws WeiboClientException {
+        return addCheckin(poiId, status, image, null);
+    }
+
+    public Status addCheckin(PoiId poiId, StatusParam status, File image, IsPublic isPublic)
+            throws WeiboClientException {
+        OAuthRequest request = createPostRequest("place/pois/add_checkin");
+        Parameters params = withParams(poiId, status, isPublic);
+
+        if (image != null) {
+            try {
+                buildUploadRequest(request, image, params);
+            } catch (IOException e) {
+                throw new WeiboClientException(e);
+            }
+        }
+
+        return sendRequestAndGetResponseObject(request, Status.class);
     }
 }
