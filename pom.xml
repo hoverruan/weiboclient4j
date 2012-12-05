@@ -32,7 +32,7 @@
 
   <scm>
     <url>https://github.com/hoverruan/weiboclient4j</url>
-    <connection>scm:git:https://github.com/hoverruan/weiboclient4j.git</connection>
+    <connection>scm:git:git@github.com:hoverruan/weiboclient4j.git</connection>
   </scm>
 
   <properties>
