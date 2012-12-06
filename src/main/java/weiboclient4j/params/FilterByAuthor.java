@@ -1,13 +1,18 @@
 package weiboclient4j.params;
 
+import weiboclient4j.StatusService;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Hover Ruan
  */
-public enum FilterByAuthor implements ParameterAction {
-    All(0), Friends(1), Stranger(2);
+public enum FilterByAuthor implements
+        StatusService.GetRepostTimelineParam,
+        StatusService.GetRepostTimelineIdsParam {
+
+    All(0), Friends(1), Stranger(2),;
 
     private static Map<Integer, FilterByAuthor> map = new HashMap<Integer, FilterByAuthor>();
 

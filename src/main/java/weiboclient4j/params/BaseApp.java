@@ -1,6 +1,7 @@
 package weiboclient4j.params;
 
 import weiboclient4j.PlaceService;
+import weiboclient4j.StatusService;
 
 /**
  * @author Hover Ruan
@@ -16,7 +17,13 @@ public enum BaseApp implements
         PlaceService.GetUserCheckinsParam,
         PlaceService.GetUserPhotosParam,
         PlaceService.GetUserTipsParam,
-        PlaceService.GetUserTodosParam {
+        PlaceService.GetUserTodosParam,
+        StatusService.GetFriendsTimelineParam,
+        StatusService.GetPublicTimelineParam,
+        StatusService.GetHomeTimelineParam,
+        StatusService.GetFriendsTimelineIdsParam,
+        StatusService.GetUserTimelineParam,
+        StatusService.GetUserTimelineIdsParam {
 
     Yes(1), No(0),;
 

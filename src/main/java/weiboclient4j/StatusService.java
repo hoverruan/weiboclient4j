@@ -27,6 +27,7 @@ import weiboclient4j.params.Longitude;
 import weiboclient4j.params.Mid;
 import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
+import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.StatusParam;
@@ -48,283 +49,264 @@ import java.util.Map;
  *
  * @author Hover Ruan
  */
+@SuppressWarnings("unchecked")
 public class StatusService extends AbstractService {
 
     public StatusService(WeiboClient2 client) {
         super(client);
     }
 
+    public static interface GetPublicTimelineParam extends ParameterAction {
+    }
+
     public Timeline getPublicTimeline() throws WeiboClientException {
         return getPublicTimeline(Paging.EMPTY);
     }
 
-    public Timeline getPublicTimeline(Paging paging) throws WeiboClientException {
-        return getPublicTimeline(paging, BaseApp.No);
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetPublicTimelineParam> Timeline getPublicTimeline(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("statuses/public_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    public Timeline getPublicTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return doGet("statuses/public_timeline",
-                paging, withParams(baseApp), Timeline.class);
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetPublicTimelineParam> Timeline getPublicTimeline(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/public_timeline", paging, buildParams(optionalParams), Timeline.class);
+    }
+
+    public static interface GetFriendsTimelineParam extends ParameterAction {
     }
 
     public Timeline getFriendsTimeline() throws WeiboClientException {
         return getFriendsTimeline(Paging.EMPTY);
     }
 
-    public Timeline getFriendsTimeline(Paging paging) throws WeiboClientException {
-        return getFriendsTimeline(paging, BaseApp.No, Feature.All);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
+     */
+    public <T extends GetFriendsTimelineParam> Timeline getFriendsTimeline(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("statuses/friends_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return getFriendsTimeline(paging, baseApp, Feature.All);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
+     */
+    public <T extends GetFriendsTimelineParam> Timeline getFriendsTimeline(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/friends_timeline", paging, buildParams(optionalParams), Timeline.class);
     }
 
-    public Timeline getFriendsTimeline(Paging paging, Feature feature) throws WeiboClientException {
-        return getFriendsTimeline(paging, BaseApp.No, feature);
-    }
-
-    public Timeline getFriendsTimeline(Paging paging, TrimUser trimUser) throws WeiboClientException {
-        return getFriendsTimeline(paging, BaseApp.No, trimUser);
-    }
-
-    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
-        return getFriendsTimeline(paging, baseApp, feature, TrimUser.No);
-    }
-
-    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, TrimUser trimUser) throws WeiboClientException {
-        return getFriendsTimeline(paging, baseApp, Feature.All, trimUser);
-    }
-
-    public Timeline getFriendsTimeline(Paging paging, Feature feature, TrimUser trimUser) throws WeiboClientException {
-        return getFriendsTimeline(paging, BaseApp.No, feature, trimUser);
-    }
-
-    public Timeline getFriendsTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
-        return doGet("statuses/friends_timeline",
-                paging, withParams(baseApp, feature, trimUser), Timeline.class);
+    public static interface GetHomeTimelineParam extends ParameterAction {
     }
 
     public Timeline getHomeTimeline() throws WeiboClientException {
         return getHomeTimeline(Paging.EMPTY);
     }
 
-    public Timeline getHomeTimeline(Paging paging) throws WeiboClientException {
-        return getHomeTimeline(paging, BaseApp.No, Feature.All);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
+     */
+    public <T extends GetHomeTimelineParam> Timeline getHomeTimeline(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("statuses/home_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return getHomeTimeline(paging, baseApp, Feature.All);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
+     */
+    public <T extends GetHomeTimelineParam> Timeline getHomeTimeline(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/home_timeline", paging, buildParams(optionalParams), Timeline.class);
     }
 
-    public Timeline getHomeTimeline(Paging paging, Feature feature) throws WeiboClientException {
-        return getHomeTimeline(paging, BaseApp.No, feature);
-    }
-
-    public Timeline getHomeTimeline(Paging paging, TrimUser trimUser) throws WeiboClientException {
-        return getHomeTimeline(paging, BaseApp.No, trimUser);
-    }
-
-    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
-        return getHomeTimeline(paging, baseApp, feature, TrimUser.No);
-    }
-
-    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, TrimUser trimUser) throws WeiboClientException {
-        return getHomeTimeline(paging, baseApp, Feature.All, trimUser);
-    }
-
-    public Timeline getHomeTimeline(Paging paging, Feature feature, TrimUser trimUser) throws WeiboClientException {
-        return getHomeTimeline(paging, BaseApp.No, feature, trimUser);
-    }
-
-    public Timeline getHomeTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser) throws WeiboClientException {
-        return doGet("statuses/home_timeline",
-                paging, withParams(baseApp, feature, trimUser), Timeline.class);
+    public static interface GetFriendsTimelineIdsParam extends ParameterAction {
     }
 
     public TimelineIds getFriendsTimelineIds() throws WeiboClientException {
         return getFriendsTimelineIds(Paging.EMPTY);
     }
 
-    public TimelineIds getFriendsTimelineIds(Paging paging) throws WeiboClientException {
-        return getFriendsTimelineIds(paging, BaseApp.No, Feature.All);
-    }
-
-    public TimelineIds getFriendsTimelineIds(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
-        return doGet("statuses/friends_timeline/ids",
-                paging, withParams(baseApp, feature), TimelineIds.class);
-    }
-
-    public Timeline getUserTimeline(ScreenName screenName) throws WeiboClientException {
-        return getUserTimeline(screenName, Paging.EMPTY);
-    }
-
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging) throws WeiboClientException {
-        return getUserTimeline(Uid.EMPTY, screenName, paging);
-    }
-
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return getUserTimeline(screenName, paging, baseApp, Feature.All);
-    }
-
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, Feature feature) throws WeiboClientException {
-        return getUserTimeline(screenName, paging, BaseApp.No, feature);
-    }
-
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, TrimUser trimUser) throws WeiboClientException {
-        return getUserTimeline(screenName, paging, BaseApp.No, trimUser);
-    }
-
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, Feature feature, TrimUser trimUser)
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetFriendsTimelineIdsParam> TimelineIds getFriendsTimelineIds(T... optionalParams)
             throws WeiboClientException {
-        return getUserTimeline(screenName, paging, BaseApp.No, feature, trimUser);
+        return doGet("statuses/friends_timeline/ids", Paging.EMPTY, buildParams(optionalParams), TimelineIds.class);
     }
 
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp, TrimUser trimUser)
-            throws WeiboClientException {
-        return getUserTimeline(screenName, paging, baseApp, Feature.All, trimUser);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetFriendsTimelineIdsParam> TimelineIds getFriendsTimelineIds(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/friends_timeline/ids", paging, buildParams(optionalParams), TimelineIds.class);
     }
 
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature)
-            throws WeiboClientException {
-        return getUserTimeline(screenName, paging, baseApp, feature, TrimUser.No);
+    public static interface GetUserTimelineParam extends ParameterAction {
     }
 
-    public Timeline getUserTimeline(ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
+    public <T extends GetUserTimelineParam> Timeline getUserTimeline(T... optionalParams)
             throws WeiboClientException {
-        return getUserTimeline(Uid.EMPTY, screenName, paging, baseApp, feature, trimUser);
+        return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
+    }
+
+    public <T extends GetUserTimelineParam> Timeline getUserTimeline(Paging paging, T... optionalParams)
+            throws WeiboClientException {
+        return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, paging, optionalParams);
     }
 
     public Timeline getUserTimeline(Uid uid) throws WeiboClientException {
         return getUserTimeline(uid, Paging.EMPTY);
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging) throws WeiboClientException {
-        return getUserTimeline(uid, ScreenName.EMPTY, paging);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
+     */
+    public <T extends GetUserTimelineParam> Timeline getUserTimeline(
+            Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
+        return getUserTimeline(uid, ScreenName.EMPTY, paging, optionalParams);
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return getUserTimeline(uid, paging, baseApp, Feature.All);
+    public Timeline getUserTimeline(ScreenName screenName) throws WeiboClientException {
+        return getUserTimeline(screenName, Paging.EMPTY);
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging, Feature feature) throws WeiboClientException {
-        return getUserTimeline(uid, paging, BaseApp.No, feature);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
+     */
+    public <T extends GetUserTimelineParam> Timeline getUserTimeline(
+            ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
+        return getUserTimeline(Uid.EMPTY, screenName, paging, optionalParams);
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging, TrimUser trimUser) throws WeiboClientException {
-        return getUserTimeline(uid, paging, BaseApp.No, trimUser);
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
+     */
+    private <T extends GetUserTimelineParam> Timeline getUserTimeline(
+            Uid uid, ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/user_timeline", paging,
+                buildParams(optionalParams, uid, screenName), Timeline.class);
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp, Feature feature)
-            throws WeiboClientException {
-        return getUserTimeline(uid, paging, baseApp, feature, TrimUser.No);
+    public static interface GetUserTimelineIdsParam extends ParameterAction {
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp, TrimUser trimUser) throws WeiboClientException {
-        return getUserTimeline(uid, paging, baseApp, Feature.All, trimUser);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            T... optionalParams) throws WeiboClientException {
+        return getUserTimelineIds(Uid.EMPTY, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
     }
 
-    public Timeline getUserTimeline(Uid uid, Paging paging, Feature feature, TrimUser trimUser) throws WeiboClientException {
-        return getUserTimeline(uid, paging, BaseApp.No, feature, trimUser);
-    }
-
-    public Timeline getUserTimeline(Uid uid, Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
-            throws WeiboClientException {
-        return getUserTimeline(uid, ScreenName.EMPTY, paging, baseApp, feature, trimUser);
-    }
-
-    public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
-        return getUserTimeline(uid, screenName, paging, BaseApp.No, Feature.All, TrimUser.No);
-    }
-
-    public Timeline getUserTimeline() throws WeiboClientException {
-        return getUserTimeline(Paging.EMPTY);
-    }
-
-    public Timeline getUserTimeline(TrimUser trimUser) throws WeiboClientException {
-        return getUserTimeline(Paging.EMPTY, BaseApp.No, Feature.All, trimUser);
-    }
-
-    public Timeline getUserTimeline(Paging paging) throws WeiboClientException {
-        return getUserTimeline(paging, BaseApp.No, Feature.All, TrimUser.No);
-    }
-
-    public Timeline getUserTimeline(Paging paging, TrimUser trimUser) throws WeiboClientException {
-        return getUserTimeline(paging, BaseApp.No, Feature.All, trimUser);
-    }
-
-    public Timeline getUserTimeline(Paging paging, BaseApp baseApp, Feature feature, TrimUser trimUser)
-            throws WeiboClientException {
-        return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, paging, baseApp, feature, trimUser);
-    }
-
-    public Timeline getUserTimeline(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp,
-                                    Feature feature, TrimUser trimUser) throws WeiboClientException {
-        return doGet("statuses/user_timeline",
-                paging, withParams(uid, screenName, trimUser, baseApp, feature), Timeline.class);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return getUserTimelineIds(Uid.EMPTY, ScreenName.EMPTY, paging, optionalParams);
     }
 
     public TimelineIds getUserTimelineIds(ScreenName screenName) throws WeiboClientException {
         return getUserTimelineIds(screenName, Paging.EMPTY);
     }
 
-    public TimelineIds getUserTimelineIds(ScreenName screenName, Paging paging) throws WeiboClientException {
-        return getUserTimelineIds(Uid.EMPTY, screenName, paging);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            ScreenName screenName, T... optionalParams) throws WeiboClientException {
+        return getUserTimelineIds(screenName, Paging.EMPTY, optionalParams);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
+        return getUserTimelineIds(Uid.EMPTY, screenName, paging, optionalParams);
     }
 
     public TimelineIds getUserTimelineIds(Uid uid) throws WeiboClientException {
         return getUserTimelineIds(uid, Paging.EMPTY);
     }
 
-    public TimelineIds getUserTimelineIds(Uid uid, Paging paging) throws WeiboClientException {
-        return getUserTimelineIds(uid, ScreenName.EMPTY, paging);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            Uid uid, T... optionalParams) throws WeiboClientException {
+        return getUserTimelineIds(uid, Paging.EMPTY, optionalParams);
     }
 
-    public TimelineIds getUserTimelineIds(Uid uid, ScreenName screenName, Paging paging) throws WeiboClientException {
-        return getUserTimelineIds(uid, screenName, paging, BaseApp.No, Feature.All);
+
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
+        return getUserTimelineIds(uid, ScreenName.EMPTY, paging, optionalParams);
     }
 
-    public TimelineIds getUserTimelineIds() throws WeiboClientException {
-        return getUserTimelineIds(Paging.EMPTY);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    private <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
+            Uid uid, ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/user_timeline/ids", paging, buildParams(optionalParams, uid, screenName),
+                TimelineIds.class);
     }
 
-    public TimelineIds getUserTimelineIds(Paging paging) throws WeiboClientException {
-        return getUserTimelineIds(paging, BaseApp.No, Feature.All);
-    }
-
-    public TimelineIds getUserTimelineIds(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
-        return getUserTimelineIds(Uid.EMPTY, ScreenName.EMPTY, paging, baseApp, feature);
-    }
-
-    public TimelineIds getUserTimelineIds(Uid uid, ScreenName screenName, Paging paging, BaseApp baseApp, Feature feature)
-            throws WeiboClientException {
-        return doGet("statuses/user_timeline/ids",
-                paging, withParams(uid, screenName, baseApp, feature), TimelineIds.class);
+    public static interface GetRepostTimelineParam extends ParameterAction {
     }
 
     public RepostTimeline getRepostTimeline(Id id) throws WeiboClientException {
         return getRepostTimeline(id, Paging.EMPTY);
     }
 
-    public RepostTimeline getRepostTimeline(Id id, Paging paging) throws WeiboClientException {
-        return getRepostTimeline(id, paging, FilterByAuthor.All);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}
+     */
+    public <T extends GetRepostTimelineParam> RepostTimeline getRepostTimeline(
+            Id id, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/repost_timeline", Paging.EMPTY, buildParams(optionalParams, id), RepostTimeline.class);
     }
 
-    public RepostTimeline getRepostTimeline(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
-        return doGet("statuses/repost_timeline",
-                paging, withParams(id, filterByAuthor), RepostTimeline.class);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}
+     */
+    public <T extends GetRepostTimelineParam> RepostTimeline getRepostTimeline(
+            Id id, Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/repost_timeline", paging, buildParams(optionalParams, id), RepostTimeline.class);
+    }
+
+    public static interface GetRepostTimelineIdsParam extends ParameterAction {
     }
 
     public TimelineIds getRepostTimelineIds(Id id) throws WeiboClientException {
         return getRepostTimelineIds(id, Paging.EMPTY);
     }
 
-    public TimelineIds getRepostTimelineIds(Id id, Paging paging) throws WeiboClientException {
-        return getRepostTimelineIds(id, paging, FilterByAuthor.All);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}
+     */
+    public <T extends GetRepostTimelineIdsParam> TimelineIds getRepostTimelineIds(
+            Id id, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/repost_timeline/ids", Paging.EMPTY, buildParams(optionalParams, id), TimelineIds.class);
     }
 
-    public TimelineIds getRepostTimelineIds(Id id, Paging paging, FilterByAuthor filterByAuthor) throws WeiboClientException {
-        return doGet("statuses/repost_timeline/ids",
-                paging, withParams(id, filterByAuthor), TimelineIds.class);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}
+     */
+    public <T extends GetRepostTimelineIdsParam> TimelineIds getRepostTimelineIds(
+            Id id, Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/repost_timeline/ids", paging, buildParams(optionalParams, id), TimelineIds.class);
     }
 
     public RepostTimeline getRepostByMe() throws WeiboClientException {

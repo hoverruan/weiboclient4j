@@ -1,9 +1,15 @@
 package weiboclient4j.params;
 
+import weiboclient4j.StatusService;
+
 /**
  * @author Hover Ruan
  */
-public enum TrimUser implements ParameterAction {
+public enum TrimUser implements
+        StatusService.GetFriendsTimelineParam,
+        StatusService.GetHomeTimelineParam,
+        StatusService.GetUserTimelineParam {
+
     Yes(1), No(0),;
 
     private int value;
