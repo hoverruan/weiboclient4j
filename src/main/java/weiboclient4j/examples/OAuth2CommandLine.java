@@ -123,7 +123,7 @@ public class OAuth2CommandLine {
         statusService.getUserTimeline(Uid.EMPTY);
         statusService.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
 
-        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(new Uid(1834561765L), null, null, BaseApp.No, Feature.All, TrimUser.No);
+        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(new Uid(1834561765L), BaseApp.No, Feature.All, TrimUser.No);
         System.out.println();
         System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
 

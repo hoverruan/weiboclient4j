@@ -151,11 +151,17 @@ public class StatusService extends AbstractService {
     public static interface GetUserTimelineParam extends ParameterAction {
     }
 
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
+     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(T... optionalParams)
             throws WeiboClientException {
         return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
     }
 
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
+     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(Paging paging, T... optionalParams)
             throws WeiboClientException {
         return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, paging, optionalParams);
@@ -163,6 +169,14 @@ public class StatusService extends AbstractService {
 
     public Timeline getUserTimeline(Uid uid) throws WeiboClientException {
         return getUserTimeline(uid, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
+     */
+    public <T extends GetUserTimelineParam> Timeline getUserTimeline(
+            Uid uid, T... optionalParams) throws WeiboClientException {
+        return getUserTimeline(uid, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
     }
 
     /**
@@ -317,18 +331,22 @@ public class StatusService extends AbstractService {
         return doGet("statuses/repost_by_me", paging, RepostTimeline.class);
     }
 
-    public Timeline getMentions() throws WeiboClientException {
-        return getMentions(Paging.EMPTY);
+    public static interface GetMentionsParam extends ParameterAction {
     }
 
-    public Timeline getMentions(Paging paging) throws WeiboClientException {
-        return getMentions(paging, FilterByAuthor.All, FilterBySource.All, FilterByType.All);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
+     */
+    public <T extends GetMentionsParam> Timeline getMentions(T... optionalParams) throws WeiboClientException {
+        return getMentions(Paging.EMPTY, optionalParams);
     }
 
-    public Timeline getMentions(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource, FilterByType filterByType)
+    /**
+     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
+     */
+    public <T extends GetMentionsParam> Timeline getMentions(Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return doGet("statuses/mentions",
-                paging, withParams(filterByAuthor, filterBySource, filterByType), Timeline.class);
+        return doGet("statuses/mentions",paging, buildParams(optionalParams), Timeline.class);
     }
 
     public TimelineIds getMentionsIds() throws WeiboClientException {

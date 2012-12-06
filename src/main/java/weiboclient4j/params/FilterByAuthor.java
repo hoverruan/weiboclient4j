@@ -10,7 +10,8 @@ import java.util.Map;
  */
 public enum FilterByAuthor implements
         StatusService.GetRepostTimelineParam,
-        StatusService.GetRepostTimelineIdsParam {
+        StatusService.GetRepostTimelineIdsParam,
+        StatusService.GetMentionsParam {
 
     All(0), Friends(1), Stranger(2),;
 

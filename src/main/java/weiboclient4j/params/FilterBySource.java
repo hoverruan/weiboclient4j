@@ -1,13 +1,16 @@
 package weiboclient4j.params;
 
+import weiboclient4j.StatusService;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Hover Ruan
  */
-public enum FilterBySource implements ParameterAction {
-    All(0), FromWeibo(1), FromWeiqun(2);
+public enum FilterBySource implements StatusService.GetMentionsParam {
+
+    All(0), FromWeibo(1), FromWeiqun(2),;
 
     private static Map<Integer, FilterBySource> map = new HashMap<Integer, FilterBySource>();
 
