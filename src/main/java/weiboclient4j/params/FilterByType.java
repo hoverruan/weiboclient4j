@@ -8,7 +8,9 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum FilterByType implements StatusService.GetMentionsParam {
+public enum FilterByType implements
+        StatusService.GetMentionsParam,
+        StatusService.GetMentionsIdsParam {
 
     All(0), Original(1),;
 

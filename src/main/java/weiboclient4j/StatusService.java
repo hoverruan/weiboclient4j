@@ -346,34 +346,45 @@ public class StatusService extends AbstractService {
      */
     public <T extends GetMentionsParam> Timeline getMentions(Paging paging, T... optionalParams)
             throws WeiboClientException {
-        return doGet("statuses/mentions",paging, buildParams(optionalParams), Timeline.class);
+        return doGet("statuses/mentions", paging, buildParams(optionalParams), Timeline.class);
     }
 
-    public TimelineIds getMentionsIds() throws WeiboClientException {
-        return getMentionsIds(Paging.EMPTY);
+    public static interface GetMentionsIdsParam extends ParameterAction {
     }
 
-    public TimelineIds getMentionsIds(Paging paging) throws WeiboClientException {
-        return getMentionsIds(paging, FilterByAuthor.All, FilterBySource.All, FilterByType.All);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
+     */
+    public <T extends GetMentionsIdsParam> TimelineIds getMentionsIds(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("statuses/mentions/ids", Paging.EMPTY, buildParams(optionalParams), TimelineIds.class);
     }
 
-    public TimelineIds getMentionsIds(Paging paging, FilterByAuthor filterByAuthor, FilterBySource filterBySource,
-                                      FilterByType filterByType) throws WeiboClientException {
-        return doGet("statuses/mentions/ids",
-                paging, withParams(filterByAuthor, filterBySource, filterByType), TimelineIds.class);
+    /**
+     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
+     */
+    public <T extends GetMentionsIdsParam> TimelineIds getMentionsIds(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/mentions/ids", paging, buildParams(optionalParams), TimelineIds.class);
     }
 
-    public Timeline getBilateralTimeline() throws WeiboClientException {
-        return getBilateralTimeline(Paging.EMPTY);
+    public static interface GetBilateralTimelineParam extends ParameterAction {
     }
 
-    public Timeline getBilateralTimeline(Paging paging) throws WeiboClientException {
-        return getBilateralTimeline(paging, BaseApp.No, Feature.All);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetBilateralTimelineParam> Timeline getBilateralTimeline(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("statuses/bilateral_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    public Timeline getBilateralTimeline(Paging paging, BaseApp baseApp, Feature feature) throws WeiboClientException {
-        return doGet("statuses/bilateral_timeline",
-                paging, withParams(baseApp, feature), Timeline.class);
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link Feature}
+     */
+    public <T extends GetBilateralTimelineParam> Timeline getBilateralTimeline(
+            Paging paging, T... optionalParams) throws WeiboClientException {
+        return doGet("statuses/bilateral_timeline", paging, buildParams(optionalParams), Timeline.class);
     }
 
     public Status show(Id id) throws WeiboClientException {
@@ -405,26 +416,28 @@ public class StatusService extends AbstractService {
         return map;
     }
 
-    public long queryId(Mid mid, MidType type, IsBase62 isBase62) throws WeiboClientException {
-        return queryId(mid, type, null, isBase62);
+    public static interface QueryIdParam extends ParameterAction {
     }
 
-    public long queryId(Mid mid, MidType type, InboxType inboxType, IsBase62 isBase62) throws WeiboClientException {
-        IdResponse idResponse = doGet("statuses/queryid",
-                withParams(mid, type, inboxType, isBase62), IdResponse.class);
+    /**
+     * Optional parameter types: {@link InboxType} and {@link IsBase62}
+     */
+    public <T extends QueryIdParam> long queryId(
+            Mid mid, MidType type, T... optionalParams) throws WeiboClientException {
+        IdResponse idResponse = doGet("statuses/queryid", buildParams(optionalParams, mid, type), IdResponse.class);
 
         return idResponse.getId();
     }
 
-    public Map<String, Long> queryIdList(Collection<Mid> midList, MidType type, IsBase62 isBase62) throws WeiboClientException {
-        return queryIdList(midList, type, null, isBase62);
+    public static interface QueryIdListParam extends ParameterAction {
     }
 
-    public Map<String, Long> queryIdList(Collection<Mid> midList, MidType type, InboxType inboxType, IsBase62 isBase62)
+    public <T extends QueryIdListParam> Map<String, Long> queryIdList(
+            Collection<Mid> midList, MidType type, T... optionalParams)
             throws WeiboClientException {
         // [{"yfcLPlKKn":"3436240135184587"},{"yfd9X6XAx":"3436255091659029"}]
-        ArrayNode arrayNode = doGet("statuses/queryid",
-                withParams(Mid.midParam(midList), type, inboxType, isBase62, IsBatch.Yes), ArrayNode.class);
+        ArrayNode arrayNode = doGet("statuses/queryid", buildParams(optionalParams, Mid.midParam(midList), type,
+                IsBatch.Yes), ArrayNode.class);
 
         Map<String, Long> map = new HashMap<String, Long>();
         for (int i = 0; i < arrayNode.size(); i++) {

@@ -11,7 +11,8 @@ import java.util.Map;
 public enum FilterByAuthor implements
         StatusService.GetRepostTimelineParam,
         StatusService.GetRepostTimelineIdsParam,
-        StatusService.GetMentionsParam {
+        StatusService.GetMentionsParam,
+        StatusService.GetMentionsIdsParam {
 
     All(0), Friends(1), Stranger(2),;
 

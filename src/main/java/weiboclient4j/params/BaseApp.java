@@ -23,7 +23,8 @@ public enum BaseApp implements
         StatusService.GetHomeTimelineParam,
         StatusService.GetFriendsTimelineIdsParam,
         StatusService.GetUserTimelineParam,
-        StatusService.GetUserTimelineIdsParam {
+        StatusService.GetUserTimelineIdsParam,
+        StatusService.GetBilateralTimelineParam {
 
     Yes(1), No(0),;
 

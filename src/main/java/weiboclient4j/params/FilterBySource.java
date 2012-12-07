@@ -8,7 +8,9 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public enum FilterBySource implements StatusService.GetMentionsParam {
+public enum FilterBySource implements
+        StatusService.GetMentionsParam,
+        StatusService.GetMentionsIdsParam {
 
     All(0), FromWeibo(1), FromWeiqun(2),;
 

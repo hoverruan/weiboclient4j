@@ -13,7 +13,8 @@ public enum Feature implements
         StatusService.GetHomeTimelineParam,
         StatusService.GetFriendsTimelineIdsParam,
         StatusService.GetUserTimelineParam,
-        StatusService.GetUserTimelineIdsParam {
+        StatusService.GetUserTimelineIdsParam,
+        StatusService.GetBilateralTimelineParam {
 
     All(0), Original(1), Picture(2), Video(3), Music(4),;
 

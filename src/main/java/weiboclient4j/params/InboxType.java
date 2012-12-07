@@ -1,13 +1,18 @@
 package weiboclient4j.params;
 
+import weiboclient4j.StatusService;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Hover Ruan
  */
-public enum InboxType implements ParameterAction {
-    Outbox(0), Inbox(1);
+public enum InboxType implements
+        StatusService.QueryIdParam,
+        StatusService.QueryIdListParam {
+
+    Outbox(0), Inbox(1),;
 
     private static Map<Integer, InboxType> map = new HashMap<Integer, InboxType>();
 
