@@ -71,6 +71,14 @@ public class PlaceService extends AbstractService {
     /**
      * Optional parameter types: {@link BaseApp}
      */
+    public <T extends GetPublishTimelineParam> Timeline getPublishTimeline(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/public_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
     public <T extends GetPublishTimelineParam> Timeline getPublishTimeline(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("place/public_timeline", paging, buildParams(optionalParams), Timeline.class);
@@ -81,6 +89,14 @@ public class PlaceService extends AbstractService {
 
     public Timeline getFriendsTimeline() throws WeiboClientException {
         return getFriendsTimeline(Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link FriendshipType}
+     */
+    public <T extends GetFriendsTimelineParam> Timeline getFriendsTimeline(T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/friends_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
     /**
@@ -101,6 +117,14 @@ public class PlaceService extends AbstractService {
     /**
      * Optional parameter types: {@link BaseApp}
      */
+    public <T extends GetUserTimelineParam> Timeline getUserTimeline(Uid uid, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/user_timeline", Paging.EMPTY, buildParams(optionalParams, uid), Timeline.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(
             Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("place/user_timeline", paging, buildParams(optionalParams, uid), Timeline.class);
@@ -116,6 +140,14 @@ public class PlaceService extends AbstractService {
     /**
      * Optional parameter types: {@link BaseApp}
      */
+    public <T extends GetPoiTimelineParam> Timeline getPoiTimeline(PoiId poiId, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/poi_timeline", Paging.EMPTY, buildParams(optionalParams, poiId), Timeline.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
     public <T extends GetPoiTimelineParam> Timeline getPoiTimeline(
             PoiId poiId, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("place/poi_timeline", paging, buildParams(optionalParams, poiId), Timeline.class);
@@ -126,6 +158,17 @@ public class PlaceService extends AbstractService {
 
     public Timeline getNearbyTimeline(Latitude latitude, Longitude longitude) throws WeiboClientException {
         return getNearbyTimeline(latitude, longitude, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link StartTime}, {@link EndTime}, {@link LocSortType},
+     * {@link BaseApp} and {@link LocOffset}
+     */
+    public <T extends GetNearbyTimelineParam> Timeline getNearbyTimeline(
+            Latitude latitude, Longitude longitude, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby_timeline", Paging.EMPTY, buildParams(optionalParams, latitude, longitude),
+                Timeline.class);
     }
 
     /**
@@ -161,6 +204,14 @@ public class PlaceService extends AbstractService {
      * Optional parameter types: {@link BaseApp}
      */
     public <T extends GetUserCheckinsParam> PoiList getUserCheckins(
+            Uid uid, T... optionalParams) throws WeiboClientException {
+        return doGet("place/users/checkins", Paging.EMPTY, buildParams(optionalParams, uid), PoiList.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetUserCheckinsParam> PoiList getUserCheckins(
             Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("place/users/checkins", paging, buildParams(optionalParams, uid), PoiList.class);
     }
@@ -170,6 +221,14 @@ public class PlaceService extends AbstractService {
 
     public StatusList getUserPhotos(Uid uid) throws WeiboClientException {
         return getUserPhotos(uid, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetUserPhotosParam> StatusList getUserPhotos(
+            Uid uid, T... optionalParams) throws WeiboClientException {
+        return doGet("place/users/photos", Paging.EMPTY, buildParams(optionalParams, uid), StatusList.class);
     }
 
     /**
@@ -191,6 +250,14 @@ public class PlaceService extends AbstractService {
      * Optional parameter types: {@link BaseApp}
      */
     public <T extends GetUserTipsParam> StatusList getUserTips(
+            Uid uid, T... optionalParams) throws WeiboClientException {
+        return doGet("place/users/tips", Paging.EMPTY, buildParams(optionalParams, uid), StatusList.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetUserTipsParam> StatusList getUserTips(
             Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("place/users/tips", paging, buildParams(optionalParams, uid), StatusList.class);
     }
@@ -200,6 +267,14 @@ public class PlaceService extends AbstractService {
 
     public StatusList getUserTodos(Uid uid) throws WeiboClientException {
         return getUserTodos(uid, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
+    public <T extends GetUserTodosParam> StatusList getUserTodos(
+            Uid uid, T... optionalParams) throws WeiboClientException {
+        return doGet("place/users/todos", Paging.EMPTY, buildParams(optionalParams, uid), StatusList.class);
     }
 
     /**
@@ -228,6 +303,14 @@ public class PlaceService extends AbstractService {
     /**
      * Optional parameter types: {@link BaseApp}
      */
+    public <T extends GetPoiUsersParam> UserList getPoiUsers(PoiId poiId, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/pois/users", Paging.EMPTY, buildParams(optionalParams, poiId), UserList.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp}
+     */
     public <T extends GetPoiUsersParam> UserList getPoiUsers(PoiId poiId, Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("place/pois/users", paging, buildParams(optionalParams, poiId), UserList.class);
@@ -238,6 +321,14 @@ public class PlaceService extends AbstractService {
 
     public StatusList getPoiTips(PoiId poiId) throws WeiboClientException {
         return getPoiTips(poiId, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link PoiSortType}
+     */
+    public <T extends GetPoiTipsParam> StatusList getPoiTips(PoiId poiId, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/pois/tips", Paging.EMPTY, buildParams(optionalParams, poiId), StatusList.class);
     }
 
     /**
@@ -258,6 +349,14 @@ public class PlaceService extends AbstractService {
     /**
      * Optional parameter types: {@link BaseApp} and {@link PoiSortType}
      */
+    public <T extends GetPoiPhotosParam> StatusList getPoiPhotos(PoiId poiId, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/pois/photos", Paging.EMPTY, buildParams(optionalParams, poiId), StatusList.class);
+    }
+
+    /**
+     * Optional parameter types: {@link BaseApp} and {@link PoiSortType}
+     */
     public <T extends GetPoiPhotosParam> StatusList getPoiPhotos(PoiId poiId, Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("place/pois/photos", paging, buildParams(optionalParams, poiId), StatusList.class);
@@ -268,6 +367,14 @@ public class PlaceService extends AbstractService {
 
     public PoiList searchPois(Keyword keyword) throws WeiboClientException {
         return searchPois(keyword, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link City} and {@link Category}
+     */
+    public <T extends SearchPoisParam> PoiList searchPois(Keyword keyword, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/pois/search", Paging.EMPTY, buildParams(optionalParams, keyword), PoiList.class);
     }
 
     /**
@@ -301,6 +408,16 @@ public class PlaceService extends AbstractService {
      * {@link LocOffset}
      */
     public <T extends GetNearbyPoisParam> PoiList getNearbyPois(
+            Latitude latitude, Longitude longitude, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby/pois", Paging.EMPTY, buildParams(optionalParams, latitude, longitude), PoiList.class);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link Query}, {@link Category}, {@link NearbySortType} and
+     * {@link LocOffset}
+     */
+    public <T extends GetNearbyPoisParam> PoiList getNearbyPois(
             Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("place/nearby/pois", paging, buildParams(optionalParams, latitude, longitude), PoiList.class);
@@ -311,6 +428,16 @@ public class PlaceService extends AbstractService {
 
     public UserList getNearbyUsers(Latitude latitude, Longitude longitude) throws WeiboClientException {
         return getNearbyUsers(latitude, longitude, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link StartTime}, {@link EndTime},{@link NearbySortType} and
+     * {@link LocOffset}
+     */
+    public <T extends GetNearbyUsersParam> UserList getNearbyUsers(
+            Latitude latitude, Longitude longitude, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby/users", Paging.EMPTY, buildParams(optionalParams, latitude, longitude), UserList.class);
     }
 
     /**
@@ -335,6 +462,16 @@ public class PlaceService extends AbstractService {
      * and {@link LocOffset}
      */
     public <T extends GetNearbyPhotosParam> StatusList getNearbyPhotos(
+            Latitude latitude, Longitude longitude, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby/photos", Paging.EMPTY, buildParams(optionalParams, latitude, longitude), StatusList.class);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link StartTime}, {@link EndTime}, {@link LocSortType}
+     * and {@link LocOffset}
+     */
+    public <T extends GetNearbyPhotosParam> StatusList getNearbyPhotos(
             Latitude latitude, Longitude longitude, Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("place/nearby/photos", paging, buildParams(optionalParams, latitude, longitude), StatusList.class);
@@ -345,6 +482,16 @@ public class PlaceService extends AbstractService {
 
     public UserList getNearbyUsersList(Latitude latitude, Longitude longitude) throws WeiboClientException {
         return getNearbyUsersList(latitude, longitude, Paging.EMPTY);
+    }
+
+    /**
+     * Optional parameter types: {@link LocRange}, {@link LocSortType}, {@link RelationshipFilter}, {@link GenderType},
+     * {@link UserLevel}, {@link StartBirth}, {@link EndBirth} and {@link LocOffset}
+     */
+    public <T extends GetNearbyUsersListParam> UserList getNearbyUsersList(
+            Latitude latitude, Longitude longitude, T... optionalParams)
+            throws WeiboClientException {
+        return doGet("place/nearby_users/list", Paging.EMPTY, buildParams(optionalParams, latitude, longitude), UserList.class);
     }
 
     /**
