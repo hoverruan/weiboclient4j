@@ -1,5 +1,8 @@
 weiboclient4j CHANGELOG
 
+*** 0.4.0 [Pending]
+ * 重构各个Service，使用可变参数
+
 *** 0.3.3
  * 完成所有的位置服务的接口
 
