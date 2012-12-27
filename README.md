@@ -1,6 +1,8 @@
 Weiboclient4j
 ===
 
+[![Build Status](https://travis-ci.org/hoverruan/weiboclient4j.png?branch=master)](https://travis-ci.org/hoverruan/weiboclient4j)
+
 为什么需要另外一个Java版本的微博客户端？
 ---
 
