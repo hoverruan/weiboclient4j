@@ -1,6 +1,8 @@
 weiboclient4j CHANGELOG
 
 *** 0.4.0 [Pending]
+ * 去掉第一版的API支持
+ * 添加travis-ci.org自动构建状态
  * 重构各个Service，使用可变参数
 
 *** 0.3.3
