@@ -5,7 +5,6 @@ import org.codehaus.jackson.type.TypeReference;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
-import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.Url;
 import weiboclient4j.model.UrlInfo;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
@@ -22,8 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -332,88 +329,6 @@ public class AbstractService {
 
         public void setStatus(int status) {
             this.status = status;
-        }
-    }
-
-    protected static SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    protected static class RawRateLimitStatus {
-        private int ipLimit;
-        private String limitTimeUnit;
-        private int remainingIpHits;
-        private int remainingUserHits;
-        private String resetTime;
-        private int resetTimeInSeconds;
-        private int userLimit;
-
-        public RateLimitStatus asRateLimitStatus() throws ParseException {
-            RateLimitStatus status = new RateLimitStatus();
-            status.setIpLimit(ipLimit);
-            status.setLimitTimeUnit(limitTimeUnit);
-            status.setRemainingUserHits(remainingUserHits);
-            status.setResetTimeInSeconds(resetTimeInSeconds);
-            status.setUserLimit(userLimit);
-
-            status.setResetTime(simpleFormat.parse(resetTime));
-
-            return status;
-        }
-
-        public int getIpLimit() {
-            return ipLimit;
-        }
-
-        public void setIpLimit(int ipLimit) {
-            this.ipLimit = ipLimit;
-        }
-
-        public String getLimitTimeUnit() {
-            return limitTimeUnit;
-        }
-
-        public void setLimitTimeUnit(String limitTimeUnit) {
-            this.limitTimeUnit = limitTimeUnit;
-        }
-
-        public int getRemainingIpHits() {
-            return remainingIpHits;
-        }
-
-        public void setRemainingIpHits(int remainingIpHits) {
-            this.remainingIpHits = remainingIpHits;
-        }
-
-        public int getRemainingUserHits() {
-            return remainingUserHits;
-        }
-
-        public void setRemainingUserHits(int remainingUserHits) {
-            this.remainingUserHits = remainingUserHits;
-        }
-
-        public String getResetTime() {
-            return resetTime;
-        }
-
-        public void setResetTime(String resetTime) {
-            this.resetTime = resetTime;
-        }
-
-        public int getResetTimeInSeconds() {
-            return resetTimeInSeconds;
-        }
-
-        public void setResetTimeInSeconds(int resetTimeInSeconds) {
-            this.resetTimeInSeconds = resetTimeInSeconds;
-        }
-
-        public int getUserLimit() {
-            return userLimit;
-        }
-
-        public void setUserLimit(int userLimit) {
-            this.userLimit = userLimit;
         }
     }
 

@@ -5,8 +5,6 @@ import weiboclient4j.model.Privacy;
 import weiboclient4j.model.RateLimitStatus;
 import weiboclient4j.model.User;
 
-import java.text.ParseException;
-
 /**
  * @author Hover Ruan
  */
@@ -26,13 +24,7 @@ public class AccountService extends AbstractService {
     }
 
     public RateLimitStatus getRateLimitStatus() throws WeiboClientException {
-        RawRateLimitStatus rawRateLimitStatus = doGet("account/rate_limit_status", RawRateLimitStatus.class);
-
-        try {
-            return rawRateLimitStatus.asRateLimitStatus();
-        } catch (ParseException e) {
-            throw new WeiboClientException("Invalid date format (reset_time): " + rawRateLimitStatus.getResetTime());
-        }
+        return doGet("account/rate_limit_status", RateLimitStatus.class);
     }
 
     public User endSession() throws WeiboClientException {

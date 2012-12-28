@@ -1,6 +1,8 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import weiboclient4j.utils.SimpleDateDeserializer;
 
 import java.util.Date;
 
@@ -13,6 +15,7 @@ public class RateLimitStatus {
     private String limitTimeUnit;
     private int remainingIpHits;
     private int remainingUserHits;
+    @JsonDeserialize(using = SimpleDateDeserializer.class)
     private Date resetTime;
     private int resetTimeInSeconds;
     private int userLimit;
