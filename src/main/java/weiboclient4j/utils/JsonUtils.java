@@ -28,7 +28,7 @@ public class JsonUtils {
         SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.getDeserializationConfig().setDateFormat(format);
+        mapper.setDateFormat(format);
     }
 
     private JsonUtils() {

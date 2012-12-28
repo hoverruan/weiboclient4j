@@ -1,7 +1,5 @@
 package weiboclient4j.params;
 
-import weiboclient4j.params.StringParam;
-
 /**
  * @author Hover Ruan
  */

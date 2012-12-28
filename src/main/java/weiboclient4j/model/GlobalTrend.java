@@ -14,8 +14,8 @@ public class GlobalTrend {
     }
 
     GlobalTrend(JsonNode json) {
-        name = json.get("name").getValueAsText();
-        query = json.get("query").getValueAsText();
+        name = json.get("name").asText();
+        query = json.get("query").asText();
     }
 
     public String getName() {

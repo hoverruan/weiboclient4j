@@ -56,7 +56,7 @@ public class Emotion {
     }
 
     public void setIsHot(boolean isHot) {
-        isHot = isHot;
+        this.isHot = isHot;
     }
 
     public boolean isIsCommon() {
