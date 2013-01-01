@@ -16,7 +16,7 @@ Weiboclient4j
     <dependency>
       <groupId>com.github.hoverruan</groupId>
       <artifactId>weiboclient4j</artifactId>
-      <version>0.3.3</version>
+      <version>0.4.0</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -66,13 +66,17 @@ WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大�
 
 所有的参数对象在 `package weiboclient4j.params` 下面；举一个例子：
 
-    FriendshipService service = client.getFriendshipService();
-    Friendship friendship;
+```java
+import weiboclient4j.params.CoreParameters.*;
 
-    friendship = service.getFriendship(new SourceUid(12345), new TargetUid(67890));
+FriendshipService service = client.getFriendshipService();
+Friendship friendship;
 
-    // 或者
-    friendship = service.getFriendship(new SourceScreenName("xxx"), new TargetScreenName("yyy"));
+friendship = service.getFriendship(sourceUid(12345), targetUid(67890));
+
+// 或者
+friendship = service.getFriendship(sourceScreenName("xxx"), targetScreenName("yyy"));
+```
 
 分页对象 Paging
 ---

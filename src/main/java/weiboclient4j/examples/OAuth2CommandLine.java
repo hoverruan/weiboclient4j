@@ -1,5 +1,6 @@
 package weiboclient4j.examples;
 
+import static java.util.Arrays.asList;
 import weiboclient4j.AccountService;
 import weiboclient4j.CommentService;
 import weiboclient4j.StatusService;
@@ -16,6 +17,10 @@ import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Cid;
+import static weiboclient4j.params.CoreParameters.cid;
+import static weiboclient4j.params.CoreParameters.id;
+import static weiboclient4j.params.CoreParameters.mid;
+import static weiboclient4j.params.CoreParameters.uid;
 import weiboclient4j.params.Feature;
 import weiboclient4j.params.Id;
 import weiboclient4j.params.IsBase62;
@@ -123,7 +128,8 @@ public class OAuth2CommandLine {
         statusService.getUserTimeline(Uid.EMPTY);
         statusService.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
 
-        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(new Uid(1834561765L), BaseApp.No, Feature.All, TrimUser.No);
+        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(
+                uid(1834561765L), BaseApp.No, Feature.All,TrimUser.No);
         System.out.println();
         System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
 
@@ -131,8 +137,8 @@ public class OAuth2CommandLine {
         statusService.getUserTimelineIds(Uid.EMPTY);
         statusService.getUserTimelineIds();
 
-        statusService.getRepostTimeline(new Id(3436240135184587L));
-        statusService.getRepostTimelineIds(new Id(3436240135184587L));
+        statusService.getRepostTimeline(id(3436240135184587L));
+        statusService.getRepostTimelineIds(id(3436240135184587L));
 
         statusService.getRepostByMe();
 
@@ -141,23 +147,19 @@ public class OAuth2CommandLine {
 
         statusService.getBilateralTimeline();
 
-        statusService.show(new Id(3436240135184587L));
+        statusService.show(id(3436240135184587L));
 
-        statusService.queryMid(new Id(3436240135184587L), MidType.Status);
+        statusService.queryMid(id(3436240135184587L), MidType.Status);
 
-        List<Id> idList = new ArrayList<Id>(2);
-        idList.add(new Id(3436240135184587L));
-        idList.add(new Id(3436255091659029L));
+        List<Id> idList = asList(id(3436240135184587L), id(3436255091659029L));
         Map<Long, String> midMap = statusService.queryMidList(idList, MidType.Status);
         System.out.println();
         System.out.println("Mid " + 3436240135184587L + "=" + midMap.get(3436240135184587L) + ", " +
                 3436255091659029L + "=" + midMap.get(3436255091659029L));
 
-        statusService.queryId(new Mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
+        statusService.queryId(mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
 
-        List<Mid> midList = new ArrayList<Mid>(2);
-        midList.add(new Mid("yfcLPlKKn"));
-        midList.add(new Mid("yfd9X6XAx"));
+        List<Mid> midList = asList(mid("yfcLPlKKn"), mid("yfd9X6XAx"));
 
         Map<String, Long> idMap = statusService.queryIdList(midList, MidType.Message, IsBase62.Yes);
         System.out.println();
@@ -177,24 +179,24 @@ public class OAuth2CommandLine {
         statusService.getStatusesCounts(idList);
 
         Status justPostStatus = statusService.update("Update status api test");
-        Status repostStatus = statusService.repost(new Id(justPostStatus.getId()), "Repost test");
+        Status repostStatus = statusService.repost(id(justPostStatus.getId()), "Repost test");
         System.out.println();
         System.out.println("Just post: " + writeObjectAsString(justPostStatus));
         System.out.println("Repost: " + writeObjectAsString(repostStatus));
 
-        statusService.destroy(new Id(repostStatus.getId()));
+        statusService.destroy(id(repostStatus.getId()));
 
         // Need advanced permission
         Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
                 new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
-        statusService.destroy(new Id(uploadedStatusByImageUrl.getId()));
+        statusService.destroy(id(uploadedStatusByImageUrl.getId()));
 
         List<Emotion> emotions = statusService.getEmotions();
         System.out.println();
         System.out.println("Emotions: " + writeObjectAsString(emotions));
 
         CommentService commentService = client.getCommentService();
-        commentService.getComments(new Id(3436240135184587L));
+        commentService.getComments(id(3436240135184587L));
         CommentList commentsByMe = commentService.getCommentsByMe();
         long firstCommentId = commentsByMe.getComments().get(0).getId();
 
@@ -202,16 +204,18 @@ public class OAuth2CommandLine {
         commentService.getCommentsTimeline();
         commentService.getMentionsComments();
 
-        ArrayList<Cid> batchCids = new ArrayList<Cid>();
-        batchCids.add(new Cid(firstCommentId));
+        List<Cid> batchCids = asList(cid(firstCommentId));
         commentService.getCommentsBatch(batchCids);
 
-        Comment comment = commentService.createComment(new Id(justPostStatus.getId()), "Create comment test");
-        Comment reply = commentService.replyComment(new Id(justPostStatus.getCommentsCount()), new Cid(comment.getId()), "Reply test");
-        commentService.destroyComment(new Cid(comment.getId()));
-        commentService.destroyComment(new Cid(reply.getId()));
+        Comment comment = commentService.createComment(id(justPostStatus.getId()), "Create comment test");
+        Comment reply = commentService.replyComment(
+                id(justPostStatus.getCommentsCount()),
+                cid(comment.getId()),
+                "Reply test");
+        commentService.destroyComment(cid(comment.getId()));
+        commentService.destroyComment(cid(reply.getId()));
 
-        statusService.destroy(new Id(justPostStatus.getId()));
+        statusService.destroy(id(justPostStatus.getId()));
         commentService.destroyCommentBatch(new ArrayList<Cid>());
     }
 }
