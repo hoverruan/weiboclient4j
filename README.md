@@ -13,45 +13,53 @@ Weiboclient4j
 
 在项目pom.xml里面加入依赖：
 
-    <dependency>
-      <groupId>com.github.hoverruan</groupId>
-      <artifactId>weiboclient4j</artifactId>
-      <version>0.4.0</version>
-      <scope>runtime</scope>
-    </dependency>
+```xml
+<dependency>
+  <groupId>com.github.hoverruan</groupId>
+  <artifactId>weiboclient4j</artifactId>
+  <version>0.4.0</version>
+  <scope>runtime</scope>
+</dependency>
+```
 
 使用
 ---
 
 Weiboclient4j支持新浪微博API V1和V2（未完成），目前推荐使用V2版本的接口：
 
-    // 使用你的应用的api key和secret
-    String apiKey = "xxxxxxx";
-    String apiSecret = "xxxxxxxx";
+```java
+// 使用你的应用的api key和secret
+String apiKey = "xxxxxxx";
+String apiSecret = "xxxxxxxx";
 
-    WeiboClient2 client = new WeiboClient2(apiKey, apiSecret);
+WeiboClient2 client = new WeiboClient2(apiKey, apiSecret);
+```
 
 OAuth2例子：
 
-    String authorizationCallback = "..."; // 你的Callback地址
-    String state = "...";
-    String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);
+```java
+String authorizationCallback = "..."; // 你的Callback地址
+String state = "...";
+String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);
 
-    // 浏览器重定向到url; 用户授权; 然后返回callback地址
-    String code = ... // 从新浪的回调请求里面获得code
-    String accessTokenCallback = "..."; // 或者Access Token的Callback地址
-    SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code, state, accessTokenCallback);
+// 浏览器重定向到url; 用户授权; 然后返回callback地址
+String code = ... // 从新浪的回调请求里面获得code
+String accessTokenCallback = "..."; // 或者Access Token的Callback地址
+SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code, state, accessTokenCallback);
 
-    System.out.println("Access token: " + accessToken.getToken());
-    System.out.println("User Uid: " + accessToken.getUid());
-    System.out.println("Expires in: " + accessToken.getExpiresIn());
-    System.out.println("Remind in: " + accessToken.getRemindIn());
+System.out.println("Access token: " + accessToken.getToken());
+System.out.println("User Uid: " + accessToken.getUid());
+System.out.println("Expires in: " + accessToken.getExpiresIn());
+System.out.println("Remind in: " + accessToken.getRemindIn());
+```
 
 获取用户Timeline例子：
 
-    client.setAccessToken(new SinaWeibo2AccessToken("..."));
-    StatusService service = client.getStatusService();
-    Timeline friendsTimeline = service.getFriendsTimeline();
+```java
+client.setAccessToken(new SinaWeibo2AccessToken("..."));
+StatusService service = client.getStatusService();
+Timeline friendsTimeline = service.getFriendsTimeline();
+```
 
 更多的使用例子可以参考 `weiboclient4j.examples.OAuth2CommandLine`
 
@@ -83,11 +91,13 @@ friendship = service.getFriendship(sourceScreenName("xxx"), targetScreenName("yy
 
 分页相关的参数，全部通过 `Paging` 对象封装：
 
-    Paging paging = Paging.create()
-            .sinceId(12345)
-            .count(25);
+```java
+Paging paging = Paging.create()
+        .sinceId(12345)
+        .count(25);
 
-    Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All); // 后两个参数可省略
+Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All); // 后两个参数可省略
+```
 
 新浪微博API V2支持情况
 ---
