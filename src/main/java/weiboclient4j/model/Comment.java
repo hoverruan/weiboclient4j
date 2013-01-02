@@ -1,5 +1,6 @@
 package weiboclient4j.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.util.Date;
@@ -8,11 +9,13 @@ import java.util.List;
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Comment {
     public static final TypeReference<List<Comment>> TYPE_COMMENT_LIST = new TypeReference<List<Comment>>() {
     };
 
     private long id;
+    private String idstr;
     private String text;
     private String source;
     private boolean favorited;
@@ -29,6 +32,14 @@ public class Comment {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIdstr() {
+        return idstr;
+    }
+
+    public void setIdstr(String idstr) {
+        this.idstr = idstr;
     }
 
     public String getText() {

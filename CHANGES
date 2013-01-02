@@ -1,6 +1,9 @@
 weiboclient4j CHANGELOG
 
-*** 0.4.0 [Pending]
+*** 0.4.1
+ * Fixed #7
+
+*** 0.4.0
  * 添加CoreParameters语法糖
  * 去掉第一版的API支持
  * 添加travis-ci.org自动构建状态
