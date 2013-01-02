@@ -1,6 +1,7 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.node.ArrayNode;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GlobalTrendList {
     private String time;
     private List<GlobalTrend> trends;

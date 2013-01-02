@@ -1,10 +1,12 @@
 package weiboclient4j.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TrendStatus {
 
     private long trendId;

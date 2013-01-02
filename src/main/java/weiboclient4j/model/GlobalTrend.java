@@ -1,10 +1,12 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GlobalTrend {
     private String name;
     private String query;

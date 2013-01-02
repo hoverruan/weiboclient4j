@@ -1,10 +1,13 @@
 package weiboclient4j.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserList {
     private List<User> users;
     private int nextCursor;
