@@ -1,5 +1,8 @@
 weiboclient4j CHANGELOG
 
+*** 0.4.3 [Pending]
+ * 将model中的字段hasvisible改名成visible
+
 *** 0.4.2
  * 将WeiboClient2重命名为WeiboClient
 

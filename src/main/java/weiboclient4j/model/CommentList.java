@@ -1,6 +1,7 @@
 package weiboclient4j.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ public class CommentList {
     private long previousCursor;
     private long nextCursor;
     private int totalNumber;
-    private boolean hasvisible;
+    @JsonProperty("hasvisible")
+    private boolean visible;
 
     public List<Comment> getComments() {
         return comments;
@@ -47,11 +49,11 @@ public class CommentList {
         this.totalNumber = totalNumber;
     }
 
-    public boolean isHasvisible() {
-        return hasvisible;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setHasvisible(boolean hasvisible) {
-        this.hasvisible = hasvisible;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }
