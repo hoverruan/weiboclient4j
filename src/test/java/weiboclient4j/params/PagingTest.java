@@ -1,9 +1,8 @@
-package weiboclient4j;
+package weiboclient4j.params;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import weiboclient4j.params.Paging;
 
 /**
  * @author Hover Ruan
