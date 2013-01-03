@@ -1,6 +1,8 @@
 package weiboclient4j;
 
 /**
+ * Only for backward compatibility, please use {@link WeiboClient} as soon as possible.
+ *
  * @author Hover Ruan
  * @deprecated Please use {@link WeiboClient}
  */

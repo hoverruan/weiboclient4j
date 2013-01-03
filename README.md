@@ -17,7 +17,7 @@ Weiboclient4j
 <dependency>
   <groupId>com.github.hoverruan</groupId>
   <artifactId>weiboclient4j</artifactId>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
   <scope>runtime</scope>
 </dependency>
 ```
@@ -32,7 +32,7 @@ Weiboclient4j支持新浪微博API V1和V2（未完成），目前推荐使用V2
 String apiKey = "xxxxxxx";
 String apiSecret = "xxxxxxxx";
 
-WeiboClient2 client = new WeiboClient2(apiKey, apiSecret);
+WeiboClient client = new WeiboClient(apiKey, apiSecret);
 ```
 
 OAuth2例子：
@@ -66,7 +66,7 @@ Timeline friendsTimeline = service.getFriendsTimeline();
 API参数对象化
 ---
 
-WeiboClient2里面，大部分的方法都没有Javadoc，取而代之的是大部分的参数都是特定的对象，这样做的原因是因为：
+WeiboClient里面，大部分的方法都没有Javadoc，取而代之的是大部分的参数都是特定的对象，这样做的原因是因为：
 
 - 写Javadoc太麻烦
 - 一些API的参数较多，如果使用基本类型容易混淆各个参数的含义
