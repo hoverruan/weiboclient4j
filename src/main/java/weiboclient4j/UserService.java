@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class UserService extends AbstractService {
 
-    public UserService(WeiboClient2 client) {
+    public UserService(WeiboClient client) {
         super(client);
     }
 

@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class CommentService extends AbstractService {
 
-    public CommentService(WeiboClient2 client) {
+    public CommentService(WeiboClient client) {
         super(client);
     }
 

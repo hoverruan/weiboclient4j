@@ -8,7 +8,7 @@ import weiboclient4j.params.Uid;
  * @author Hover Ruan
  */
 public class RemindService extends AbstractService {
-    public RemindService(WeiboClient2 client) {
+    public RemindService(WeiboClient client) {
         super(client);
     }
 

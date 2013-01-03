@@ -16,7 +16,7 @@ import java.util.List;
  * @author Hover Ruan
  */
 public class TagService extends AbstractService {
-    public TagService(WeiboClient2 client) {
+    public TagService(WeiboClient client) {
         super(client);
     }
 

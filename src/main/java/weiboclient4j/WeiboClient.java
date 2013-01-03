@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Hover Ruan
  */
-public class WeiboClient2 {
+public class WeiboClient {
     private String clientId;
     private String clientSecret;
     private SinaWeibo2AccessToken accessToken;
@@ -32,7 +32,7 @@ public class WeiboClient2 {
      * @param clientId Client ID, or Api Key
      * @param clientSecret Client Secret, or Api Secret
      */
-    public WeiboClient2(String clientId, String clientSecret) {
+    public WeiboClient(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
     }

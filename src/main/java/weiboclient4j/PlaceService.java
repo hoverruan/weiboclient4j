@@ -57,7 +57,7 @@ import java.util.List;
  */
 @SuppressWarnings("unchecked")
 public class PlaceService extends AbstractService {
-    public PlaceService(WeiboClient2 client) {
+    public PlaceService(WeiboClient client) {
         super(client);
     }
 

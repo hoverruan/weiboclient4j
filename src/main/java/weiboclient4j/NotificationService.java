@@ -14,7 +14,7 @@ import java.util.Collection;
  * @author Hover Ruan
  */
 public class NotificationService extends AbstractService {
-    public NotificationService(WeiboClient2 client) {
+    public NotificationService(WeiboClient client) {
         super(client);
     }
 

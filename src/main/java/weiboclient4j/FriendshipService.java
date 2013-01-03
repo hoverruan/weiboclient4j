@@ -19,7 +19,7 @@ import weiboclient4j.params.Uid;
  */
 public class FriendshipService extends AbstractService {
 
-    public FriendshipService(WeiboClient2 client) {
+    public FriendshipService(WeiboClient client) {
         super(client);
     }
 

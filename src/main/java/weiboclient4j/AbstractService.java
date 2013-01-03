@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class AbstractService {
     public static final String API2_URL = "https://api.weibo.com/2/";
 
-    protected WeiboClient2 client;
+    protected WeiboClient client;
     private SinaWeibo2AccessToken accessToken;
 
     private int connectTimeoutDuration = 30;
@@ -41,7 +41,7 @@ public class AbstractService {
     private int readTimeoutDuration = 30;
     private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
 
-    public AbstractService(WeiboClient2 client) {
+    public AbstractService(WeiboClient client) {
         this.client = client;
 
         client.initService(this);

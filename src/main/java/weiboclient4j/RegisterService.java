@@ -7,7 +7,7 @@ import weiboclient4j.params.Nickname;
  * @author Hover Ruan
  */
 public class RegisterService extends AbstractService {
-    public RegisterService(WeiboClient2 client) {
+    public RegisterService(WeiboClient client) {
         super(client);
     }
 

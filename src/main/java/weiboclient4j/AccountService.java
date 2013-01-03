@@ -9,7 +9,7 @@ import weiboclient4j.model.User;
  * @author Hover Ruan
  */
 public class AccountService extends AbstractService {
-    public AccountService(WeiboClient2 client) {
+    public AccountService(WeiboClient client) {
         super(client);
     }
 

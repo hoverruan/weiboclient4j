@@ -4,7 +4,7 @@ import static java.util.Arrays.asList;
 import weiboclient4j.AccountService;
 import weiboclient4j.CommentService;
 import weiboclient4j.StatusService;
-import weiboclient4j.WeiboClient2;
+import weiboclient4j.WeiboClient;
 import weiboclient4j.model.Comment;
 import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Emotion;
@@ -76,7 +76,7 @@ public class OAuth2CommandLine {
         }
 
         String authorizationCallback = "http://demo.localhost.weiboclient4j.org/callback";
-        WeiboClient2 client = new WeiboClient2(apiKey, apiSecret);
+        WeiboClient client = new WeiboClient(apiKey, apiSecret);
         String state = "__MY_STATE__";
         String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);
         System.out.println("Please visit: " + url);

@@ -16,7 +16,7 @@ import java.util.Collection;
  * @author Hover Ruan
  */
 public class FavoriteService extends AbstractService {
-    public FavoriteService(WeiboClient2 client) {
+    public FavoriteService(WeiboClient client) {
         super(client);
     }
 

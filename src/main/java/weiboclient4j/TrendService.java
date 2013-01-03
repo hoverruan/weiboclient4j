@@ -16,7 +16,7 @@ import java.util.List;
  * @author Hover Ruan
  */
 public class TrendService extends AbstractService {
-    public TrendService(WeiboClient2 client) {
+    public TrendService(WeiboClient client) {
         super(client);
     }
 

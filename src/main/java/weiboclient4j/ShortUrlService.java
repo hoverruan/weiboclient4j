@@ -14,7 +14,7 @@ import java.util.List;
  * @author Hover Ruan
  */
 public class ShortUrlService extends AbstractService {
-    public ShortUrlService(WeiboClient2 client) {
+    public ShortUrlService(WeiboClient client) {
         super(client);
     }
 

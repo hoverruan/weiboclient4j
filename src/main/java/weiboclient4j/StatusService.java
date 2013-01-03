@@ -52,7 +52,7 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class StatusService extends AbstractService {
 
-    public StatusService(WeiboClient2 client) {
+    public StatusService(WeiboClient client) {
         super(client);
     }
 

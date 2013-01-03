@@ -19,7 +19,7 @@ import java.util.List;
  * @author Hover Ruan
  */
 public class SearchService extends AbstractService {
-    public SearchService(WeiboClient2 client) {
+    public SearchService(WeiboClient client) {
         super(client);
     }
 

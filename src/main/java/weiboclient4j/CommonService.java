@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Hover Ruan
  */
 public class CommonService extends AbstractService {
-    public CommonService(WeiboClient2 client) {
+    public CommonService(WeiboClient client) {
         super(client);
     }
 
