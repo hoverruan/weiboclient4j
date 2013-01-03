@@ -4,8 +4,6 @@ import org.codehaus.jackson.JsonNode;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import weiboclient4j.AbstractParseJsonTest;
-import weiboclient4j.model.Tag;
 import static weiboclient4j.utils.JsonUtils.readValue;
 
 import java.util.List;

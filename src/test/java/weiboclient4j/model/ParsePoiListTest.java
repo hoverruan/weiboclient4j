@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
-import weiboclient4j.AbstractParseJsonTest;
 import weiboclient4j.utils.JsonUtils;
 import weiboclient4j.utils.SimpleDateDeserializer;
 

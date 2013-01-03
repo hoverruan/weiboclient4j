@@ -5,7 +5,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItem;
-import weiboclient4j.AbstractParseJsonTest;
 import weiboclient4j.utils.JsonUtils;
 
 import java.util.List;

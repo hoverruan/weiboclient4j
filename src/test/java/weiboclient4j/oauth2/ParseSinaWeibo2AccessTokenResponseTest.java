@@ -2,7 +2,7 @@ package weiboclient4j.oauth2;
 
 import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
-import weiboclient4j.AbstractParseJsonTest;
+import weiboclient4j.model.AbstractParseJsonTest;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**

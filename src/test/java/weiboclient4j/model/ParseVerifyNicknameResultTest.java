@@ -3,7 +3,6 @@ package weiboclient4j.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import weiboclient4j.AbstractParseJsonTest;
 import weiboclient4j.utils.JsonUtils;
 
 /**

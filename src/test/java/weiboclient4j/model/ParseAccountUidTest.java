@@ -2,7 +2,6 @@ package weiboclient4j.model;
 
 import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
-import weiboclient4j.AbstractParseJsonTest;
 import weiboclient4j.utils.JsonUtils;
 
 /**
