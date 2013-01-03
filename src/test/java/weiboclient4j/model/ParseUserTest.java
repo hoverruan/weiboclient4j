@@ -1,8 +1,8 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
-import weiboclient4j.model.User;
+import weiboclient4j.AbstractParseJsonTest;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**
@@ -12,7 +12,7 @@ public class ParseUserTest extends AbstractParseJsonTest {
 
     @Test
     public void testParseUser() throws Exception {
-        String content = readResource("/weiboclient4j/users.json");
+        String content = readResource("/weiboclient4j/model/users.json");
         User user = parseJsonObject(content, User.class);
 
         assertNotNull(user.getCreatedAt());
@@ -20,13 +20,13 @@ public class ParseUserTest extends AbstractParseJsonTest {
 
     @Test
     public void testParseUser2() throws Exception {
-        String content = readResource("/weiboclient4j/user2.json");
+        String content = readResource("/weiboclient4j/model/user2.json");
         parseJsonObject(content, User.class);
     }
 
     @Test
     public void testParseUserList() throws Exception {
-        String content = readResource("/weiboclient4j/user_list.json");
+        String content = readResource("/weiboclient4j/model/user_list.json");
         parseJsonObject(content, User.TYPE_USER_LIST);
     }
 }

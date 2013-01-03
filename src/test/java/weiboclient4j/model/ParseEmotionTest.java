@@ -1,7 +1,7 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 import org.junit.Test;
-import weiboclient4j.model.Emotion;
+import weiboclient4j.AbstractParseJsonTest;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 
 /**
@@ -10,7 +10,7 @@ import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 public class ParseEmotionTest extends AbstractParseJsonTest {
     @Test
     public void testParseEmotions() throws Exception {
-        String content = readResource("/weiboclient4j/emotions.json");
+        String content = readResource("/weiboclient4j/model/emotions.json");
 
         parseJsonObject(content, Emotion.TYPE_EMOTION_LIST);
     }

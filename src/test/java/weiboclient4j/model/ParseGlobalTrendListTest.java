@@ -1,8 +1,8 @@
-package weiboclient4j;
+package weiboclient4j.model;
 
 import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
-import weiboclient4j.model.GlobalTrendList;
+import weiboclient4j.AbstractParseJsonTest;
 import static weiboclient4j.utils.JsonUtils.readValue;
 
 /**
@@ -11,7 +11,7 @@ import static weiboclient4j.utils.JsonUtils.readValue;
 public class ParseGlobalTrendListTest extends AbstractParseJsonTest {
     @Test
     public void testParseGlobalTrendList() throws Exception {
-        String content = readResource("/weiboclient4j/global_trend_list.json");
+        String content = readResource("/weiboclient4j/model/global_trend_list.json");
 
         new GlobalTrendList(readValue(content, JsonNode.class));
     }
