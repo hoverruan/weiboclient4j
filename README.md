@@ -74,8 +74,10 @@ WeiboClient里面，大部分的方法都没有Javadoc，取而代之的是大�
 
 所有的参数对象在 `package weiboclient4j.params` 下面；举一个例子：
 
+使用静态引入 **CoreParameters.\***:
+
 ```java
-import weiboclient4j.params.CoreParameters.*;
+import static weiboclient4j.params.CoreParameters.*;
 
 FriendshipService service = client.getFriendshipService();
 Friendship friendship;
@@ -84,6 +86,20 @@ friendship = service.getFriendship(sourceUid(12345), targetUid(67890));
 
 // 或者
 friendship = service.getFriendship(sourceScreenName("xxx"), targetScreenName("yyy"));
+```
+
+使用 **P**:
+
+```java
+import weiboclient4j.params.P;
+
+FriendshipService service = client.getFriendshipService();
+Friendship friendship;
+
+friendship = service.getFriendship(P.sourceUid(12345), P.targetUid(67890));
+
+// 或者
+friendship = service.getFriendship(P.sourceScreenName("xxx"), P.targetScreenName("yyy"));
 ```
 
 分页对象 Paging
