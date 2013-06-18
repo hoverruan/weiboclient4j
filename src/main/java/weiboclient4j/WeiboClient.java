@@ -18,18 +18,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class WeiboClient {
     private String clientId;
+
     private String clientSecret;
+
     private SinaWeibo2AccessToken accessToken;
 
     private int connectTimeoutDuration = 30;
+
     private TimeUnit connectTimeoutUnit = TimeUnit.SECONDS;
+
     private int readTimeoutDuration = 30;
+
     private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
 
     /**
      * Create api client v2.
      *
-     * @param clientId Client ID, or Api Key
+     * @param clientId     Client ID, or Api Key
      * @param clientSecret Client Secret, or Api Secret
      */
     public WeiboClient(String clientId, String clientSecret) {
@@ -146,6 +151,10 @@ public class WeiboClient {
 
     public CommonService getCommonService() {
         return new CommonService(this);
+    }
+
+    public LocationService getLocationService() {
+        return new LocationService(this);
     }
 
     protected void initService(AbstractService service) {

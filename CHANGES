@@ -1,6 +1,7 @@
 weiboclient4j CHANGELOG
 
 *** 0.4.3 [Pending]
+ * 实现地理接口中的"生成一张静态的地图图片"接口
  * 将model中的字段hasvisible改名成visible
 
 *** 0.4.2

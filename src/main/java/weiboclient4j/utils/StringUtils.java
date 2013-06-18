@@ -1,5 +1,6 @@
 package weiboclient4j.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -19,6 +20,20 @@ public class StringUtils {
         for (String str : strings) {
             buf.append(sep).append(str);
         }
+
         return buf.substring(sep.length());
+    }
+
+    public static String join(Object[] array, String sep) {
+        return join(toStringArray(array), sep);
+    }
+
+    public static Collection<String> toStringArray(Object[] array) {
+        Collection<String> result = new ArrayList<String>(array.length);
+        for (Object coordinate : array) {
+            result.add(coordinate.toString());
+        }
+
+        return result;
     }
 }
