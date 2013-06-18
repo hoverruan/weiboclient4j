@@ -195,4 +195,64 @@ public class CoreParameters {
     public static UrlShort urlShort(String value) {
         return new UrlShort(value);
     }
+
+    public static CenterCoordinate centerCoordinate(String value) {
+        return new CenterCoordinate(value);
+    }
+
+    public static CenterCoordinate centerCoordinate(Coordinate coordinate) {
+        return new CenterCoordinate(coordinate);
+    }
+
+    public static CenterCoordinate centerCoordinate(Longitude longitude, Latitude latitude) {
+        return new CenterCoordinate(longitude, latitude);
+    }
+
+    public static Coordinates coordinates(String value) {
+        return new Coordinates(value);
+    }
+
+    public static Coordinates coordinates(Coordinate... coordinatesParam) {
+        return new Coordinates(coordinatesParam);
+    }
+
+    public static Font font(String value) {
+        return new Font(value);
+    }
+
+    public static Format format(String value) {
+        return new Format(value);
+    }
+
+    public static Lines lines(String value) {
+        return new Lines(value);
+    }
+
+    public static Names names(String... namesParam) {
+        return new Names(namesParam);
+    }
+
+    public static OffsetX offsetX(String value) {
+        return new OffsetX(value);
+    }
+
+    public static OffsetY offsetY(String value) {
+        return new OffsetY(value);
+    }
+
+    public static Polygons polygons(String value) {
+        return new Polygons(value);
+    }
+
+    public static Scale scale(boolean value) {
+        return new Scale(value);
+    }
+
+    public static Traffic traffic(boolean value) {
+        return new Traffic(value);
+    }
+
+    public static Zoom zoom(long value) {
+        return new Zoom(value);
+    }
 }
