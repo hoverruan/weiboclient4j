@@ -121,7 +121,7 @@ Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All);
 <tr><td>通知接口</td><td>NotificationService</td><td>完成</td></tr>
 <tr><td>公共服务接口</td><td>CommonService</td><td>完成</td></tr>
 <tr><td>位置服务接口</td><td>PlaceService</td><td>完成</td></tr>
-<tr><td>地理信息接口</td><td>LocationService</td><td> </td></tr>
+<tr><td>地理信息接口</td><td>LocationService</td><td>开发中</td></tr>
 </table>
 
 反馈
