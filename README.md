@@ -18,7 +18,6 @@ Weiboclient4j
   <groupId>com.github.hoverruan</groupId>
   <artifactId>weiboclient4j</artifactId>
   <version>0.4.3</version>
-  <scope>runtime</scope>
 </dependency>
 ```
 
