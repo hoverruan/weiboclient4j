@@ -4,12 +4,12 @@ Weiboclient4j
 [![Build Status](https://travis-ci.org/hoverruan/weiboclient4j.png?branch=master)](https://travis-ci.org/hoverruan/weiboclient4j)
 
 为什么需要另外一个Java版本的微博客户端？
----------------------------------------
+----------------------------------
 
 新浪微博官方推荐的Java客户端 [weibo4j](http://code.google.com/p/weibo4j/) 一直没有发布到maven仓库，而我们是重度maven用户，因而重新发明了这个新的轮子。
 
 通过maven引用weiboclient4j
---------------------------
+-------------------------
 
 在项目pom.xml里面加入依赖：
 
@@ -63,7 +63,7 @@ Timeline friendsTimeline = service.getFriendsTimeline();
 更多的使用例子可以参考 `weiboclient4j.examples.OAuth2CommandLine`
 
 API参数对象化
--------------
+------------
 
 WeiboClient里面，大部分的方法都没有Javadoc，取而代之的是大部分的参数都是特定的对象，这样做的原因是因为：
 
@@ -102,7 +102,7 @@ friendship = service.getFriendship(P.sourceScreenName("xxx"), P.targetScreenName
 ```
 
 分页对象 Paging
----------------
+--------------
 
 分页相关的参数，全部通过 `Paging` 对象封装：
 
@@ -115,7 +115,7 @@ Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All);
 ```
 
 新浪微博API V2支持情况
-----------------------
+--------------------
 
 [API文档 V2](http://open.weibo.com/wiki/API%E6%96%87%E6%A1%A3_V2)
 
