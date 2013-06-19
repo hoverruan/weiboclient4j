@@ -11,7 +11,10 @@ import java.io.OutputStream;
 /**
  * @author Hover Ruan
  */
-public class StreamUtils {
+public final class StreamUtils {
+    private StreamUtils() {
+    }
+
     public static void close(OutputStream outputStream) {
         if (outputStream != null) {
             try {

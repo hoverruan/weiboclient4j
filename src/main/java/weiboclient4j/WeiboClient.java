@@ -17,17 +17,20 @@ import java.util.concurrent.TimeUnit;
  * @author Hover Ruan
  */
 public class WeiboClient {
+
+    private static final int DEFAULT_TIMEOUT = 30;
+
     private String clientId;
 
     private String clientSecret;
 
     private SinaWeibo2AccessToken accessToken;
 
-    private int connectTimeoutDuration = 30;
+    private int connectTimeoutDuration = DEFAULT_TIMEOUT;
 
     private TimeUnit connectTimeoutUnit = TimeUnit.SECONDS;
 
-    private int readTimeoutDuration = 30;
+    private int readTimeoutDuration = DEFAULT_TIMEOUT;
 
     private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
 
@@ -60,7 +63,8 @@ public class WeiboClient {
         this.readTimeoutUnit = unit;
     }
 
-    public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state, String callback) {
+    public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state,
+                                      String callback) {
         SinaWeibo2Api api = new SinaWeibo2Api(responseType, displayType);
         api.setState(state);
 

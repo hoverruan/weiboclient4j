@@ -12,12 +12,7 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.params.BaseApp;
-import weiboclient4j.params.Feature;
-import weiboclient4j.params.FilterByAuthor;
-import weiboclient4j.params.FilterBySource;
-import weiboclient4j.params.FilterByType;
 import weiboclient4j.params.Id;
-import weiboclient4j.params.InboxType;
 import weiboclient4j.params.IsBase62;
 import weiboclient4j.params.IsBatch;
 import weiboclient4j.params.IsComment;
@@ -31,7 +26,6 @@ import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.StatusParam;
-import weiboclient4j.params.TrimUser;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.Visible;
 
@@ -63,17 +57,11 @@ public class StatusService extends AbstractService {
         return getPublicTimeline(Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}
-     */
     public <T extends GetPublicTimelineParam> Timeline getPublicTimeline(T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/public_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}
-     */
     public <T extends GetPublicTimelineParam> Timeline getPublicTimeline(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/public_timeline", paging, buildParams(optionalParams), Timeline.class);
@@ -86,17 +74,11 @@ public class StatusService extends AbstractService {
         return getFriendsTimeline(Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
-     */
     public <T extends GetFriendsTimelineParam> Timeline getFriendsTimeline(T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/friends_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
-     */
     public <T extends GetFriendsTimelineParam> Timeline getFriendsTimeline(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/friends_timeline", paging, buildParams(optionalParams), Timeline.class);
@@ -109,17 +91,11 @@ public class StatusService extends AbstractService {
         return getHomeTimeline(Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
-     */
     public <T extends GetHomeTimelineParam> Timeline getHomeTimeline(T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/home_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature} and {@link TrimUser}
-     */
     public <T extends GetHomeTimelineParam> Timeline getHomeTimeline(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/home_timeline", paging, buildParams(optionalParams), Timeline.class);
@@ -132,17 +108,11 @@ public class StatusService extends AbstractService {
         return getFriendsTimelineIds(Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetFriendsTimelineIdsParam> TimelineIds getFriendsTimelineIds(T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/friends_timeline/ids", Paging.EMPTY, buildParams(optionalParams), TimelineIds.class);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetFriendsTimelineIdsParam> TimelineIds getFriendsTimelineIds(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/friends_timeline/ids", paging, buildParams(optionalParams), TimelineIds.class);
@@ -151,17 +121,11 @@ public class StatusService extends AbstractService {
     public static interface GetUserTimelineParam extends ParameterAction {
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
-     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(T... optionalParams)
             throws WeiboClientException {
         return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
-     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(Paging paging, T... optionalParams)
             throws WeiboClientException {
         return getUserTimeline(Uid.EMPTY, ScreenName.EMPTY, paging, optionalParams);
@@ -171,17 +135,11 @@ public class StatusService extends AbstractService {
         return getUserTimeline(uid, Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
-     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(
             Uid uid, T... optionalParams) throws WeiboClientException {
         return getUserTimeline(uid, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
-     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(
             Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
         return getUserTimeline(uid, ScreenName.EMPTY, paging, optionalParams);
@@ -191,17 +149,11 @@ public class StatusService extends AbstractService {
         return getUserTimeline(screenName, Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
-     */
     public <T extends GetUserTimelineParam> Timeline getUserTimeline(
             ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
         return getUserTimeline(Uid.EMPTY, screenName, paging, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp}, {@link Feature}, {@link TrimUser}
-     */
     private <T extends GetUserTimelineParam> Timeline getUserTimeline(
             Uid uid, ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/user_timeline", paging,
@@ -211,17 +163,11 @@ public class StatusService extends AbstractService {
     public static interface GetUserTimelineIdsParam extends ParameterAction {
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             T... optionalParams) throws WeiboClientException {
         return getUserTimelineIds(Uid.EMPTY, ScreenName.EMPTY, Paging.EMPTY, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return getUserTimelineIds(Uid.EMPTY, ScreenName.EMPTY, paging, optionalParams);
@@ -231,17 +177,11 @@ public class StatusService extends AbstractService {
         return getUserTimelineIds(screenName, Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             ScreenName screenName, T... optionalParams) throws WeiboClientException {
         return getUserTimelineIds(screenName, Paging.EMPTY, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
         return getUserTimelineIds(Uid.EMPTY, screenName, paging, optionalParams);
@@ -251,26 +191,16 @@ public class StatusService extends AbstractService {
         return getUserTimelineIds(uid, Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             Uid uid, T... optionalParams) throws WeiboClientException {
         return getUserTimelineIds(uid, Paging.EMPTY, optionalParams);
     }
 
-
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             Uid uid, Paging paging, T... optionalParams) throws WeiboClientException {
         return getUserTimelineIds(uid, ScreenName.EMPTY, paging, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     private <T extends GetUserTimelineIdsParam> TimelineIds getUserTimelineIds(
             Uid uid, ScreenName screenName, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/user_timeline/ids", paging, buildParams(optionalParams, uid, screenName),
@@ -284,17 +214,11 @@ public class StatusService extends AbstractService {
         return getRepostTimeline(id, Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}
-     */
     public <T extends GetRepostTimelineParam> RepostTimeline getRepostTimeline(
             Id id, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/repost_timeline", Paging.EMPTY, buildParams(optionalParams, id), RepostTimeline.class);
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}
-     */
     public <T extends GetRepostTimelineParam> RepostTimeline getRepostTimeline(
             Id id, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/repost_timeline", paging, buildParams(optionalParams, id), RepostTimeline.class);
@@ -307,17 +231,11 @@ public class StatusService extends AbstractService {
         return getRepostTimelineIds(id, Paging.EMPTY);
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}
-     */
     public <T extends GetRepostTimelineIdsParam> TimelineIds getRepostTimelineIds(
             Id id, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/repost_timeline/ids", Paging.EMPTY, buildParams(optionalParams, id), TimelineIds.class);
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}
-     */
     public <T extends GetRepostTimelineIdsParam> TimelineIds getRepostTimelineIds(
             Id id, Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/repost_timeline/ids", paging, buildParams(optionalParams, id), TimelineIds.class);
@@ -334,16 +252,10 @@ public class StatusService extends AbstractService {
     public static interface GetMentionsParam extends ParameterAction {
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
-     */
     public <T extends GetMentionsParam> Timeline getMentions(T... optionalParams) throws WeiboClientException {
         return getMentions(Paging.EMPTY, optionalParams);
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
-     */
     public <T extends GetMentionsParam> Timeline getMentions(Paging paging, T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/mentions", paging, buildParams(optionalParams), Timeline.class);
@@ -352,17 +264,11 @@ public class StatusService extends AbstractService {
     public static interface GetMentionsIdsParam extends ParameterAction {
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
-     */
     public <T extends GetMentionsIdsParam> TimelineIds getMentionsIds(T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/mentions/ids", Paging.EMPTY, buildParams(optionalParams), TimelineIds.class);
     }
 
-    /**
-     * Optional parameter types: {@link FilterByAuthor}, {@link FilterBySource} and {@link FilterByType}
-     */
     public <T extends GetMentionsIdsParam> TimelineIds getMentionsIds(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/mentions/ids", paging, buildParams(optionalParams), TimelineIds.class);
@@ -371,17 +277,11 @@ public class StatusService extends AbstractService {
     public static interface GetBilateralTimelineParam extends ParameterAction {
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetBilateralTimelineParam> Timeline getBilateralTimeline(T... optionalParams)
             throws WeiboClientException {
         return doGet("statuses/bilateral_timeline", Paging.EMPTY, buildParams(optionalParams), Timeline.class);
     }
 
-    /**
-     * Optional parameter types: {@link BaseApp} and {@link Feature}
-     */
     public <T extends GetBilateralTimelineParam> Timeline getBilateralTimeline(
             Paging paging, T... optionalParams) throws WeiboClientException {
         return doGet("statuses/bilateral_timeline", paging, buildParams(optionalParams), Timeline.class);
@@ -419,9 +319,6 @@ public class StatusService extends AbstractService {
     public static interface QueryIdParam extends ParameterAction {
     }
 
-    /**
-     * Optional parameter types: {@link InboxType} and {@link IsBase62}
-     */
     public <T extends QueryIdParam> long queryId(
             Mid mid, MidType type, T... optionalParams) throws WeiboClientException {
         IdResponse idResponse = doGet("statuses/queryid", buildParams(optionalParams, mid, type), IdResponse.class);
@@ -541,11 +438,13 @@ public class StatusService extends AbstractService {
         return uploadImageUrl(status, url, null, null);
     }
 
-    public Status uploadImageUrl(String status, URL url, Latitude latitude, Longitude longitude) throws WeiboClientException {
+    public Status uploadImageUrl(String status, URL url, Latitude latitude, Longitude longitude)
+            throws WeiboClientException {
         return uploadImageUrl(new StatusParam(status), url, latitude, longitude);
     }
 
-    public Status uploadImageUrl(StatusParam status, URL url, Latitude latitude, Longitude longitude) throws WeiboClientException {
+    public Status uploadImageUrl(StatusParam status, URL url, Latitude latitude, Longitude longitude)
+            throws WeiboClientException {
         return doPost("statuses/upload_url_text",
                 withParams(status, urlParam(url), latitude, longitude), Status.class);
     }
@@ -554,11 +453,13 @@ public class StatusService extends AbstractService {
         return uploadImageBinary(status, Visible.All, null, image, null, null);
     }
 
-    public Status uploadImageBinary(StatusParam status, Visible visible, ListId listId, File image) throws WeiboClientException {
+    public Status uploadImageBinary(StatusParam status, Visible visible, ListId listId, File image)
+            throws WeiboClientException {
         return uploadImageBinary(status, visible, listId, image, null, null);
     }
 
-    public Status uploadImageBinary(StatusParam status, File image, Latitude latitude, Longitude longitude) throws WeiboClientException {
+    public Status uploadImageBinary(StatusParam status, File image, Latitude latitude, Longitude longitude)
+            throws WeiboClientException {
         return uploadImageBinary(status, null, null, image, latitude, longitude);
     }
 

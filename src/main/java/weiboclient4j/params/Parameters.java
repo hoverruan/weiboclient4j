@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Hover Ruan
  */
-public class Parameters {
+public final class Parameters {
     private List<Parameter> parameterList = new ArrayList<Parameter>();
 
     private Parameters() {
@@ -109,7 +109,7 @@ public class Parameters {
         return this;
     }
 
-    public static class Parameter {
+    public static final class Parameter {
         private String key;
         private String value;
 

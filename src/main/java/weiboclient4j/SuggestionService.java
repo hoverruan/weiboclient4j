@@ -61,7 +61,8 @@ public class SuggestionService extends AbstractService {
         return getStatusesHot(type, isPic, Paging.EMPTY);
     }
 
-    public StatusList getStatusesHot(SuggestionStatusType type, IsPic isPic, Paging paging) throws WeiboClientException {
+    public StatusList getStatusesHot(SuggestionStatusType type, IsPic isPic, Paging paging)
+            throws WeiboClientException {
         return doGet("suggestions/statuses/hot",
                 paging, withParams(type, isPic), StatusList.class);
     }

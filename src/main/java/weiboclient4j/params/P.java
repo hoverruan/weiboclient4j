@@ -1,4 +1,4 @@
 package weiboclient4j.params;
 
-public class P extends CoreParameters {
+public final class P extends CoreParameters {
 }

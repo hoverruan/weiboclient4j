@@ -10,7 +10,8 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RawSuggestionUser {
-    public static final TypeReference<List<RawSuggestionUser>> TYPE_SUGGESTION_USER_LIST = new TypeReference<List<RawSuggestionUser>>() {
+    public static final TypeReference<List<RawSuggestionUser>> TYPE_SUGGESTION_USER_LIST =
+            new TypeReference<List<RawSuggestionUser>>() {
     };
 
     private long uid;

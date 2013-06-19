@@ -6,7 +6,10 @@ import java.util.Collection;
 /**
  * @author Hover Ruan
  */
-public class StringUtils {
+public final class StringUtils {
+    private StringUtils() {
+    }
+
     public static boolean isBlank(String value) {
         return !isNotBlank(value);
     }

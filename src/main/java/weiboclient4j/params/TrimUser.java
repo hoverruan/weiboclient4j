@@ -10,7 +10,7 @@ public enum TrimUser implements
         StatusService.GetHomeTimelineParam,
         StatusService.GetUserTimelineParam {
 
-    Yes(1), No(0),;
+    Yes(1), No(0);
 
     private int value;
 

@@ -12,7 +12,7 @@ public enum FilterBySource implements
         StatusService.GetMentionsParam,
         StatusService.GetMentionsIdsParam {
 
-    All(0), FromWeibo(1), FromWeiqun(2),;
+    All(0), FromWeibo(1), FromWeiqun(2);
 
     private static Map<Integer, FilterBySource> map = new HashMap<Integer, FilterBySource>();
 
@@ -28,12 +28,12 @@ public enum FilterBySource implements
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static FilterBySource fromValue(int value) {
         return map.get(value);
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public void addParameter(Parameters params) {

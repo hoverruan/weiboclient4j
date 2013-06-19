@@ -33,7 +33,8 @@ public class CommonService extends AbstractService {
         return getCountryMap(null, null);
     }
 
-    public Map<String, String> getCountryMap(Language language, CapitalLetter capitalLetter) throws WeiboClientException {
+    public Map<String, String> getCountryMap(Language language, CapitalLetter capitalLetter)
+            throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/get_country",
                 withParams(language, capitalLetter), LIST_MAP_S_S_TYPE_REFERENCE);
 
@@ -44,7 +45,8 @@ public class CommonService extends AbstractService {
         return getProvinceMap(country, null, null);
     }
 
-    public Map<String, String> getProvinceMap(Country country, Language language, CapitalLetter capitalLetter) throws WeiboClientException {
+    public Map<String, String> getProvinceMap(Country country, Language language, CapitalLetter capitalLetter)
+            throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/get_province",
                 withParams(country, language, capitalLetter), LIST_MAP_S_S_TYPE_REFERENCE);
 
@@ -55,7 +57,8 @@ public class CommonService extends AbstractService {
         return getCityMap(province, null, null);
     }
 
-    public Map<String, String> getCityMap(Province province, Language language, CapitalLetter capitalLetter) throws WeiboClientException {
+    public Map<String, String> getCityMap(Province province, Language language, CapitalLetter capitalLetter)
+            throws WeiboClientException {
         List<Map<String, String>> response = doGet("common/get_city",
                 withParams(province, language, capitalLetter), LIST_MAP_S_S_TYPE_REFERENCE);
 

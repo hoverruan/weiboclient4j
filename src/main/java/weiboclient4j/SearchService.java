@@ -27,7 +27,8 @@ public class SearchService extends AbstractService {
         return searchSuggestionUsers(query, Paging.EMPTY);
     }
 
-    public List<SearchSuggestionUserResult> searchSuggestionUsers(Query query, Paging paging) throws WeiboClientException {
+    public List<SearchSuggestionUserResult> searchSuggestionUsers(Query query, Paging paging)
+            throws WeiboClientException {
         return doGet("search/suggestions/users",
                 paging, withParams(query),
                 SearchSuggestionUserResult.TYPE_SEARCH_SUGGESTION_USER_RESULT_LIST);
@@ -37,7 +38,8 @@ public class SearchService extends AbstractService {
         return searchSuggestionStatuses(query, Paging.EMPTY);
     }
 
-    public List<SearchSuggestionStatusResult> searchSuggestionStatuses(Query query, Paging paging) throws WeiboClientException {
+    public List<SearchSuggestionStatusResult> searchSuggestionStatuses(Query query, Paging paging)
+            throws WeiboClientException {
         return doGet("search/suggestions/statuses",
                 paging, withParams(query),
                 SearchSuggestionStatusResult.TYPE_SEARCH_SUGGESTION_STATUS_RESULT_LIST);
@@ -47,15 +49,18 @@ public class SearchService extends AbstractService {
         return searchSuggestionSchools(query, Paging.EMPTY);
     }
 
-    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, Paging paging) throws WeiboClientException {
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, Paging paging)
+            throws WeiboClientException {
         return searchSuggestionSchools(query, SchoolType.All, paging);
     }
 
-    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType) throws WeiboClientException {
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType)
+            throws WeiboClientException {
         return searchSuggestionSchools(query, schoolType, Paging.EMPTY);
     }
 
-    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType, Paging paging) throws WeiboClientException {
+    public List<SearchSuggestionSchoolResult> searchSuggestionSchools(Query query, SchoolType schoolType, Paging paging)
+            throws WeiboClientException {
         return doGet("search/suggestions/schools",
                 paging, withParams(query, schoolType),
                 SearchSuggestionSchoolResult.TYPE_SEARCH_SUGGESTION_SCHOOL_RESULT_LIST);
@@ -65,7 +70,8 @@ public class SearchService extends AbstractService {
         return searchSuggestionCompanies(query, Paging.EMPTY);
     }
 
-    public List<SearchSuggestionCompanyResult> searchSuggestionCompanies(Query query, Paging paging) throws WeiboClientException {
+    public List<SearchSuggestionCompanyResult> searchSuggestionCompanies(Query query, Paging paging)
+            throws WeiboClientException {
         return doGet("search/suggestions/companies",
                 paging, withParams(query),
                 SearchSuggestionCompanyResult.TYPE_SEARCH_SUGGESTION_COMPANY_RESULT_LIST);
@@ -75,7 +81,8 @@ public class SearchService extends AbstractService {
         return searchSuggestionApps(query, Paging.EMPTY);
     }
 
-    public List<SearchSuggestionAppResult> searchSuggestionApps(Query query, Paging paging) throws WeiboClientException {
+    public List<SearchSuggestionAppResult> searchSuggestionApps(Query query, Paging paging)
+            throws WeiboClientException {
         return doGet("search/suggestions/apps",
                 paging, withParams(query),
                 SearchSuggestionAppResult.TYPE_SEARCH_SUGGESTION_APP_RESULT_LIST);
@@ -91,13 +98,15 @@ public class SearchService extends AbstractService {
         return searchSuggestionAtUsers(query, type, SuggestionRange.All, paging);
     }
 
-    public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type, SuggestionRange range)
+    public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type,
+                                                                      SuggestionRange range)
             throws WeiboClientException {
         return searchSuggestionAtUsers(query, type, range, Paging.EMPTY);
     }
 
     public List<SearchSuggestionAtUserResult> searchSuggestionAtUsers(Query query, SuggestionType type,
-                                                                      SuggestionRange range, Paging paging) throws WeiboClientException {
+                                                                      SuggestionRange range, Paging paging)
+            throws WeiboClientException {
         return doGet("search/suggestions/at_users",
                 paging, withParams(query, type, range),
                 SearchSuggestionAtUserResult.TYPE_SEARCH_SUGGESTION_AT_USER_RESULT_LIST);

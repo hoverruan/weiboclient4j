@@ -10,7 +10,7 @@ public enum LocSortType implements
         PlaceService.GetNearbyUsersListParam,
         PlaceService.GetNearbyTimelineParam {
 
-    Time(0), Dis(1), SocialRelationship(2),;
+    Time(0), Dis(1), SocialRelationship(2);
 
     private int value;
 

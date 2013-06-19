@@ -5,6 +5,7 @@ import weiboclient4j.AccountService;
 import weiboclient4j.CommentService;
 import weiboclient4j.StatusService;
 import weiboclient4j.WeiboClient;
+import weiboclient4j.WeiboClientException;
 import weiboclient4j.model.Comment;
 import weiboclient4j.model.CommentList;
 import weiboclient4j.model.Emotion;
@@ -35,6 +36,7 @@ import static weiboclient4j.utils.StringUtils.isBlank;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,10 +47,28 @@ import java.util.prefs.Preferences;
 /**
  * @author Hover Ruan
  */
+//
 public class OAuth2CommandLine {
 
     public static final String API_KEY = "api_key";
+
     public static final String API_SECRET = "api_secret";
+
+    private static final long STATUS_ID = 3436240135184587L;
+
+    private static final long ANOTHER_STATUS_ID = 3436255091659029L;
+
+    private static final long UID = 1834561765L;
+
+    private WeiboClient client;
+
+    private BufferedReader in;
+
+    private Status justPostStatus;
+
+    public OAuth2CommandLine(BufferedReader in) {
+        this.in = in;
+    }
 
     public static void main(String[] args) throws Exception {
         Preferences pref = Preferences.userRoot().node("/weiboclient4j/example/oauth2");
@@ -75,128 +95,37 @@ public class OAuth2CommandLine {
             apiSecret = savedSecret;
         }
 
-        String authorizationCallback = "http://demo.localhost.weiboclient4j.org/callback";
         WeiboClient client = new WeiboClient(apiKey, apiSecret);
-        String state = "__MY_STATE__";
-        String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);
-        System.out.println("Please visit: " + url);
 
-        System.out.print("Input code: ");
-        String code = in.readLine();
-        String accessTokenCallback = "http://demo.localhost.weiboclient4j.org/callback";
-        SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code, accessTokenCallback);
-        System.out.println();
-        System.out.println("Access token: " + accessToken.getToken());
-        System.out.println("Uid: " + accessToken.getUid());
-        System.out.println("Expires in: " + accessToken.getExpiresIn());
-        System.out.println("Remind in: " + accessToken.getRemindIn());
+        OAuth2CommandLine cmd = new OAuth2CommandLine(in);
+        cmd.setClient(client);
 
-        accessToken = new SinaWeibo2AccessToken(accessToken.getToken());
-        client.setAccessToken(accessToken);
+        cmd.retrieveAccessToken();
+        cmd.retrieveAccountUid();
+        cmd.retrievePublicTimeline();
+        cmd.retrieveFriendsTimeline();
+        cmd.retrieveHomeTimeline();
+        cmd.retrieveUserTimeline();
+        cmd.retrieveOtherTimeline();
+        cmd.retrieveIds();
+        cmd.retrieveHotStatuses();
+        cmd.updateStatus();
+        cmd.retrieveAndUpdateComments();
+    }
+
+    public void setClient(WeiboClient client) {
+        this.client = client;
+    }
+
+    private void retrieveAndUpdateComments() throws WeiboClientException, IOException {
         StatusService statusService = client.getStatusService();
-
-        AccountService accountService = client.getAccountService();
-        long uid = accountService.getUid();
-        System.out.println();
-        System.out.println("Got account uid: " + uid);
-
-        Timeline publicTimeline = statusService.getPublicTimeline();
-        System.out.println();
-        System.out.println("Public timeline: " + writeObjectAsString(publicTimeline));
-
-        Timeline friendsTimeline = statusService.getFriendsTimeline();
-        System.out.println();
-        System.out.println("Friends timeline: " + writeObjectAsString(friendsTimeline));
-
-        Timeline homeTimeline = statusService.getHomeTimeline();
-        System.out.println();
-        System.out.println("Home timeline: " + writeObjectAsString(homeTimeline));
-
-        TimelineIds friendsTimelineIds = statusService.getFriendsTimelineIds();
-        System.out.println();
-        System.out.println("Friends timeline ids: " + writeObjectAsString(friendsTimelineIds));
-
-        Timeline userTimeline = statusService.getUserTimeline();
-        System.out.println();
-        System.out.println("User timeline: " + writeObjectAsString(userTimeline));
-
-        Timeline userTimelineTrimUser = statusService.getUserTimeline(TrimUser.No);
-        System.out.println();
-        System.out.println("User timeline that trim user: " + writeObjectAsString(userTimelineTrimUser));
-
-        statusService.getUserTimeline(ScreenName.EMPTY);
-        statusService.getUserTimeline(Uid.EMPTY);
-        statusService.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
-
-        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(
-                uid(1834561765L), BaseApp.No, Feature.All,TrimUser.No);
-        System.out.println();
-        System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
-
-        statusService.getUserTimelineIds(ScreenName.EMPTY);
-        statusService.getUserTimelineIds(Uid.EMPTY);
-        statusService.getUserTimelineIds();
-
-        statusService.getRepostTimeline(id(3436240135184587L));
-        statusService.getRepostTimelineIds(id(3436240135184587L));
-
-        statusService.getRepostByMe();
-
-        statusService.getMentions();
-        statusService.getMentionsIds();
-
-        statusService.getBilateralTimeline();
-
-        statusService.show(id(3436240135184587L));
-
-        statusService.queryMid(id(3436240135184587L), MidType.Status);
-
-        List<Id> idList = asList(id(3436240135184587L), id(3436255091659029L));
-        Map<Long, String> midMap = statusService.queryMidList(idList, MidType.Status);
-        System.out.println();
-        System.out.println("Mid " + 3436240135184587L + "=" + midMap.get(3436240135184587L) + ", " +
-                3436255091659029L + "=" + midMap.get(3436255091659029L));
-
-        statusService.queryId(mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
-
-        List<Mid> midList = asList(mid("yfcLPlKKn"), mid("yfd9X6XAx"));
-
-        Map<String, Long> idMap = statusService.queryIdList(midList, MidType.Message, IsBase62.Yes);
-        System.out.println();
-        System.out.println("Id yfcLPlKKn=" + idMap.get("yfcLPlKKn") + ", yfd9X6XAx=" + idMap.get("yfd9X6XAx"));
-
-        List<Status> hotRepostDaily = statusService.getHotRepostDaily();
-        System.out.println();
-        System.out.println("Hot repost daily: " + writeObjectAsString(hotRepostDaily));
-
-        List<Status> hotRepostWeekly = statusService.getHotRepostWeekly();
-        System.out.println();
-        System.out.println("Hot report weekly: " + writeObjectAsString(hotRepostWeekly));
-
-        statusService.getHotCommentsDaily();
-        statusService.getHotCommentsWeekly();
-
-        statusService.getStatusesCounts(idList);
-
-        Status justPostStatus = statusService.update("Update status api test");
-        Status repostStatus = statusService.repost(id(justPostStatus.getId()), "Repost test");
-        System.out.println();
-        System.out.println("Just post: " + writeObjectAsString(justPostStatus));
-        System.out.println("Repost: " + writeObjectAsString(repostStatus));
-
-        statusService.destroy(id(repostStatus.getId()));
-
-        // Need advanced permission
-        Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
-                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373"));
-        statusService.destroy(id(uploadedStatusByImageUrl.getId()));
 
         List<Emotion> emotions = statusService.getEmotions();
         System.out.println();
         System.out.println("Emotions: " + writeObjectAsString(emotions));
 
         CommentService commentService = client.getCommentService();
-        commentService.getComments(id(3436240135184587L));
+        commentService.getComments(id(STATUS_ID));
         CommentList commentsByMe = commentService.getCommentsByMe();
         long firstCommentId = commentsByMe.getComments().get(0).getId();
 
@@ -217,5 +146,158 @@ public class OAuth2CommandLine {
 
         statusService.destroy(id(justPostStatus.getId()));
         commentService.destroyCommentBatch(new ArrayList<Cid>());
+    }
+
+    private void updateStatus() throws WeiboClientException, IOException {
+        StatusService statusService = client.getStatusService();
+
+        justPostStatus = statusService.update("Update status api test");
+        Status repostStatus = statusService.repost(id(justPostStatus.getId()), "Repost test");
+        System.out.println();
+        System.out.println("Just post: " + writeObjectAsString(justPostStatus));
+        System.out.println("Repost: " + writeObjectAsString(repostStatus));
+
+        statusService.destroy(id(repostStatus.getId()));
+
+        // Need advanced permission
+        Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
+                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373")
+        );
+        statusService.destroy(id(uploadedStatusByImageUrl.getId()));
+    }
+
+    private void retrieveHotStatuses() throws WeiboClientException, IOException {
+        StatusService statusService = client.getStatusService();
+
+        List<Status> hotRepostDaily = statusService.getHotRepostDaily();
+        System.out.println();
+        System.out.println("Hot repost daily: " + writeObjectAsString(hotRepostDaily));
+
+        List<Status> hotRepostWeekly = statusService.getHotRepostWeekly();
+        System.out.println();
+        System.out.println("Hot report weekly: " + writeObjectAsString(hotRepostWeekly));
+
+        statusService.getHotCommentsDaily();
+        statusService.getHotCommentsWeekly();
+    }
+
+    private void retrieveIds() throws WeiboClientException {
+        StatusService statusService = client.getStatusService();
+
+        statusService.show(id(STATUS_ID));
+
+        statusService.queryMid(id(STATUS_ID), MidType.Status);
+
+        List<Id> idList = asList(id(STATUS_ID), id(ANOTHER_STATUS_ID));
+        Map<Long, String> midMap = statusService.queryMidList(idList, MidType.Status);
+        System.out.println();
+        System.out.println("Mid " + STATUS_ID + "=" + midMap.get(STATUS_ID) + ", "
+                + ANOTHER_STATUS_ID + "=" + midMap.get(ANOTHER_STATUS_ID));
+
+        statusService.queryId(mid("yfcLPlKKn"), MidType.Message, IsBase62.Yes);
+
+        List<Mid> midList = asList(mid("yfcLPlKKn"), mid("yfd9X6XAx"));
+
+        Map<String, Long> idMap = statusService.queryIdList(midList, MidType.Message, IsBase62.Yes);
+        System.out.println();
+        System.out.println("Id yfcLPlKKn=" + idMap.get("yfcLPlKKn") + ", yfd9X6XAx=" + idMap.get("yfd9X6XAx"));
+
+        statusService.getStatusesCounts(idList);
+    }
+
+    private void retrieveOtherTimeline() throws WeiboClientException {
+        StatusService statusService = client.getStatusService();
+
+        statusService.getRepostTimeline(id(STATUS_ID));
+        statusService.getRepostTimelineIds(id(STATUS_ID));
+
+        statusService.getRepostByMe();
+
+        statusService.getMentions();
+        statusService.getMentionsIds();
+
+        statusService.getBilateralTimeline();
+    }
+
+    private void retrieveUserTimeline() throws WeiboClientException, IOException {
+        StatusService statusService = client.getStatusService();
+
+        Timeline userTimeline = statusService.getUserTimeline();
+        System.out.println();
+        System.out.println("User timeline: " + writeObjectAsString(userTimeline));
+
+        Timeline userTimelineTrimUser = statusService.getUserTimeline(TrimUser.No);
+        System.out.println();
+        System.out.println("User timeline that trim user: " + writeObjectAsString(userTimelineTrimUser));
+
+        statusService.getUserTimeline(ScreenName.EMPTY);
+        statusService.getUserTimeline(Uid.EMPTY);
+        statusService.getUserTimeline(Paging.EMPTY, TrimUser.Yes);
+
+        Timeline userTimelineFor1834561765 = statusService.getUserTimeline(
+                uid(UID), BaseApp.No, Feature.All, TrimUser.No);
+        System.out.println();
+        System.out.println("User timeline for 1834561765: " + writeObjectAsString(userTimelineFor1834561765));
+
+        statusService.getUserTimelineIds(ScreenName.EMPTY);
+        statusService.getUserTimelineIds(Uid.EMPTY);
+        statusService.getUserTimelineIds();
+    }
+
+    private void retrieveHomeTimeline() throws IOException, WeiboClientException {
+        StatusService statusService = client.getStatusService();
+
+        Timeline homeTimeline = statusService.getHomeTimeline();
+        System.out.println();
+        System.out.println("Home timeline: " + writeObjectAsString(homeTimeline));
+    }
+
+    private void retrieveFriendsTimeline() throws WeiboClientException, IOException {
+        StatusService statusService = client.getStatusService();
+
+        Timeline friendsTimeline = statusService.getFriendsTimeline();
+        System.out.println();
+        System.out.println("Friends timeline: " + writeObjectAsString(friendsTimeline));
+
+        TimelineIds friendsTimelineIds = statusService.getFriendsTimelineIds();
+        System.out.println();
+        System.out.println("Friends timeline ids: " + writeObjectAsString(friendsTimelineIds));
+    }
+
+    private void retrievePublicTimeline() throws WeiboClientException, IOException {
+        StatusService statusService = client.getStatusService();
+
+        Timeline publicTimeline = statusService.getPublicTimeline();
+        System.out.println();
+        System.out.println("Public timeline: " + writeObjectAsString(publicTimeline));
+    }
+
+    private void retrieveAccountUid() throws WeiboClientException {
+        AccountService accountService = client.getAccountService();
+        long uid = accountService.getUid();
+
+        System.out.println();
+        System.out.println("Got account uid: " + uid);
+    }
+
+    private void retrieveAccessToken() throws IOException {
+        String state = "__MY_STATE__";
+        String authorizationCallback = "http://demo.localhost.weiboclient4j.org/callback";
+        String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);
+        System.out.println("Please visit: " + url);
+
+        System.out.print("Input code: ");
+        String code = in.readLine();
+        String accessTokenCallback = "http://demo.localhost.weiboclient4j.org/callback";
+        SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code,
+                accessTokenCallback);
+        System.out.println();
+        System.out.println("Access token: " + accessToken.getToken());
+        System.out.println("Uid: " + accessToken.getUid());
+        System.out.println("Expires in: " + accessToken.getExpiresIn());
+        System.out.println("Remind in: " + accessToken.getRemindIn());
+
+        accessToken = new SinaWeibo2AccessToken(accessToken.getToken());
+        client.setAccessToken(accessToken);
     }
 }

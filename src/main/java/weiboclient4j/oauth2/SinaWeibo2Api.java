@@ -17,16 +17,19 @@ public class SinaWeibo2Api extends DefaultApi20 {
             "https://api.weibo.com/oauth2/access_token";
 
     private static final String AUTHORIZE_URL =
-            "https://api.weibo.com/oauth2/authorize?" +
-                    "client_id=%s" +
-                    "&redirect_uri=%s" +
-                    "&response_type=%s" +
-                    "&state=%s" +
-                    "&display=%s";
+            "https://api.weibo.com/oauth2/authorize?"
+                    + "client_id=%s"
+                    + "&redirect_uri=%s"
+                    + "&response_type=%s"
+                    + "&state=%s"
+                    + "&display=%s";
 
     private ResponseType responseType = ResponseType.Code;
+
     private DisplayType displayType = DisplayType.Default;
+
     private GrantType grantType = GrantType.RefreshToken;
+
     private String state = "";
 
     public SinaWeibo2Api() {
@@ -42,8 +45,8 @@ public class SinaWeibo2Api extends DefaultApi20 {
     }
 
     @Override
-    public String getAccessTokenEndpoint() {
-        return ACCESS_TOKEN_URL;
+    public AccessTokenExtractor getAccessTokenExtractor() {
+        return new SinaWeibo2AccessTokenExtractor();
     }
 
     @Override
@@ -52,8 +55,8 @@ public class SinaWeibo2Api extends DefaultApi20 {
     }
 
     @Override
-    public OAuthService createService(OAuthConfig config) {
-        return new SinaWeibo2ServiceImpl(this, config);
+    public String getAccessTokenEndpoint() {
+        return ACCESS_TOKEN_URL;
     }
 
     @Override
@@ -76,8 +79,8 @@ public class SinaWeibo2Api extends DefaultApi20 {
     }
 
     @Override
-    public AccessTokenExtractor getAccessTokenExtractor() {
-        return new SinaWeibo2AccessTokenExtractor();
+    public OAuthService createService(OAuthConfig config) {
+        return new SinaWeibo2ServiceImpl(this, config);
     }
 
     public ResponseType getResponseType() {

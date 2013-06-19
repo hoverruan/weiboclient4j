@@ -8,7 +8,8 @@ import weiboclient4j.PlaceService;
 public enum PoiSortType implements
         PlaceService.GetPoiPhotosParam,
         PlaceService.GetPoiTipsParam {
-    Time(0), Hot(1),;
+
+    Time(0), Hot(1);
 
     private int value;
 

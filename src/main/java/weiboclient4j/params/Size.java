@@ -3,7 +3,7 @@ package weiboclient4j.params;
 import weiboclient4j.LocationService;
 
 public class Size extends StringParam implements
-        LocationService.GetMapImageParam{
+        LocationService.GetMapImageParam {
 
     public Size(String value) {
         super(value);

@@ -26,16 +26,12 @@ public enum BaseApp implements
         StatusService.GetUserTimelineIdsParam,
         StatusService.GetBilateralTimelineParam {
 
-    Yes(1), No(0),;
+    Yes(1), No(0);
 
     private int value;
 
     BaseApp(int value) {
         this.value = value;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static BaseApp fromValue(int value) {
@@ -46,6 +42,10 @@ public enum BaseApp implements
         }
 
         return null;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public void addParameter(Parameters params) {

@@ -11,6 +11,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SuggestionUser {
     private Long uid;
+
     private List<Reason> reasonList;
 
     public static List<SuggestionUser> convertFromRawSuggestionUserList(List<RawSuggestionUser> rawSuggestionUsers) {
@@ -21,6 +22,22 @@ public class SuggestionUser {
         }
 
         return result;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public List<Reason> getReasonList() {
+        return reasonList;
+    }
+
+    public void setReasonList(List<Reason> reasonList) {
+        this.reasonList = reasonList;
     }
 
     private static SuggestionUser convertFromRawSuggestionUser(RawSuggestionUser rawSuggestionUser) {
@@ -55,28 +72,17 @@ public class SuggestionUser {
         return suggestionUser;
     }
 
-    public Long getUid() {
-        return uid;
+    public enum ReasonType {
+        F, H, S, C, T
     }
-
-    public List<Reason> getReasonList() {
-        return reasonList;
-    }
-
-    public void setUid(Long uid) {
-        this.uid = uid;
-    }
-
-    public void setReasonList(List<Reason> reasonList) {
-        this.reasonList = reasonList;
-    }
-
-    public enum ReasonType {F, H, S, C, T}
 
     public static class Reason {
         private String name;
+
         private ReasonType type;
+
         private List<Long> uidList;
+
         private int numOfRelationship;
 
         public Reason(RawSuggestionUser.Reason.Item item, ReasonType reasonType) {
@@ -90,8 +96,16 @@ public class SuggestionUser {
             return type;
         }
 
+        public void setType(ReasonType type) {
+            this.type = type;
+        }
+
         public int getNumOfRelationship() {
             return numOfRelationship;
+        }
+
+        public void setNumOfRelationship(int numOfRelationship) {
+            this.numOfRelationship = numOfRelationship;
         }
 
         public String getName() {
@@ -108,14 +122,6 @@ public class SuggestionUser {
 
         public void setUidList(List<Long> uidList) {
             this.uidList = uidList;
-        }
-
-        public void setType(ReasonType type) {
-            this.type = type;
-        }
-
-        public void setNumOfRelationship(int numOfRelationship) {
-            this.numOfRelationship = numOfRelationship;
         }
     }
 }

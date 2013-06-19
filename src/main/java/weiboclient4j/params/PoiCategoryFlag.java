@@ -7,7 +7,8 @@ import weiboclient4j.PlaceService;
  */
 public enum PoiCategoryFlag implements
         PlaceService.GetPoiCategoriesParam {
-    CurrentLevel(0), All(1),;
+
+    CurrentLevel(0), All(1);
 
     private int value;
 

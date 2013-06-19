@@ -16,7 +16,7 @@ public enum Feature implements
         StatusService.GetUserTimelineIdsParam,
         StatusService.GetBilateralTimelineParam {
 
-    All(0), Original(1), Picture(2), Video(3), Music(4),;
+    All(0), Original(1), Picture(2), Video(3), Music(4);
 
     private static Map<Integer, Feature> map = new HashMap<Integer, Feature>();
 
@@ -32,12 +32,12 @@ public enum Feature implements
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static Feature fromValue(int value) {
         return map.get(value);
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public void addParameter(Parameters params) {

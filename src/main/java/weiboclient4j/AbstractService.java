@@ -33,18 +33,24 @@ import java.util.concurrent.TimeUnit;
 public class AbstractService {
     public static final String API2_URL = "https://api.weibo.com/2/";
 
-    protected WeiboClient client;
+    private static final int DEFAULT_TIMEOUT = 30;
+
+    private WeiboClient client;
     private SinaWeibo2AccessToken accessToken;
 
-    private int connectTimeoutDuration = 30;
+    private int connectTimeoutDuration = DEFAULT_TIMEOUT;
     private TimeUnit connectTimeoutUnit = TimeUnit.SECONDS;
-    private int readTimeoutDuration = 30;
+    private int readTimeoutDuration = DEFAULT_TIMEOUT;
     private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
 
     public AbstractService(WeiboClient client) {
         this.client = client;
 
         client.initService(this);
+    }
+
+    public WeiboClient getClient() {
+        return client;
     }
 
     public void setAccessToken(SinaWeibo2AccessToken accessToken) {
@@ -95,7 +101,8 @@ public class AbstractService {
         return sendRequestAndGetResponseObject(createGetRequest(path), typeReference);
     }
 
-    public <T> List<T> doGet(String path, Paging paging, TypeReference<List<T>> typeReference) throws WeiboClientException {
+    public <T> List<T> doGet(String path, Paging paging, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
         return sendRequestAndGetResponseObject(createGetRequest(path), paging, typeReference);
     }
 
@@ -121,22 +128,27 @@ public class AbstractService {
         return doPost(path, Parameters.create(), clazz);
     }
 
-    public <T> List<T> doPost(String path, Parameters params, TypeReference<List<T>> typeReference) throws WeiboClientException {
+    public <T> List<T> doPost(String path, Parameters params, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
         return sendRequestAndGetResponseObject(createPostRequest(path), params, typeReference);
     }
 
-    public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Parameters params,
-                                                       TypeReference<List<T>> typeReference) throws WeiboClientException {
+    public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request,
+                                                       Parameters params,
+                                                       TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, Paging.EMPTY, params, typeReference);
     }
 
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Paging paging,
-                                                       TypeReference<List<T>> typeReference) throws WeiboClientException {
+                                                       TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
         return sendRequestAndGetResponseObject(request, paging, Parameters.create(), typeReference);
     }
 
     public <T> List<T> sendRequestAndGetResponseObject(OAuthRequest request, Paging paging, Parameters params,
-                                                       TypeReference<List<T>> typeReference) throws WeiboClientException {
+                                                       TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
         if (paging != null) {
             params.add(paging);
         }
@@ -332,7 +344,8 @@ public class AbstractService {
         }
     }
 
-    public static final TypeReference<List<Map<String, String>>> LIST_MAP_S_S_TYPE_REFERENCE = new TypeReference<List<Map<String, String>>>() {
+    public static final TypeReference<List<Map<String, String>>> LIST_MAP_S_S_TYPE_REFERENCE =
+            new TypeReference<List<Map<String, String>>>() {
     };
 
     protected Map<String, String> mergeSingleItemMap(List<Map<String, String>> response) {
@@ -354,7 +367,8 @@ public class AbstractService {
         };
     }
 
-    protected static void buildUploadRequest(OAuthRequest request, File imageFile, Parameters params) throws IOException {
+    protected static void buildUploadRequest(OAuthRequest request, File imageFile, Parameters params)
+            throws IOException {
         ByteArrayOutputStream baos = null;
         OutputStream os = null;
         DataOutputStream dos = null;
@@ -384,7 +398,8 @@ public class AbstractService {
         }
     }
 
-    protected static void writeFile(StreamUtils.StreamWriter writer, String boundary, File imageFile) throws IOException {
+    protected static void writeFile(StreamUtils.StreamWriter writer, String boundary, File imageFile)
+            throws IOException {
         writer.writeLine(boundary)
                 .writeLine("Content-Disposition: form-data; name=\"pic\"; filename=\"" + imageFile.getName() + "\"")
                 .writeLine("Content-Type: " + getContentTypeFromImage(imageFile))

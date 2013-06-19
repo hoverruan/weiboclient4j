@@ -127,8 +127,8 @@ public class CommentService extends AbstractService {
         return replyComment(id, cid, new CommentParam(comment), withoutMention, commentOri);
     }
 
-    public Comment replyComment(Id id, Cid cid, CommentParam comment, WithoutMention withoutMention, CommentOri commentOri)
-            throws WeiboClientException {
+    public Comment replyComment(Id id, Cid cid, CommentParam comment, WithoutMention withoutMention,
+                                CommentOri commentOri) throws WeiboClientException {
         return doPost("comments/reply",
                 withParams(id, cid, comment, withoutMention, commentOri), Comment.class);
     }

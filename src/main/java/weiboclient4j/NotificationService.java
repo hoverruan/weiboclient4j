@@ -51,7 +51,8 @@ public class NotificationService extends AbstractService {
                                    final int objects2Count,
                                    final String objects3,
                                    final int objects3Count) throws WeiboClientException {
-        return send(uids, templateId, objects1, objects1Count, objects2, objects2Count, objects3, objects3Count, ActionUrl.EMPTY);
+        return send(uids, templateId, objects1, objects1Count, objects2, objects2Count, objects3, objects3Count,
+                ActionUrl.EMPTY);
     }
 
     public NotificationResult send(Collection<Uid> uids,

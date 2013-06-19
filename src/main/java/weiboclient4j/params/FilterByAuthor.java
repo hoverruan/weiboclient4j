@@ -14,7 +14,7 @@ public enum FilterByAuthor implements
         StatusService.GetMentionsParam,
         StatusService.GetMentionsIdsParam {
 
-    All(0), Friends(1), Stranger(2),;
+    All(0), Friends(1), Stranger(2);
 
     private static Map<Integer, FilterByAuthor> map = new HashMap<Integer, FilterByAuthor>();
 
@@ -30,12 +30,12 @@ public enum FilterByAuthor implements
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static FilterByAuthor fromValue(int value) {
         return map.get(value);
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public void addParameter(Parameters params) {

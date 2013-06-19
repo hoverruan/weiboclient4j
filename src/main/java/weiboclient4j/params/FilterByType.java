@@ -12,7 +12,7 @@ public enum FilterByType implements
         StatusService.GetMentionsParam,
         StatusService.GetMentionsIdsParam {
 
-    All(0), Original(1),;
+    All(0), Original(1);
 
     private static Map<Integer, FilterByType> map = new HashMap<Integer, FilterByType>();
 
@@ -28,12 +28,12 @@ public enum FilterByType implements
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static FilterByType fromValue(int value) {
         return map.get(value);
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public void addParameter(Parameters params) {

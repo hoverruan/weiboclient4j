@@ -40,10 +40,6 @@ public class Paging {
         }
     };
 
-    private Paging() {
-
-    }
-
     public static Paging create() {
         return new Paging();
     }
@@ -54,32 +50,32 @@ public class Paging {
     private long maxId;
     private long cursor;
 
-    public Paging page(int page) {
-        setPage(page);
+    public Paging page(int newPage) {
+        setPage(newPage);
 
         return this;
     }
 
-    public Paging count(int count) {
-        setCount(count);
+    public Paging count(int newCount) {
+        setCount(newCount);
 
         return this;
     }
 
-    public Paging sinceId(long sinceId) {
-        setSinceId(sinceId);
+    public Paging sinceId(long newSinceId) {
+        setSinceId(newSinceId);
 
         return this;
     }
 
-    public Paging maxId(long maxId) {
-        setMaxId(maxId);
+    public Paging maxId(long newMaxId) {
+        setMaxId(newMaxId);
 
         return this;
     }
 
-    public Paging cursor(long cursor) {
-        setCursor(cursor);
+    public Paging cursor(long newCursor) {
+        setCursor(newCursor);
 
         return this;
     }

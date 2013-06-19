@@ -9,7 +9,7 @@ public enum IsBase62 implements
         StatusService.QueryIdParam,
         StatusService.QueryIdListParam {
 
-    Yes(1), No(0),;
+    Yes(1), No(0);
 
     private int value;
 

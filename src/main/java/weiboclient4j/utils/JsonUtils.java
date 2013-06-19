@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 /**
  * @author Hover Ruan
  */
-public class JsonUtils {
-    private static final Logger log = Logger.getLogger("weiboclient2/json");
+public final class JsonUtils {
+    private static Logger log = Logger.getLogger("weiboclient2/json");
     private static ObjectMapper mapper = new ObjectMapper();
 
     static {
@@ -50,7 +50,8 @@ public class JsonUtils {
         }
     }
 
-    public static <T> List<T> parseJsonObject(Response response, TypeReference<List<T>> type) throws WeiboClientException {
+    public static <T> List<T> parseJsonObject(Response response, TypeReference<List<T>> type)
+            throws WeiboClientException {
         if (response.isSuccessful()) {
             return parseJsonObject(response.getBody(), type);
         } else {

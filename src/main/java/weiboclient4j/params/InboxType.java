@@ -12,7 +12,7 @@ public enum InboxType implements
         StatusService.QueryIdParam,
         StatusService.QueryIdListParam {
 
-    Outbox(0), Inbox(1),;
+    Outbox(0), Inbox(1);
 
     private static Map<Integer, InboxType> map = new HashMap<Integer, InboxType>();
 
@@ -28,12 +28,12 @@ public enum InboxType implements
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static InboxType fromValue(int value) {
         return map.get(value);
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public void addParameter(Parameters params) {

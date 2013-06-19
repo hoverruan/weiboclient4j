@@ -7,7 +7,10 @@ import java.util.List;
 /**
  * @author Hover Ruan
  */
-public class CollectionUtils {
+public final class CollectionUtils {
+    private CollectionUtils() {
+    }
+
     public static <E> ArrayList<E> newArrayList(E... elements) {
         ArrayList<E> list = new ArrayList<E>(elements.length);
         Collections.addAll(list, elements);

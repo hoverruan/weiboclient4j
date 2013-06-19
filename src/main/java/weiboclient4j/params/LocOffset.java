@@ -12,7 +12,7 @@ public enum LocOffset implements
         PlaceService.GetNearbyUsersListParam,
         PlaceService.GetNearbyTimelineParam {
 
-    Original(0), Transformed(1),;
+    Original(0), Transformed(1);
 
     private int value;
 
