@@ -1,11 +1,13 @@
 package weiboclient4j.params;
 
-public class Coordinate {
+public class Coordinate extends StringParam {
     private Longitude longitude;
 
     private Latitude latitude;
 
     public Coordinate(Longitude longitude, Latitude latitude) {
+        super(formatCoordinate(longitude, latitude));
+
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -20,6 +22,15 @@ public class Coordinate {
 
     @Override
     public String toString() {
-        return String.format("%f,%f", longitude.getValue(), latitude.getValue());
+        return formatCoordinate(longitude, latitude);
+    }
+
+    @Override
+    protected String paramKey() {
+        return "coordinate";
+    }
+
+    private static String formatCoordinate(Longitude longitudeParam, Latitude latitudeParam) {
+        return String.format("%f,%f", longitudeParam.getValue(), latitudeParam.getValue());
     }
 }

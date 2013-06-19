@@ -6,6 +6,7 @@ import weiboclient4j.params.Paging;
 import weiboclient4j.params.UrlLong;
 import weiboclient4j.params.UrlShort;
 import weiboclient4j.utils.CollectionUtils;
+import static weiboclient4j.utils.CollectionUtils.firstItem;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,9 +20,7 @@ public class ShortUrlService extends AbstractService {
     }
 
     public Url shortenUrl(UrlLong urlLong) throws WeiboClientException {
-        List<Url> result = shortenUrl(CollectionUtils.newArrayList(urlLong));
-
-        return result != null && result.size() > 0 ? result.get(0) : null;
+        return firstItem(shortenUrl(CollectionUtils.newArrayList(urlLong)));
     }
 
     public List<Url> shortenUrl(Collection<UrlLong> urlList) throws WeiboClientException {
@@ -32,9 +31,7 @@ public class ShortUrlService extends AbstractService {
     }
 
     public Url expandUrl(UrlShort urlShort) throws WeiboClientException {
-        List<Url> result = expandUrl(CollectionUtils.newArrayList(urlShort));
-
-        return result != null && result.size() > 0 ? result.get(0) : null;
+        return firstItem(expandUrl(CollectionUtils.newArrayList(urlShort)));
     }
 
     public List<Url> expandUrl(Collection<UrlShort> urlList) throws WeiboClientException {

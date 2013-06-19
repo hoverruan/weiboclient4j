@@ -255,4 +255,8 @@ public class CoreParameters {
     public static Zoom zoom(long value) {
         return new Zoom(value);
     }
+
+    public static Ip ip(String value) {
+        return new Ip(value);
+    }
 }
