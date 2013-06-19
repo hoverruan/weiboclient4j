@@ -1,6 +1,6 @@
 weiboclient4j CHANGELOG
 
-*** 0.4.3 [Pending]
+*** 0.4.3
  * 实现地理接口中的"坐标转换接口"
  * 引入 weiboclient4j.params.P 简化参数对象的创建
  * 实现地理接口中的"生成一张静态的地图图片"接口
