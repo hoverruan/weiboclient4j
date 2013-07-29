@@ -14,7 +14,12 @@ import org.scribe.oauth.OAuth20ServiceImpl;
 public class SinaWeibo2ServiceImpl extends OAuth20ServiceImpl {
     public static final String GRANT_TYPE = "grant_type";
 
+    public static final String USERNAME = "username";
+
+    public static final String PASSWORD = "password";
+
     private SinaWeibo2Api api;
+
     private OAuthConfig config;
 
     public SinaWeibo2ServiceImpl(SinaWeibo2Api api, OAuthConfig config) {
@@ -30,8 +35,15 @@ public class SinaWeibo2ServiceImpl extends OAuth20ServiceImpl {
         request.addBodyParameter(OAuthConstants.CLIENT_ID, config.getApiKey());
         request.addBodyParameter(OAuthConstants.CLIENT_SECRET, config.getApiSecret());
         request.addBodyParameter(GRANT_TYPE, api.getGrantType().getType());
-        request.addBodyParameter(OAuthConstants.CODE, verifier.getValue());
-        request.addBodyParameter(OAuthConstants.REDIRECT_URI, config.getCallback());
+
+        if (api.getGrantType() == GrantType.AuthorizationCode) {
+            request.addBodyParameter(OAuthConstants.CODE, verifier.getValue());
+            request.addBodyParameter(OAuthConstants.REDIRECT_URI, config.getCallback());
+        } else if (api.getGrantType() == GrantType.Password && requestToken != null) {
+            request.addBodyParameter(USERNAME, requestToken.getToken());
+            request.addBodyParameter(PASSWORD, requestToken.getSecret());
+        }
+
         Response response = request.send();
         return api.getAccessTokenExtractor().extract(response.getBody());
     }

@@ -1,6 +1,7 @@
 package weiboclient4j;
 
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import weiboclient4j.oauth2.DisplayType;
@@ -8,6 +9,7 @@ import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
+import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.util.concurrent.TimeUnit;
 
@@ -78,17 +80,48 @@ public class WeiboClient {
         return service.getAuthorizationUrl(null);
     }
 
+    /**
+     * @deprecated Use {@link #getAccessTokenByCode(String, String)} for 'authorization_code' grant type
+     */
+    @Deprecated
     public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String callback) {
-        SinaWeibo2Api api = new SinaWeibo2Api(grantType);
+        return getAccessTokenByCode(code, callback);
+    }
 
-        OAuthService service = new ServiceBuilder()
+    public SinaWeibo2AccessToken getAccessTokenByCode(String code, String callback) {
+        SinaWeibo2Api api = new SinaWeibo2Api(GrantType.AuthorizationCode);
+
+        ServiceBuilder serviceBuilder = new ServiceBuilder();
+
+        if (isNotBlank(callback)) {
+            serviceBuilder.callback(callback);
+        }
+
+        OAuthService service = serviceBuilder
                 .apiKey(clientId)
                 .apiSecret(clientSecret)
-                .callback(callback)
                 .provider(api)
                 .build();
 
         accessToken = (SinaWeibo2AccessToken) service.getAccessToken(null, new Verifier(code));
+
+        return accessToken;
+    }
+
+    public SinaWeibo2AccessToken getAccessTokenByCode(String code) {
+        return getAccessTokenByCode(code, null);
+    }
+
+    public SinaWeibo2AccessToken getAccessTokenByPassword(String username, String password) {
+        SinaWeibo2Api api = new SinaWeibo2Api(GrantType.Password);
+
+        OAuthService service = new ServiceBuilder()
+                .apiKey(clientId)
+                .apiSecret(clientSecret)
+                .provider(api)
+                .build();
+
+        accessToken = (SinaWeibo2AccessToken) service.getAccessToken(new Token(username, password), null);
 
         return accessToken;
     }
