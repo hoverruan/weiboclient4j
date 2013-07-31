@@ -1,12 +1,11 @@
 package weiboclient4j.utils;
 
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author Hover Ruan
@@ -15,20 +14,10 @@ public final class StreamUtils {
     private StreamUtils() {
     }
 
-    public static void close(OutputStream outputStream) {
-        if (outputStream != null) {
+    public static void closeQuietly(Closeable closeable) {
+        if (closeable != null) {
             try {
-                outputStream.close();
-            } catch (IOException e) {
-                // ignore
-            }
-        }
-    }
-
-    public static void close(InputStream inputStream) {
-        if (inputStream != null) {
-            try {
-                inputStream.close();
+                closeable.close();
             } catch (IOException e) {
                 // ignore
             }
@@ -81,10 +70,9 @@ public final class StreamUtils {
                 }
 
                 stream.writeBytes(CRLF);
-
             } finally {
-                close(fileInputStream);
-                close(in);
+                closeQuietly(fileInputStream);
+                closeQuietly(in);
             }
 
             return this;

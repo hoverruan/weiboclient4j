@@ -35,6 +35,9 @@ import java.util.List;
  */
 @SuppressWarnings("unchecked")
 public class PlaceService extends AbstractService {
+
+    private static final String PIC_PARAM_NAME = "pic";
+
     public PlaceService(WeiboClient client) {
         super(client);
     }
@@ -401,7 +404,7 @@ public class PlaceService extends AbstractService {
 
         if (image != null) {
             try {
-                buildUploadRequest(request, image, params);
+                buildUploadRequest(request, PIC_PARAM_NAME, image, params);
             } catch (IOException e) {
                 throw new WeiboClientException(e);
             }
@@ -421,7 +424,7 @@ public class PlaceService extends AbstractService {
 
         if (image != null) {
             try {
-                buildUploadRequest(request, image, params);
+                buildUploadRequest(request, PIC_PARAM_NAME, image, params);
             } catch (IOException e) {
                 throw new WeiboClientException(e);
             }

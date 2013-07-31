@@ -46,6 +46,8 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class StatusService extends AbstractService {
 
+    private static final String PIC_PARAM_NAME = "pic";
+
     public StatusService(WeiboClient client) {
         super(client);
     }
@@ -469,7 +471,7 @@ public class StatusService extends AbstractService {
         Parameters params = withParams(status, visible, listId, latitude, longitude);
 
         try {
-            buildUploadRequest(request, image, params);
+            buildUploadRequest(request, PIC_PARAM_NAME, image, params);
         } catch (IOException e) {
             throw new WeiboClientException(e);
         }

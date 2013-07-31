@@ -13,6 +13,8 @@ import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
 import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import weiboclient4j.utils.StreamUtils;
+import static weiboclient4j.utils.StreamUtils.closeQuietly;
+import static weiboclient4j.utils.StreamUtils.newStreamWriter;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -367,7 +369,7 @@ public class AbstractService {
         };
     }
 
-    protected static void buildUploadRequest(OAuthRequest request, File imageFile, Parameters params)
+    protected static void buildUploadRequest(OAuthRequest request, String fileParamName, File file, Parameters params)
             throws IOException {
         ByteArrayOutputStream baos = null;
         OutputStream os = null;
@@ -378,13 +380,13 @@ public class AbstractService {
             os = new BufferedOutputStream(baos);
             dos = new DataOutputStream(os);
 
-            StreamUtils.StreamWriter writer = StreamUtils.newStreamWriter(dos);
+            StreamUtils.StreamWriter writer = newStreamWriter(dos);
 
             String boundary = "----weiboclient4j-upload" + System.currentTimeMillis();
             request.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
             boundary = "--" + boundary;
 
-            writeFile(writer, boundary, imageFile);
+            writeFile(writer, boundary, fileParamName, file);
             writeParameters(writer, boundary, params);
             writer.writeLine(boundary + "--").writeLine();
 
@@ -392,19 +394,19 @@ public class AbstractService {
 
             request.addPayload(baos.toByteArray());
         } finally {
-            StreamUtils.close(dos);
-            StreamUtils.close(os);
-            StreamUtils.close(baos);
+            closeQuietly(dos);
+            closeQuietly(os);
+            closeQuietly(baos);
         }
     }
 
-    protected static void writeFile(StreamUtils.StreamWriter writer, String boundary, File imageFile)
+    protected static void writeFile(StreamUtils.StreamWriter writer, String boundary, String fileParamName, File file)
             throws IOException {
         writer.writeLine(boundary)
-                .writeLine("Content-Disposition: form-data; name=\"pic\"; filename=\"" + imageFile.getName() + "\"")
-                .writeLine("Content-Type: " + getContentTypeFromImage(imageFile))
+                .writeLine(String.format("Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"", fileParamName, file.getName()))
+                .writeLine("Content-Type: " + getContentTypeFromImage(file))
                 .writeLine()
-                .writeFile(imageFile);
+                .writeFile(file);
     }
 
     protected static void writeParameters(StreamUtils.StreamWriter writer, String boundary,
