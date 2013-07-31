@@ -263,4 +263,8 @@ public class CoreParameters {
     public static PicId picId(String... picIdList) {
         return new PicId(picIdList);
     }
+
+    public static Pic pic(String value) {
+        return new Pic(value);
+    }
 }
