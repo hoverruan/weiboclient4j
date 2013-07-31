@@ -11,6 +11,7 @@ import weiboclient4j.model.RepostTimeline;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
+import weiboclient4j.model.UploadedPic;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Id;
 import weiboclient4j.params.IsBase62;
@@ -24,6 +25,7 @@ import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
+import weiboclient4j.params.PicId;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.StatusParam;
 import weiboclient4j.params.Uid;
@@ -436,19 +438,38 @@ public class StatusService extends AbstractService {
         return doPost("statuses/destroy", withParams(id), Status.class);
     }
 
-    public Status uploadImageUrl(String status, URL url) throws WeiboClientException {
-        return uploadImageUrl(status, url, null, null);
+    public static interface UploadImageUrlParam extends ParameterAction {
     }
 
-    public Status uploadImageUrl(String status, URL url, Latitude latitude, Longitude longitude)
-            throws WeiboClientException {
-        return uploadImageUrl(new StatusParam(status), url, latitude, longitude);
+    public Status uploadImageUrl(String status, URL url, UploadImageUrlParam... optionalParams)
+        throws WeiboClientException {
+        return uploadImageUrl(new StatusParam(status), url, optionalParams);
     }
 
-    public Status uploadImageUrl(StatusParam status, URL url, Latitude latitude, Longitude longitude)
+    public Status uploadImageUrl(StatusParam status, URL url, UploadImageUrlParam... optionalParams)
             throws WeiboClientException {
-        return doPost("statuses/upload_url_text",
-                withParams(status, urlParam(url), latitude, longitude), Status.class);
+        return uploadImageUrl(status, url, null, optionalParams);
+    }
+
+    public Status uploadImageUrl(String status, PicId picId, UploadImageUrlParam... optionalParams)
+            throws WeiboClientException {
+        return uploadImageUrl(new StatusParam(status), picId, optionalParams);
+    }
+
+    public Status uploadImageUrl(StatusParam status, PicId picId, UploadImageUrlParam... optionalParams)
+            throws WeiboClientException {
+        return uploadImageUrl(status, null, picId, optionalParams);
+    }
+
+    public Status uploadImageUrl(String status, URL url, PicId picId, UploadImageUrlParam... optionalParams)
+            throws WeiboClientException {
+        return uploadImageUrl(new StatusParam(status), url, picId, optionalParams);
+    }
+
+    public Status uploadImageUrl(StatusParam status, URL url, PicId picId, UploadImageUrlParam... optionalParams)
+            throws WeiboClientException {
+        return doPost("statuses/upload_url_text", buildParams(optionalParams, status, urlParam(url), picId),
+                Status.class);
     }
 
     public Status uploadImageBinary(StatusParam status, File image) throws WeiboClientException {
@@ -481,5 +502,17 @@ public class StatusService extends AbstractService {
 
     public List<Emotion> getEmotions() throws WeiboClientException {
         return doGet("emotions", Emotion.TYPE_EMOTION_LIST);
+    }
+
+    public UploadedPic uploadImage(File image) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/upload_pic");
+
+        try {
+            buildUploadRequest(request, PIC_PARAM_NAME, image, Parameters.create());
+        } catch (IOException e) {
+            throw new WeiboClientException(e);
+        }
+
+        return sendRequestAndGetResponseObject(request, UploadedPic.class);
     }
 }

@@ -259,4 +259,8 @@ public class CoreParameters {
     public static Ip ip(String value) {
         return new Ip(value);
     }
+
+    public static PicId picId(String... picIdList) {
+        return new PicId(picIdList);
+    }
 }

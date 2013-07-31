@@ -1,6 +1,7 @@
 weiboclient4j CHANGELOG
 
-*** 0.4.4 [Pending]
+*** 0.4.4
+ * 实现上传图片以及发送多图微博的接口
  * 支持password类型的grant_type认证
 
 *** 0.4.3
