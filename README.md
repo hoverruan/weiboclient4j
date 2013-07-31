@@ -55,7 +55,6 @@ System.out.println("Remind in: " + accessToken.getRemindIn());
 获取用户Timeline例子：
 
 ```java
-client.setAccessToken(new SinaWeibo2AccessToken("..."));
 StatusService service = client.getStatusService();
 Timeline friendsTimeline = service.getFriendsTimeline();
 ```
