@@ -1,5 +1,8 @@
 weiboclient4j CHANGELOG
 
+*** 0.4.4 [Pending]
+ * 支持password类型的grant_type认证
+
 *** 0.4.3
  * 实现地理接口中的"坐标转换接口"
  * 引入 weiboclient4j.params.P 简化参数对象的创建

@@ -130,6 +130,10 @@ public class WeiboClient {
         this.accessToken = accessToken;
     }
 
+    public void setAccessToken(String accessToken) {
+        setAccessToken(new SinaWeibo2AccessToken(accessToken));
+    }
+
     public StatusService getStatusService() {
         return new StatusService(this);
     }
