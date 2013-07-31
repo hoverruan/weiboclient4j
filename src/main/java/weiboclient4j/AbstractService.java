@@ -403,7 +403,8 @@ public class AbstractService {
     protected static void writeFile(StreamUtils.StreamWriter writer, String boundary, String fileParamName, File file)
             throws IOException {
         writer.writeLine(boundary)
-                .writeLine(String.format("Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"", fileParamName, file.getName()))
+                .writeLine(String.format("Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"",
+                        fileParamName, file.getName()))
                 .writeLine("Content-Type: " + getContentTypeFromImage(file))
                 .writeLine()
                 .writeFile(file);
