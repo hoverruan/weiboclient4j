@@ -25,7 +25,6 @@ import weiboclient4j.params.MidType;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import weiboclient4j.params.Parameters;
-import weiboclient4j.params.Pic;
 import weiboclient4j.params.PicId;
 import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.StatusParam;
@@ -505,7 +504,15 @@ public class StatusService extends AbstractService {
         return doGet("emotions", Emotion.TYPE_EMOTION_LIST);
     }
 
-    public UploadedPic uploadImage(Pic pic) throws WeiboClientException {
-        return doPost("statuses/upload_pic", withParams(pic), UploadedPic.class);
+    public UploadedPic uploadImage(File image) throws WeiboClientException {
+        OAuthRequest request = createPostRequest("statuses/upload_pic");
+
+        try {
+            buildUploadRequest(request, PIC_PARAM_NAME, image, Parameters.create());
+        } catch (IOException e) {
+            throw new WeiboClientException(e);
+        }
+
+        return sendRequestAndGetResponseObject(request, UploadedPic.class);
     }
 }
