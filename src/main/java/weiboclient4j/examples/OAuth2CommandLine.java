@@ -8,7 +8,6 @@ import weiboclient4j.WeiboClient;
 import weiboclient4j.WeiboClientException;
 import weiboclient4j.model.Comment;
 import weiboclient4j.model.CommentList;
-import weiboclient4j.model.Emotion;
 import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
@@ -37,8 +36,6 @@ import static weiboclient4j.utils.StringUtils.isNotBlank;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
@@ -118,10 +115,6 @@ public class OAuth2CommandLine {
     private void retrieveAndUpdateComments() throws WeiboClientException, IOException {
         StatusService statusService = client.getStatusService();
 
-        List<Emotion> emotions = statusService.getEmotions();
-        System.out.println();
-        System.out.println("Emotions: " + writeObjectAsString(emotions));
-
         CommentService commentService = client.getCommentService();
         commentService.getComments(id(STATUS_ID));
         CommentList commentsByMe = commentService.getCommentsByMe();
@@ -136,14 +129,13 @@ public class OAuth2CommandLine {
 
         Comment comment = commentService.createComment(id(justPostStatus.getId()), "Create comment test");
         Comment reply = commentService.replyComment(
-                id(justPostStatus.getCommentsCount()),
+                id(justPostStatus.getId()),
                 cid(comment.getId()),
                 "Reply test");
         commentService.destroyComment(cid(comment.getId()));
         commentService.destroyComment(cid(reply.getId()));
 
         statusService.destroy(id(justPostStatus.getId()));
-        commentService.destroyCommentBatch(new ArrayList<Cid>());
     }
 
     private void updateStatus() throws WeiboClientException, IOException {
@@ -158,10 +150,10 @@ public class OAuth2CommandLine {
         statusService.destroy(id(repostStatus.getId()));
 
         // Need advanced permission
-        Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
-                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373")
-        );
-        statusService.destroy(id(uploadedStatusByImageUrl.getId()));
+//        Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
+//                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373")
+//        );
+//        statusService.destroy(id(uploadedStatusByImageUrl.getId()));
     }
 
     private void retrieveIds() throws WeiboClientException {

@@ -4,6 +4,8 @@ package weiboclient4j;
  * @author Hover Ruan
  */
 public class WeiboError {
+    public static final int ERR = 10001;
+
     private String request;
     private String errorCode;
     private String error;
