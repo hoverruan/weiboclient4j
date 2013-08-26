@@ -14,7 +14,6 @@ import weiboclient4j.model.TimelineIds;
 import weiboclient4j.model.UploadedPic;
 import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Id;
-import weiboclient4j.params.IsBase62;
 import weiboclient4j.params.IsBatch;
 import weiboclient4j.params.IsComment;
 import weiboclient4j.params.Latitude;
@@ -305,7 +304,7 @@ public class StatusService extends AbstractService {
     public Map<Long, String> queryMidList(Collection<Id> idList, MidType midType) throws WeiboClientException {
         // [{"3436240135184587":"yfcLPlKKn"},{"3436255091659029":"yfd9X6XAx"}]
         ArrayNode arrayNode = doGet("statuses/querymid",
-                withParams(Id.idParam(idList), midType, IsBase62.Yes), ArrayNode.class);
+                withParams(Id.idParam(idList), midType, IsBatch.Yes), ArrayNode.class);
 
         Map<Long, String> map = new HashMap<Long, String>();
         for (int i = 0; i < arrayNode.size(); i++) {

@@ -32,8 +32,6 @@ public enum MidType implements ParameterAction {
     }
 
     public void addParameter(Parameters params) {
-        if (this != Status) {
-            params.add("type", getValue());
-        }
+        params.add("type", getValue());
     }
 }

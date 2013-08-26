@@ -13,7 +13,6 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.oauth2.DisplayType;
-import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.params.BaseApp;
@@ -289,8 +288,7 @@ public class OAuth2CommandLine {
         System.out.print("Input code: ");
         String code = in.readLine();
         String accessTokenCallback = "http://demo.localhost.weiboclient4j.org/callback";
-        SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code,
-                accessTokenCallback);
+        SinaWeibo2AccessToken accessToken = client.getAccessTokenByCode(code, accessTokenCallback);
         System.out.println();
         System.out.println("Access token: " + accessToken.getToken());
         System.out.println("Uid: " + accessToken.getUid());
