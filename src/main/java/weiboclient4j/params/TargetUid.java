@@ -10,6 +10,10 @@ public class TargetUid extends LongParam {
         super(value);
     }
 
+    public TargetUid(String value) {
+        this(Long.parseLong(value));
+    }
+
     protected String paramKey() {
         return "target_id";
     }

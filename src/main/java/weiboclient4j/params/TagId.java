@@ -14,6 +14,10 @@ public class TagId extends LongParam {
         super(value);
     }
 
+    public TagId(String value) {
+        this(Long.parseLong(value));
+    }
+
     protected String paramKey() {
         return "tag_id";
     }

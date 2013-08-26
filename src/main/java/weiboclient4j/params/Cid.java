@@ -14,6 +14,10 @@ public class Cid extends LongParam {
         super(value);
     }
 
+    public Cid(String value) {
+        this(Long.parseLong(value));
+    }
+
     protected String paramKey() {
         return "cid";
     }

@@ -10,6 +10,10 @@ public class Suid extends LongParam {
         super(value);
     }
 
+    public Suid(String value) {
+        this(Long.parseLong(value));
+    }
+
     protected String paramKey() {
         return "suid";
     }

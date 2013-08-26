@@ -10,6 +10,10 @@ public class SourceUid extends LongParam {
         super(value);
     }
 
+    public SourceUid(String value) {
+        this(Long.parseLong(value));
+    }
+
     protected String paramKey() {
         return "source_id";
     }

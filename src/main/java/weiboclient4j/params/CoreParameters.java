@@ -28,6 +28,10 @@ public class CoreParameters {
         return new Cid(value);
     }
 
+    public static Cid cid(String value) {
+        return new Cid(value);
+    }
+
     public static City city(String value) {
         return new City(value);
     }
@@ -61,6 +65,10 @@ public class CoreParameters {
     }
 
     public static Id id(long value) {
+        return new Id(value);
+    }
+
+    public static Id id(String value) {
         return new Id(value);
     }
 
@@ -136,6 +144,10 @@ public class CoreParameters {
         return new SourceUid(value);
     }
 
+    public static SourceUid sourceUid(String value) {
+        return new SourceUid(value);
+    }
+
     public static StartBirth startBirth(long value) {
         return new StartBirth(value);
     }
@@ -148,7 +160,15 @@ public class CoreParameters {
         return new Suid(value);
     }
 
+    public static Suid suid(String value) {
+        return new Suid(value);
+    }
+
     public static TagId tagId(long value) {
+        return new TagId(value);
+    }
+
+    public static TagId tagId(String value) {
         return new TagId(value);
     }
 
@@ -161,6 +181,10 @@ public class CoreParameters {
     }
 
     public static TargetUid targetUid(long value) {
+        return new TargetUid(value);
+    }
+
+    public static TargetUid targetUid(String value) {
         return new TargetUid(value);
     }
 
@@ -185,6 +209,10 @@ public class CoreParameters {
     }
 
     public static Uid uid(long value) {
+        return new Uid(value);
+    }
+
+    public static Uid uid(String value) {
         return new Uid(value);
     }
 
