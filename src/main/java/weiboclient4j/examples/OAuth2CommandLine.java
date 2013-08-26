@@ -107,7 +107,6 @@ public class OAuth2CommandLine {
         cmd.retrieveUserTimeline();
         cmd.retrieveOtherTimeline();
         cmd.retrieveIds();
-        cmd.retrieveHotStatuses();
         cmd.updateStatus();
         cmd.retrieveAndUpdateComments();
     }
@@ -163,21 +162,6 @@ public class OAuth2CommandLine {
                 new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373")
         );
         statusService.destroy(id(uploadedStatusByImageUrl.getId()));
-    }
-
-    private void retrieveHotStatuses() throws WeiboClientException, IOException {
-        StatusService statusService = client.getStatusService();
-
-        List<Status> hotRepostDaily = statusService.getHotRepostDaily();
-        System.out.println();
-        System.out.println("Hot repost daily: " + writeObjectAsString(hotRepostDaily));
-
-        List<Status> hotRepostWeekly = statusService.getHotRepostWeekly();
-        System.out.println();
-        System.out.println("Hot report weekly: " + writeObjectAsString(hotRepostWeekly));
-
-        statusService.getHotCommentsDaily();
-        statusService.getHotCommentsWeekly();
     }
 
     private void retrieveIds() throws WeiboClientException {

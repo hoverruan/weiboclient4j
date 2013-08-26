@@ -12,7 +12,6 @@ import weiboclient4j.model.Status;
 import weiboclient4j.model.Timeline;
 import weiboclient4j.model.TimelineIds;
 import weiboclient4j.model.UploadedPic;
-import weiboclient4j.params.BaseApp;
 import weiboclient4j.params.Id;
 import weiboclient4j.params.IsBatch;
 import weiboclient4j.params.IsComment;
@@ -350,58 +349,6 @@ public class StatusService extends AbstractService {
         }
 
         return map;
-    }
-
-    public List<Status> getHotRepostDaily() throws WeiboClientException {
-        return getHotRepostDaily(Paging.EMPTY);
-    }
-
-    public List<Status> getHotRepostDaily(Paging paging) throws WeiboClientException {
-        return getHotRepostDaily(paging, BaseApp.No);
-    }
-
-    public List<Status> getHotRepostDaily(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return doGet("statuses/hot/repost_daily",
-                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
-    }
-
-    public List<Status> getHotRepostWeekly() throws WeiboClientException {
-        return getHotRepostWeekly(Paging.EMPTY);
-    }
-
-    public List<Status> getHotRepostWeekly(Paging paging) throws WeiboClientException {
-        return getHotRepostWeekly(paging, BaseApp.No);
-    }
-
-    public List<Status> getHotRepostWeekly(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return doGet("statuses/hot/repost_weekly",
-                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
-    }
-
-    public List<Status> getHotCommentsDaily() throws WeiboClientException {
-        return getHotCommentsDaily(Paging.EMPTY);
-    }
-
-    public List<Status> getHotCommentsDaily(Paging paging) throws WeiboClientException {
-        return getHotCommentsDaily(paging, BaseApp.No);
-    }
-
-    public List<Status> getHotCommentsDaily(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return doGet("statuses/hot/comments_daily",
-                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
-    }
-
-    public List<Status> getHotCommentsWeekly() throws WeiboClientException {
-        return getHotCommentsWeekly(Paging.EMPTY);
-    }
-
-    public List<Status> getHotCommentsWeekly(Paging paging) throws WeiboClientException {
-        return getHotCommentsWeekly(paging, BaseApp.No);
-    }
-
-    public List<Status> getHotCommentsWeekly(Paging paging, BaseApp baseApp) throws WeiboClientException {
-        return doGet("statuses/hot/comments_weekly",
-                paging, withParams(baseApp), Status.TYPE_STATUS_LIST);
     }
 
     public List<Count> getStatusesCounts(Collection<Id> ids) throws WeiboClientException {
