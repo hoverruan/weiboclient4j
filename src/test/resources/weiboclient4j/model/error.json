@@ -1,5 +1,5 @@
 {
-	"request":"/users/show.json",
-	"error_code":"403",
-	"error":"40315:Error: users/show out of rate limit!"
+  "request" : "/statuses/home_timeline.json",
+  "error_code" : "20502",
+  "error" : "Need you follow uid."
 }

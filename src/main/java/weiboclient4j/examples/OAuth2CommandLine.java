@@ -43,7 +43,6 @@ import java.util.prefs.Preferences;
 /**
  * @author Hover Ruan
  */
-//
 public class OAuth2CommandLine {
 
     public static final String API_KEY = "api_key";
@@ -151,7 +150,7 @@ public class OAuth2CommandLine {
 
         // Need advanced permission
 //        Status uploadedStatusByImageUrl = statusService.uploadImageUrl("Post image test",
-//                new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373")
+//               new URL("https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1306884373")
 //        );
 //        statusService.destroy(id(uploadedStatusByImageUrl.getId()));
     }

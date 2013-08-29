@@ -17,6 +17,6 @@ public class ParseWeiboErrorTest extends AbstractParseJsonTest {
 
         WeiboError error = JsonUtils.readValue(content, WeiboError.class);
         assertThat(error, is(notNullValue()));
-        assertThat(error.getErrorCode(), is("403"));
+        assertThat(error.getErrorCodeAsInt(), is(20502));
     }
 }
