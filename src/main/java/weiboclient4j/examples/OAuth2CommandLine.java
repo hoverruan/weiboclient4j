@@ -254,7 +254,7 @@ public class OAuth2CommandLine {
         System.out.println("Got account uid: " + uid);
     }
 
-    private void retrieveAccessToken() throws IOException {
+    private void retrieveAccessToken() throws IOException, WeiboClientException {
         String state = "__MY_STATE__";
         String authorizationCallback = "http://demo.localhost.weiboclient4j.org/callback";
         String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);

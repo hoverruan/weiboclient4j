@@ -23,7 +23,7 @@ public class WeiboClientException extends Exception {
     }
 
     public WeiboClientException(WeiboError error) {
-        this(error.getError());
+        this(error.toString());
 
         this.error = error;
     }

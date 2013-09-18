@@ -1,8 +1,12 @@
 package weiboclient4j;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import static weiboclient4j.utils.StringUtils.isBlank;
+
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WeiboError {
     // http://open.weibo.com/wiki/Error_code
     public static final int ERR_SYSTEM = 10001;
@@ -293,6 +297,10 @@ public class WeiboError {
 
     private String error;
 
+    public boolean isNotEmpty() {
+        return !(isBlank(request) && isBlank(errorCode) && isBlank(error));
+    }
+
     public String getRequest() {
         return request;
     }
@@ -315,6 +323,11 @@ public class WeiboError {
 
     public String getError() {
         return error;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s", errorCode, error);
     }
 
     public void setError(String error) {

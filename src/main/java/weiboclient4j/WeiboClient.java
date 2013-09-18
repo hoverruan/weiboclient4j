@@ -1,6 +1,7 @@
 package weiboclient4j;
 
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.exceptions.OAuthException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -47,6 +48,10 @@ public class WeiboClient {
         this.clientSecret = clientSecret;
     }
 
+    public WeiboClient(String accessToken) {
+        setAccessToken(accessToken);
+    }
+
     public long getConnectTimeout() {
         return connectTimeoutUnit.toMillis(connectTimeoutDuration);
     }
@@ -84,11 +89,12 @@ public class WeiboClient {
      * @deprecated Use {@link #getAccessTokenByCode(String, String)} for 'authorization_code' grant type
      */
     @Deprecated
-    public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String callback) {
+    public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String callback)
+            throws WeiboClientException {
         return getAccessTokenByCode(code, callback);
     }
 
-    public SinaWeibo2AccessToken getAccessTokenByCode(String code, String callback) {
+    public SinaWeibo2AccessToken getAccessTokenByCode(String code, String callback) throws WeiboClientException {
         SinaWeibo2Api api = new SinaWeibo2Api(GrantType.AuthorizationCode);
 
         ServiceBuilder serviceBuilder = new ServiceBuilder();
@@ -103,16 +109,28 @@ public class WeiboClient {
                 .provider(api)
                 .build();
 
-        accessToken = (SinaWeibo2AccessToken) service.getAccessToken(null, new Verifier(code));
+        return retrieveAccessToken(service, null, new Verifier(code));
+    }
+
+    private SinaWeibo2AccessToken retrieveAccessToken(OAuthService service, Token token, Verifier verifier)
+            throws WeiboClientException {
+        try {
+            accessToken = (SinaWeibo2AccessToken) service.getAccessToken(token, verifier);
+        } catch (OAuthException oe) {
+            if (oe.getCause() instanceof WeiboClientException) {
+                throw (WeiboClientException) oe.getCause();
+            }
+        }
 
         return accessToken;
     }
 
-    public SinaWeibo2AccessToken getAccessTokenByCode(String code) {
+    public SinaWeibo2AccessToken getAccessTokenByCode(String code) throws WeiboClientException {
         return getAccessTokenByCode(code, null);
     }
 
-    public SinaWeibo2AccessToken getAccessTokenByPassword(String username, String password) {
+    public SinaWeibo2AccessToken getAccessTokenByPassword(String username, String password)
+            throws WeiboClientException {
         SinaWeibo2Api api = new SinaWeibo2Api(GrantType.Password);
 
         OAuthService service = new ServiceBuilder()
@@ -121,9 +139,7 @@ public class WeiboClient {
                 .provider(api)
                 .build();
 
-        accessToken = (SinaWeibo2AccessToken) service.getAccessToken(new Token(username, password), null);
-
-        return accessToken;
+        return retrieveAccessToken(service, new Token(username, password), null);
     }
 
     public void setAccessToken(SinaWeibo2AccessToken accessToken) {

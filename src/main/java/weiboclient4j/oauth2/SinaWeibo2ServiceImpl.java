@@ -1,5 +1,6 @@
 package weiboclient4j.oauth2;
 
+import org.scribe.exceptions.OAuthException;
 import org.scribe.model.OAuthConfig;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
@@ -7,6 +8,13 @@ import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuth20ServiceImpl;
+import weiboclient4j.WeiboClientException;
+import weiboclient4j.WeiboError;
+import weiboclient4j.utils.JsonUtils;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Hover Ruan
@@ -17,6 +25,8 @@ public class SinaWeibo2ServiceImpl extends OAuth20ServiceImpl {
     public static final String USERNAME = "username";
 
     public static final String PASSWORD = "password";
+
+    private static final Logger log = Logger.getLogger(SinaWeibo2ServiceImpl.class.getName());
 
     private SinaWeibo2Api api;
 
@@ -45,6 +55,22 @@ public class SinaWeibo2ServiceImpl extends OAuth20ServiceImpl {
         }
 
         Response response = request.send();
-        return api.getAccessTokenExtractor().extract(response.getBody());
+        String responseBody = response.getBody();
+
+        if (!response.isSuccessful()) {
+            try {
+                WeiboError error = JsonUtils.readValue(responseBody, WeiboError.class);
+                if (error.isNotEmpty()) {
+                    throw new OAuthException("Failed with weibo error", new WeiboClientException(error));
+                }
+            } catch (IOException e) {
+                log.log(Level.WARNING, String.format("Failed to parse response: %d, %s", response.getCode(),
+                        responseBody));
+            }
+
+            return null;
+        }
+
+        return api.getAccessTokenExtractor().extract(responseBody);
     }
 }
