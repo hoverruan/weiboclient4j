@@ -26,7 +26,7 @@ public class SinaWeibo2ServiceImpl extends OAuth20ServiceImpl {
 
     public static final String PASSWORD = "password";
 
-    private static final Logger log = Logger.getLogger(SinaWeibo2ServiceImpl.class.getName());
+    private static Logger log = Logger.getLogger(SinaWeibo2ServiceImpl.class.getName());
 
     private SinaWeibo2Api api;
 
