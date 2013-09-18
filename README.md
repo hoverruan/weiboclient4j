@@ -17,7 +17,7 @@ Weiboclient4j
 <dependency>
   <groupId>com.github.hoverruan</groupId>
   <artifactId>weiboclient4j</artifactId>
-  <version>0.4.6</version>
+  <version>0.4.7</version>
 </dependency>
 ```
 
@@ -44,7 +44,7 @@ String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, 
 // 浏览器重定向到url; 用户授权; 然后返回callback地址
 String code = ... // 从新浪的回调请求里面获得code
 String accessTokenCallback = "..."; // 或者Access Token的Callback地址
-SinaWeibo2AccessToken accessToken = client.getAccessToken(GrantType.AuthorizationCode, code, state, accessTokenCallback);
+SinaWeibo2AccessToken accessToken = client.getAccessTokenByCode(code, accessTokenCallback);
 
 System.out.println("Access token: " + accessToken.getToken());
 System.out.println("User Uid: " + accessToken.getUid());
