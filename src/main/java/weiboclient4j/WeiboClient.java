@@ -120,6 +120,8 @@ public class WeiboClient {
             if (oe.getCause() instanceof WeiboClientException) {
                 throw (WeiboClientException) oe.getCause();
             }
+
+            throw new WeiboClientException("OAuth error", oe);
         }
 
         return accessToken;
