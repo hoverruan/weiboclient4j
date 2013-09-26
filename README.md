@@ -3,7 +3,13 @@ Weiboclient4j
 
 [![Build Status](https://travis-ci.org/hoverruan/weiboclient4j.png?branch=master)](https://travis-ci.org/hoverruan/weiboclient4j)
 
-Demo [Github](https://github.com/hoverruan/weiboclient4j-demo) [heroku](http://wc4jdemo.herokuapp.com/)
+演示 Demo
+--------
+
+一个演示怎样使用 `weiboclient4j` 的Demo应用：
+
+- 访问[代码 @ Github](https://github.com/hoverruan/weiboclient4j-demo)
+- 访问[部署在Heroku上的应用](http://wc4jdemo.herokuapp.com/)
 
 为什么需要另外一个Java版本的微博客户端？
 ----------------------------------
