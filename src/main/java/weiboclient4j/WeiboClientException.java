@@ -5,6 +5,7 @@ package weiboclient4j;
  */
 public class WeiboClientException extends Exception {
     private int responseCode;
+    private String responseBody;
     private WeiboError error;
 
     public WeiboClientException() {
@@ -28,20 +29,22 @@ public class WeiboClientException extends Exception {
         this.error = error;
     }
 
-    public WeiboClientException(int code, WeiboError error) {
+    public WeiboClientException(int code) {
+        responseCode = code;
+    }
+
+    public WeiboClientException(int code, String body, WeiboError error) {
         this(error);
 
         responseCode = code;
+        responseBody = body;
     }
 
-    public WeiboClientException(int code, Throwable cause) {
+    public WeiboClientException(int code, String body, Throwable cause) {
         this(cause);
 
         responseCode = code;
-    }
-
-    public WeiboClientException(int code) {
-        responseCode = code;
+        responseBody = body;
     }
 
     public boolean isWeiboError() {
@@ -54,5 +57,13 @@ public class WeiboClientException extends Exception {
 
     public int getResponseCode() {
         return responseCode;
+    }
+
+    public String getResponseBody() {
+        return responseBody;
+    }
+
+    public void setResponseBody(String responseBody) {
+        this.responseBody = responseBody;
     }
 }

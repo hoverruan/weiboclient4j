@@ -3,6 +3,7 @@ package weiboclient4j.model;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +11,12 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RepostTimeline {
+    public static final RepostTimeline EMPTY = new RepostTimeline() {
+        {
+            setReposts(new ArrayList<Status>());
+        }
+    };
+
     @JsonProperty("hasvisible")
     private boolean visible;
     private long previousCursor;

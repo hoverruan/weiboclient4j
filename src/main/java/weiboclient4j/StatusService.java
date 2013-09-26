@@ -28,6 +28,7 @@ import weiboclient4j.params.ScreenName;
 import weiboclient4j.params.StatusParam;
 import weiboclient4j.params.Uid;
 import weiboclient4j.params.Visible;
+import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.File;
 import java.io.IOException;
@@ -223,7 +224,17 @@ public class StatusService extends AbstractService {
 
     public <T extends GetRepostTimelineParam> RepostTimeline getRepostTimeline(
             Id id, Paging paging, T... optionalParams) throws WeiboClientException {
-        return doGet("statuses/repost_timeline", paging, buildParams(optionalParams, id), RepostTimeline.class);
+        try {
+            return doGet("statuses/repost_timeline", paging, buildParams(optionalParams, id), RepostTimeline.class);
+        } catch (WeiboClientException e) {
+            if (e.getWeiboError() == null && isNotBlank(e.getResponseBody())) {
+                if ("[]".equals(e.getResponseBody())) {
+                    return RepostTimeline.EMPTY;
+                }
+            }
+
+            throw e;
+        }
     }
 
     public static interface GetRepostTimelineIdsParam extends ParameterAction {

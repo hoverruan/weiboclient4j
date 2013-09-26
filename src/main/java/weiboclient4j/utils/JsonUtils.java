@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  */
 public final class JsonUtils {
     private static Logger log = Logger.getLogger("weiboclient2/json");
+
     private static ObjectMapper mapper = new ObjectMapper();
 
     static {
@@ -44,7 +45,7 @@ public final class JsonUtils {
 
     public static <T> T parseJsonObject(Response response, Class<T> clazz) throws WeiboClientException {
         if (response.isSuccessful()) {
-            return parseJsonObject(response.getBody(), clazz);
+            return parseJsonObject(response.getCode(), response.getBody(), clazz);
         } else {
             throw createException(response);
         }
@@ -53,7 +54,7 @@ public final class JsonUtils {
     public static <T> List<T> parseJsonObject(Response response, TypeReference<List<T>> type)
             throws WeiboClientException {
         if (response.isSuccessful()) {
-            return parseJsonObject(response.getBody(), type);
+            return parseJsonObject(response.getCode(), response.getBody(), type);
         } else {
             throw createException(response);
         }
@@ -63,7 +64,17 @@ public final class JsonUtils {
         try {
             return readValue(content, type);
         } catch (IOException e) {
-            handleWeiboError(content, e);
+            handleWeiboError(0, content, e);
+            return null;
+        }
+    }
+
+    private static <T> List<T> parseJsonObject(int code, String body, TypeReference<List<T>> type)
+            throws WeiboClientException {
+        try {
+            return readValue(body, type);
+        } catch (IOException e) {
+            handleWeiboError(code, body, e);
             return null;
         }
     }
@@ -72,7 +83,16 @@ public final class JsonUtils {
         try {
             return readValue(content, clazz);
         } catch (IOException e) {
-            handleWeiboError(content, e);
+            handleWeiboError(0, content, e);
+            return null;
+        }
+    }
+
+    private static <T> T parseJsonObject(int code, String content, Class<T> clazz) throws WeiboClientException {
+        try {
+            return readValue(content, clazz);
+        } catch (IOException e) {
+            handleWeiboError(code, content, e);
             return null;
         }
     }
@@ -84,23 +104,21 @@ public final class JsonUtils {
         if (isNotBlank(body)) {
             try {
                 WeiboError error = readValue(body, WeiboError.class);
-                return new WeiboClientException(code, error);
+                return new WeiboClientException(code, body, error);
             } catch (IOException e) {
-                log.warning("Parse failed for json: " + body);
-                return new WeiboClientException(code, e);
+                return new WeiboClientException(code, body, e);
             }
         } else {
             return new WeiboClientException(code);
         }
     }
 
-    private static void handleWeiboError(String content, IOException e) throws WeiboClientException {
+    private static void handleWeiboError(int code, String content, IOException e) throws WeiboClientException {
         try {
             WeiboError error = readValue(content, WeiboError.class);
-            throw new WeiboClientException(error);
-        } catch (IOException ex) {
-            log.warning("Parse failed for json: " + content);
-            throw new WeiboClientException(e);
+            throw new WeiboClientException(code, content, error);
+        } catch (IOException ioe) {
+            throw new WeiboClientException(code, content, e);
         }
     }
 
