@@ -3,7 +3,7 @@
 
 	<groupId>com.github.hoverruan</groupId>
 	<artifactId>weiboclient4j</artifactId>
-	<version>0.4.9-SNAPSHOT</version>
+	<version>0.4.9</version>
 	<packaging>jar</packaging>
 
 	<name>weiboclient4j</name>
@@ -33,7 +33,8 @@
 	<scm>
 		<url>https://github.com/hoverruan/weiboclient4j</url>
 		<connection>scm:git:git@github.com:hoverruan/weiboclient4j.git</connection>
-	</scm>
+	  <tag>weiboclient4j-0.4.9</tag>
+  </scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
