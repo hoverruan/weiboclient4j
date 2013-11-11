@@ -15,30 +15,58 @@ public class User {
     };
 
     private long id;
+
     private String idstr;
+
     private String screenName;
+
     private String name;
+
     private String province;
+
     private String city;
+
     private String location;
+
     private String description;
+
     private String url;
+
     private String profileImageUrl;
+
     private String profileUrl;
+
     private String domain;
+
     private String gender;
+
     private int followersCount;
+
     private int friendsCount;
+
     private int statusesCount;
+
     private int favouritesCount;
+
     private Date createdAt;
+
     private boolean following;
+
     private boolean followMe;
+
     private boolean verified;
+
     private boolean allowAllActMsg;
+
     private boolean geoEnabled;
+
     private Status status;
+
     private String remark;
+
+    private String avatarLarge;
+
+    private String verifiedReason;
 
     public long getId() {
         return id;
@@ -238,5 +266,21 @@ public class User {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAvatarLarge() {
+        return avatarLarge;
+    }
+
+    public void setAvatarLarge(String avatarLarge) {
+        this.avatarLarge = avatarLarge;
+    }
+
+    public String getVerifiedReason() {
+        return verifiedReason;
+    }
+
+    public void setVerifiedReason(String verifiedReason) {
+        this.verifiedReason = verifiedReason;
     }
 }
