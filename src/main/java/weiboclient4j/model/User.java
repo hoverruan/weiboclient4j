@@ -68,6 +68,9 @@ public class User {
 
     private String verifiedReason;
 
+    private int verifiedType;
+
+
     public long getId() {
         return id;
     }
@@ -282,5 +285,13 @@ public class User {
 
     public void setVerifiedReason(String verifiedReason) {
         this.verifiedReason = verifiedReason;
+    }
+
+    public int getVerifiedType() {
+        return verifiedType;
+    }
+
+    public void setVerifiedType(int verifiedType) {
+        this.verifiedType = verifiedType;
     }
 }
