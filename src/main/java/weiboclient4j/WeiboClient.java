@@ -212,6 +212,10 @@ public class WeiboClient {
         return new CommonService(this);
     }
 
+    public PlaceService getPlaceService() {
+        return new PlaceService(this);
+    }
+
     public LocationService getLocationService() {
         return new LocationService(this);
     }
