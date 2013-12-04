@@ -22,6 +22,6 @@ public abstract class FloatParam implements ParameterAction {
     protected abstract String paramKey();
 
     public void addParameter(Parameters params) {
-
+        params.add(paramKey(), getValue());
     }
 }
