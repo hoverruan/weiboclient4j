@@ -1,5 +1,6 @@
 package weiboclient4j;
 
+import org.codehaus.jackson.type.TypeReference;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.exceptions.OAuthException;
 import org.scribe.model.Token;
@@ -10,8 +11,11 @@ import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
+import weiboclient4j.params.Paging;
+import weiboclient4j.params.Parameters;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,6 +41,8 @@ public class WeiboClient {
 
     private TimeUnit readTimeoutUnit = TimeUnit.SECONDS;
 
+    private AbstractService defaultService;
+
     /**
      * Create api client v2.
      *
@@ -46,6 +52,8 @@ public class WeiboClient {
     public WeiboClient(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+
+        initDefaultService();
     }
 
     public WeiboClient(String accessToken) {
@@ -110,21 +118,6 @@ public class WeiboClient {
                 .build();
 
         return retrieveAccessToken(service, null, new Verifier(code));
-    }
-
-    private SinaWeibo2AccessToken retrieveAccessToken(OAuthService service, Token token, Verifier verifier)
-            throws WeiboClientException {
-        try {
-            accessToken = (SinaWeibo2AccessToken) service.getAccessToken(token, verifier);
-        } catch (OAuthException oe) {
-            if (oe.getCause() instanceof WeiboClientException) {
-                throw (WeiboClientException) oe.getCause();
-            }
-
-            throw new WeiboClientException("OAuth error", oe);
-        }
-
-        return accessToken;
     }
 
     public SinaWeibo2AccessToken getAccessTokenByCode(String code) throws WeiboClientException {
@@ -220,11 +213,100 @@ public class WeiboClient {
         return new LocationService(this);
     }
 
+    public <T> T get(String path, Paging paging, Parameters params, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doGet(path, paging, params, clazz);
+    }
+
+    public <T> T get(String path, Parameters params, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doGet(path, params, clazz);
+    }
+
+    public <T> T get(String path, Paging paging, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doGet(path, paging, clazz);
+    }
+
+    public <T> T get(String path, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doGet(path, clazz);
+    }
+
+    public <T> List<T> get(String path, Paging paging, Parameters params, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        return defaultService.doGet(path, paging, params, typeReference);
+    }
+
+    public <T> List<T> get(String path, Parameters params, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        return defaultService.doGet(path, params, typeReference);
+    }
+
+    public <T> List<T> get(String path, Paging paging, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        return defaultService.doGet(path, paging, typeReference);
+    }
+
+    public <T> List<T> get(String path, TypeReference<List<T>> typeReference) throws WeiboClientException {
+        return defaultService.doGet(path, typeReference);
+    }
+
+    public <T> T post(String path, Paging paging, Parameters params, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doPost(path, paging, params, clazz);
+    }
+
+    public <T> T post(String path, Parameters params, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doPost(path, params, clazz);
+    }
+
+    public <T> T post(String path, Paging paging, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doPost(path, paging, clazz);
+    }
+
+    public <T> T post(String path, Class<T> clazz) throws WeiboClientException {
+        return defaultService.doPost(path, clazz);
+    }
+
+    public <T> List<T> post(String path, Paging paging, Parameters params, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        return defaultService.doPost(path, paging, params, typeReference);
+    }
+
+    public <T> List<T> post(String path, Parameters params, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        return defaultService.doPost(path, params, typeReference);
+    }
+
+    public <T> List<T> post(String path, Paging paging, TypeReference<List<T>> typeReference)
+            throws WeiboClientException {
+        return defaultService.doPost(path, paging, typeReference);
+    }
+
+    public <T> List<T> post(String path, TypeReference<List<T>> typeReference) throws WeiboClientException {
+        return defaultService.doPost(path, typeReference);
+    }
+
     protected void initService(AbstractService service) {
         service.setAccessToken(accessToken);
         service.setConnectTimeoutDuration(connectTimeoutDuration);
         service.setConnectTimeoutUnit(connectTimeoutUnit);
         service.setReadTimeoutDuration(readTimeoutDuration);
         service.setReadTimeoutUnit(readTimeoutUnit);
+    }
+
+    private void initDefaultService() {
+        defaultService = new AbstractService(this);
+    }
+
+    private SinaWeibo2AccessToken retrieveAccessToken(OAuthService service, Token token, Verifier verifier)
+            throws WeiboClientException {
+        try {
+            accessToken = (SinaWeibo2AccessToken) service.getAccessToken(token, verifier);
+        } catch (OAuthException oe) {
+            if (oe.getCause() instanceof WeiboClientException) {
+                throw (WeiboClientException) oe.getCause();
+            }
+
+            throw new WeiboClientException("OAuth error", oe);
+        }
+
+        return accessToken;
     }
 }
