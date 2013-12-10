@@ -15,6 +15,7 @@ import static weiboclient4j.utils.JsonUtils.parseJsonObject;
 import weiboclient4j.utils.StreamUtils;
 import static weiboclient4j.utils.StreamUtils.closeQuietly;
 import static weiboclient4j.utils.StreamUtils.newStreamWriter;
+import weiboclient4j.utils.StringUtils;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.BufferedOutputStream;
@@ -36,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 public class AbstractService {
     public static final String API2_URL = "https://api.weibo.com/2/";
 
-    public static final TypeReference<List<Map<String, String>>> LIST_MAP_S_S_TYPE_REFERENCE =
+    protected static final TypeReference<List<Map<String, String>>> LIST_MAP_S_S_TYPE_REFERENCE =
             new TypeReference<List<Map<String, String>>>() {
             };
 
@@ -122,9 +123,9 @@ public class AbstractService {
         for (Parameters.Parameter param : params.getParameterList()) {
             writer.writeLine(boundary)
                     .writeLine("Content-Disposition: form-data; name=\"" + param.getKey() + "\"")
-                    .writeLine("Content-Type: text/plain; charset=UTF-8")
+                    .writeLine("Content-Type: text/plain; charset=" + StringUtils.DEFAULT_ENCODING)
                     .writeLine()
-                    .writeLine(param.getValue().getBytes("UTF-8"));
+                    .writeLine(param.getValue().getBytes(StringUtils.DEFAULT_ENCODING));
         }
     }
 

@@ -5,9 +5,7 @@ import org.scribe.extractors.AccessTokenExtractor;
 import org.scribe.model.OAuthConfig;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import static weiboclient4j.utils.StringUtils.encodeUrl;
 
 /**
  * @author Hover Ruan
@@ -61,21 +59,12 @@ public class SinaWeibo2Api extends DefaultApi20 {
 
     @Override
     public String getAuthorizationUrl(OAuthConfig config) {
-        try {
-            return String.format(AUTHORIZE_URL,
-                    config.getApiKey(),
-                    URLEncoder.encode(config.getCallback(), "UTF-8"),
-                    responseType.getType(),
-                    state,
-                    displayType.getDisplay());
-        } catch (UnsupportedEncodingException e) {
-            return String.format(AUTHORIZE_URL,
-                    config.getApiKey(),
-                    URLEncoder.encode(config.getCallback()),
-                    responseType.getType(),
-                    state,
-                    displayType.getDisplay());
-        }
+        return String.format(AUTHORIZE_URL,
+                config.getApiKey(),
+                encodeUrl(config.getCallback()),
+                responseType.getType(),
+                state,
+                displayType.getDisplay());
     }
 
     @Override

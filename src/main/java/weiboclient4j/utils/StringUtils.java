@@ -1,5 +1,7 @@
 package weiboclient4j.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -7,6 +9,9 @@ import java.util.Collection;
  * @author Hover Ruan
  */
 public final class StringUtils {
+
+    public static final String DEFAULT_ENCODING = "UTF-8";
+
     private StringUtils() {
     }
 
@@ -38,5 +43,13 @@ public final class StringUtils {
         }
 
         return result;
+    }
+
+    public static String encodeUrl(String url) {
+        try {
+            return URLEncoder.encode(url, DEFAULT_ENCODING);
+        } catch (UnsupportedEncodingException ignore) {
+            return url;
+        }
     }
 }
