@@ -58,6 +58,8 @@ public class WeiboClient {
 
     public WeiboClient(String accessToken) {
         setAccessToken(accessToken);
+
+        initDefaultService();
     }
 
     public long getConnectTimeout() {
