@@ -80,6 +80,14 @@ public class WeiboClient {
         this.readTimeoutUnit = unit;
     }
 
+    public String getAuthorizationUrl(String callback) {
+        return getAuthorizationUrl(null, callback);
+    }
+
+    public String getAuthorizationUrl(String state, String callback) {
+        return getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, callback);
+    }
+
     public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state,
                                       String callback) {
         SinaWeibo2Api api = new SinaWeibo2Api(responseType, displayType);
