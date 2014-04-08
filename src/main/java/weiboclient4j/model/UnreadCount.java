@@ -7,11 +7,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UnreadCount {
-    // V1 fields, TODO remove these fields
-    private int comments;
-    private int followers;
-    private int newStatus;
-    private int mentions;
 
     // V2 fields
     private int dm;
@@ -26,30 +21,7 @@ public class UnreadCount {
     private int invite;
     private int badge;
     private int photo;
-
-    public int getComments() {
-        return comments;
-    }
-
-    public void setComments(int comments) {
-        this.comments = comments;
-    }
-
-    public int getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(int followers) {
-        this.followers = followers;
-    }
-
-    public int getNewStatus() {
-        return newStatus;
-    }
-
-    public void setNewStatus(int newStatus) {
-        this.newStatus = newStatus;
-    }
+    private int msgbox;
 
     public int getDm() {
         return dm;
@@ -57,14 +29,6 @@ public class UnreadCount {
 
     public void setDm(int dm) {
         this.dm = dm;
-    }
-
-    public int getMentions() {
-        return mentions;
-    }
-
-    public void setMentions(int mentions) {
-        this.mentions = mentions;
     }
 
     public int getStatus() {
@@ -153,5 +117,13 @@ public class UnreadCount {
 
     public void setPhoto(int photo) {
         this.photo = photo;
+    }
+
+    public int getMsgbox() {
+        return msgbox;
+    }
+
+    public void setMsgbox(int msgbox) {
+        this.msgbox = msgbox;
     }
 }
