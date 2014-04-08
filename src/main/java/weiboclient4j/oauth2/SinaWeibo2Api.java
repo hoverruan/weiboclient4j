@@ -26,7 +26,7 @@ public class SinaWeibo2Api extends DefaultApi20 {
 
     private DisplayType displayType = DisplayType.Default;
 
-    private GrantType grantType = GrantType.RefreshToken;
+    private GrantType grantType = GrantType.AuthorizationCode;
 
     private String state = "";
 
