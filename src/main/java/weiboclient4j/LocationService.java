@@ -53,6 +53,10 @@ public class LocationService extends AbstractService {
         return doGet("location/pois/search/by_location", paging, buildParams(params), LocationPoiList.class);
     }
 
+    public <T extends SearchByLocationParam> LocationPoiList searchByLocation(T... params) throws WeiboClientException {
+        return searchByLocation(Paging.EMPTY, params);
+    }
+
     public static interface SearchByLocationParam extends ParameterAction {
     }
 
