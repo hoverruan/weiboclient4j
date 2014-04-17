@@ -16,6 +16,7 @@ public class Count {
     private long id;
     private int comments;
     private int reposts;
+    private int attitudes;
 
     // API V1 fields
     private int rt;
@@ -50,5 +51,13 @@ public class Count {
 
     public void setReposts(int reposts) {
         this.reposts = reposts;
+    }
+
+    public int getAttitudes() {
+        return attitudes;
+    }
+
+    public void setAttitudes(int attitudes) {
+        this.attitudes = attitudes;
     }
 }
