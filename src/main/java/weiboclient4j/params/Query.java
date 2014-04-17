@@ -8,7 +8,8 @@ import weiboclient4j.PlaceService;
  */
 public class Query extends StringParam implements
         PlaceService.GetNearbyPoisParam,
-        LocationService.SearchByLocationParam {
+        LocationService.SearchByLocationParam,
+        LocationService.SearchByAreaParam {
 
     public Query(String value) {
         super(value);
