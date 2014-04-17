@@ -152,3 +152,73 @@ Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All);
 ----
 
 [阮永沛Hover](http://weibo.com/hoverruan) @ 新浪微博
+
+CHANGELOG
+---------
+
+* 0.4.14
+    * 将默认的grantType设置为AuthorizationCode
+    * 将UnreadCount的V1的字段删除
+    * 添加简化的获取AccessToken的方法
+    * 在User中添加attitudes字段
+* 0.4.13
+    * 修复WeiboClient使用AccessToken初始化时的一个问题
+* 0.4.12
+    * 将get(...)和post(...)方法添加到WeiboClient
+* 0.4.11
+    * 修复FloatParam没法添加参数的问题
+    * 在WeiboClient添加getPlaceService()方法
+* 0.4.10
+    * 在User中添加新字段：verifiedType
+* 0.4.9
+    * 在User中添加两个新字段：avatarLarge和verifiedReason
+* 0.4.8
+    * 抛出OAuthException
+    * 修复获取转发列表的一个BUG
+* 0.4.7
+    * 处理OAuth的异常
+* 0.4.6
+    * 添加微博错误代码
+    * 去掉了一些已经不存的接口
+* 0.4.5
+    * 修复上传图片的错误
+* 0.4.4
+    * 实现上传图片以及发送多图微博的接口
+    * 支持password类型的grant_type认证
+* 0.4.3
+    * 实现地理接口中的"坐标转换接口"
+    * 引入 weiboclient4j.params.P 简化参数对象的创建
+    * 实现地理接口中的"生成一张静态的地图图片"接口
+    * 将model中的字段hasvisible改名成visible
+* 0.4.2
+    * 将WeiboClient2重命名为WeiboClient
+* 0.4.1
+    * Fixed #7
+* 0.4.0
+    * 添加CoreParameters语法糖
+    * 去掉第一版的API支持
+    * 添加travis-ci.org自动构建状态
+    * 重构各个Service，使用可变参数
+* 0.3.3
+    * 完成所有的位置服务的接口
+
+* 0.3.2
+    * 实现位置接口中的"获取用户的todo列表"接口
+    * 实现位置接口中的"获取用户的点评列表"接口
+    * 实现位置接口中的"获取用户的照片列表"接口
+    * 实现位置接口中的"获取用户签到过的地点列表"接口
+    * 实现推荐接口中的"获取用户可能感兴趣的人"接口
+    * 将 Access Token 放到 HTTP Header 中
+    * 为上传图片功能添加几个快捷方法
+* 0.3.1
+    * 实现位置服务 (PlaceService) 中的用户读取接口
+    * 实现上传图片并发布一条微博的接口 (http://open.weibo.com/wiki/2/statuses/upload)
+    * 实现位置服务 (PlaceService) 中的动态读取接口
+* 0.3.0
+    * 将新浪微博接口2.0的实现从巨大的 WeiboClient2 分离到多个小的 Service 中
+
+* 0.2.x
+    * 实现新浪微博接口2.0的主要功能
+
+* 0.1
+    * 实现新浪微博接口1.0的主要功能
