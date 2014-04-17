@@ -25,7 +25,7 @@ Weiboclient4j
 <dependency>
   <groupId>com.github.hoverruan</groupId>
   <artifactId>weiboclient4j</artifactId>
-  <version>0.4.13</version>
+  <version>0.4.14</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ OAuth2例子：
 ```java
 String authorizationCallback = "..."; // 你的Callback地址
 String state = "...";
-String url = client.getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, authorizationCallback);
+String url = client.getAuthorizationUrl(state, authorizationCallback);
 
 // 浏览器重定向到url; 用户授权; 然后返回callback地址
 String code = ... // 从新浪的回调请求里面获得code
@@ -63,6 +63,8 @@ System.out.println("Remind in: " + accessToken.getRemindIn());
 获取用户Timeline例子：
 
 ```java
+String accessToken = "xxxxxxx";
+WeiboClient client = new WeiboClient(accessToken);
 StatusService service = client.getStatusService();
 Timeline friendsTimeline = service.getFriendsTimeline();
 ```

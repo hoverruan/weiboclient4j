@@ -1,5 +1,31 @@
 weiboclient4j CHANGELOG
 
+*** 0.4.14
+ * 将默认的grantType设置为AuthorizationCode
+ * 将UnreadCount的V1的字段删除
+ * 添加简化的获取AccessToken的方法
+ * 在User中添加attitudes字段
+
+*** 0.4.13
+ * 修复WeiboClient使用AccessToken初始化时的一个问题
+
+*** 0.4.12
+ * 将get(...)和post(...)方法添加到WeiboClient
+
+*** 0.4.11
+ * 修复FloatParam没法添加参数的问题
+ * 在WeiboClient添加getPlaceService()方法
+
+*** 0.4.10
+ * 在User中添加新字段：verifiedType
+
+*** 0.4.9
+ * 在User中添加两个新字段：avatarLarge和verifiedReason
+
+*** 0.4.8
+ * 抛出OAuthException
+ * 修复获取转发列表的一个BUG
+
 *** 0.4.7
  * 处理OAuth的异常
 
