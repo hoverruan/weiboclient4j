@@ -1,5 +1,6 @@
 package weiboclient4j.params;
 
+import weiboclient4j.LocationService;
 import weiboclient4j.PlaceService;
 
 /**
@@ -7,7 +8,9 @@ import weiboclient4j.PlaceService;
  */
 public class Category extends StringParam implements
         PlaceService.GetNearbyPoisParam,
-        PlaceService.SearchPoisParam {
+        PlaceService.SearchPoisParam,
+        LocationService.SearchByLocationParam {
+
     public Category(String value) {
         super(value);
     }

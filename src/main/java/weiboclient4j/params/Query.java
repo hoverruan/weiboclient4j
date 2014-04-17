@@ -1,12 +1,15 @@
 package weiboclient4j.params;
 
+import weiboclient4j.LocationService;
 import weiboclient4j.PlaceService;
 
 /**
  * @author Hover Ruan
  */
 public class Query extends StringParam implements
-        PlaceService.GetNearbyPoisParam {
+        PlaceService.GetNearbyPoisParam,
+        LocationService.SearchByLocationParam {
+
     public Query(String value) {
         super(value);
     }

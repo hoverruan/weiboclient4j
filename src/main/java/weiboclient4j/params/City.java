@@ -8,7 +8,8 @@ import weiboclient4j.PlaceService;
  */
 public class City extends StringParam implements
         PlaceService.SearchPoisParam,
-        LocationService.GetMapImageParam {
+        LocationService.GetMapImageParam,
+        LocationService.SearchByLocationParam {
 
     public City(String value) {
         super(value);

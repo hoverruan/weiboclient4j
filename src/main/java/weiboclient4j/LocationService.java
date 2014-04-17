@@ -3,10 +3,12 @@ package weiboclient4j;
 import org.codehaus.jackson.JsonNode;
 import weiboclient4j.model.DomesticResult;
 import weiboclient4j.model.Geo;
+import weiboclient4j.model.LocationPoiList;
 import weiboclient4j.params.Address;
 import weiboclient4j.params.Coordinate;
 import weiboclient4j.params.Coordinates;
 import weiboclient4j.params.Ip;
+import weiboclient4j.params.Paging;
 import weiboclient4j.params.ParameterAction;
 import static weiboclient4j.utils.CollectionUtils.firstItem;
 
@@ -44,6 +46,14 @@ public class LocationService extends AbstractService {
         JsonNode json = doGet("location/geo/is_domestic", withParams(coordinates), JsonNode.class);
 
         return DomesticResult.parseList(json);
+    }
+
+    public <T extends SearchByLocationParam> LocationPoiList searchByLocation(Paging paging, T... params)
+            throws WeiboClientException {
+        return doGet("location/pois/search/by_location", paging, buildParams(params), LocationPoiList.class);
+    }
+
+    public static interface SearchByLocationParam extends ParameterAction {
     }
 
     public static interface GetMapImageParam extends ParameterAction {
