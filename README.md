@@ -25,7 +25,7 @@ Weiboclient4j
 <dependency>
   <groupId>com.github.hoverruan</groupId>
   <artifactId>weiboclient4j</artifactId>
-  <version>0.4.14</version>
+  <version>0.4.15</version>
 </dependency>
 ```
 
@@ -156,6 +156,8 @@ Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All);
 CHANGELOG
 ---------
 
+* 0.4.15
+    * 实现"获取Token信息"接口
 * 0.4.14
     * 将默认的grantType设置为AuthorizationCode
     * 将UnreadCount的V1的字段删除

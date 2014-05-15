@@ -6,6 +6,7 @@ import org.scribe.exceptions.OAuthException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+import weiboclient4j.model.TokenInfo;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
@@ -153,6 +154,14 @@ public class WeiboClient {
 
     public void setAccessToken(String accessToken) {
         setAccessToken(new SinaWeibo2AccessToken(accessToken));
+    }
+
+    public TokenInfo getTokenInfo() throws WeiboClientException {
+        if (accessToken == null) {
+            throw new WeiboClientException("Empty accessToken");
+        }
+
+        return post("oauth2/get_token_info", TokenInfo.class);
     }
 
     public StatusService getStatusService() {
