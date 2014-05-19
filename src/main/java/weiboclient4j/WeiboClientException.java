@@ -1,5 +1,7 @@
 package weiboclient4j;
 
+import weiboclient4j.utils.StringUtils;
+
 /**
  * @author Hover Ruan
  */
@@ -27,6 +29,19 @@ public class WeiboClientException extends Exception {
         this(error.toString());
 
         this.error = error;
+    }
+
+    @Override
+    public String getMessage() {
+        String sourceMessage = super.getMessage();
+
+        if (StringUtils.isNotBlank(responseBody)) {
+            return String.format("<%d: %s> %s", responseCode, responseBody, sourceMessage);
+        } else if (responseCode != 0) {
+            return String.format("<%d> %s", responseCode, sourceMessage);
+        } else {
+            return sourceMessage;
+        }
     }
 
     public WeiboClientException(int code) {
