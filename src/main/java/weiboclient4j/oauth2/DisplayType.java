@@ -17,6 +17,10 @@ public enum DisplayType {
 
     Js("js"),
 
+    Wap("wap"),
+
+    Client("client"),
+
     AppOnWeibo("apponweibo");
 
     private String display;
