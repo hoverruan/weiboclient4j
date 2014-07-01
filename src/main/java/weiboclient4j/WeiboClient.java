@@ -6,7 +6,6 @@ import org.scribe.exceptions.OAuthException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
-import static weiboclient4j.AbstractService.withParams;
 import weiboclient4j.model.TokenInfo;
 import weiboclient4j.oauth2.DisplayType;
 import weiboclient4j.oauth2.ForceLogin;
@@ -14,7 +13,6 @@ import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
 import weiboclient4j.oauth2.SinaWeibo2Api;
-import weiboclient4j.params.AccessToken;
 import weiboclient4j.params.Paging;
 import weiboclient4j.params.Parameters;
 import static weiboclient4j.utils.StringUtils.isNotBlank;
@@ -173,12 +171,7 @@ public class WeiboClient {
     }
 
     public TokenInfo getTokenInfo() throws WeiboClientException {
-        if (accessToken == null) {
-            throw new WeiboClientException("Empty accessToken");
-        }
-
-        return post("https://api.weibo.com/oauth2/get_token_info",
-                withParams(new AccessToken(accessToken)), TokenInfo.class);
+        return post("https://api.weibo.com/oauth2/get_token_info", TokenInfo.class);
     }
 
     public StatusService getStatusService() {
