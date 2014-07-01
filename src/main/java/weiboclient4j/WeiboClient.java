@@ -9,6 +9,7 @@ import org.scribe.oauth.OAuthService;
 import static weiboclient4j.AbstractService.withParams;
 import weiboclient4j.model.TokenInfo;
 import weiboclient4j.oauth2.DisplayType;
+import weiboclient4j.oauth2.ForceLogin;
 import weiboclient4j.oauth2.GrantType;
 import weiboclient4j.oauth2.ResponseType;
 import weiboclient4j.oauth2.SinaWeibo2AccessToken;
@@ -87,13 +88,26 @@ public class WeiboClient {
         return getAuthorizationUrl(null, callback);
     }
 
+    public String getAuthorizationUrl(String callback, ForceLogin forceLogin) {
+        return getAuthorizationUrl(null, callback, forceLogin);
+    }
+
     public String getAuthorizationUrl(String state, String callback) {
         return getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, callback);
     }
 
+    public String getAuthorizationUrl(String state, String callback, ForceLogin forceLogin) {
+        return getAuthorizationUrl(ResponseType.Code, DisplayType.Default, state, callback, forceLogin);
+    }
+
     public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state,
                                       String callback) {
-        SinaWeibo2Api api = new SinaWeibo2Api(responseType, displayType);
+        return getAuthorizationUrl(responseType, displayType, state, callback, ForceLogin.No);
+    }
+
+    public String getAuthorizationUrl(ResponseType responseType, DisplayType displayType, String state,
+                                      String callback, ForceLogin forceLogin) {
+        SinaWeibo2Api api = new SinaWeibo2Api(responseType, displayType, forceLogin);
         api.setState(state);
 
         OAuthService service = new ServiceBuilder()
@@ -106,9 +120,9 @@ public class WeiboClient {
         return service.getAuthorizationUrl(null);
     }
 
-    /**
-     * @deprecated Use {@link #getAccessTokenByCode(String, String)} for 'authorization_code' grant type
-     */
+        /**
+         * @deprecated Use {@link #getAccessTokenByCode(String, String)} for 'authorization_code' grant type
+         */
     @Deprecated
     public SinaWeibo2AccessToken getAccessToken(GrantType grantType, String code, String callback)
             throws WeiboClientException {

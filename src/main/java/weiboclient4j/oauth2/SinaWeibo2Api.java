@@ -20,13 +20,16 @@ public class SinaWeibo2Api extends DefaultApi20 {
                     + "&redirect_uri=%s"
                     + "&response_type=%s"
                     + "&state=%s"
-                    + "&display=%s";
+                    + "&display=%s"
+                    + "&forcelogin=%s";
 
     private ResponseType responseType = ResponseType.Code;
 
     private DisplayType displayType = DisplayType.Default;
 
     private GrantType grantType = GrantType.AuthorizationCode;
+
+    private ForceLogin forceLogin = ForceLogin.No;
 
     private String state = "";
 
@@ -37,9 +40,10 @@ public class SinaWeibo2Api extends DefaultApi20 {
         this.grantType = grantType;
     }
 
-    public SinaWeibo2Api(ResponseType responseType, DisplayType displayType) {
+    public SinaWeibo2Api(ResponseType responseType, DisplayType displayType, ForceLogin forceLogin) {
         this.responseType = responseType;
         this.displayType = displayType;
+        this.forceLogin = forceLogin;
     }
 
     @Override
@@ -64,7 +68,8 @@ public class SinaWeibo2Api extends DefaultApi20 {
                 encodeUrl(config.getCallback()),
                 responseType.getType(),
                 state,
-                displayType.getDisplay());
+                displayType.getDisplay(),
+                forceLogin.getValue());
     }
 
     @Override

@@ -40,7 +40,7 @@ public final class Parameters {
     }
 
     public Parameters add(String key, boolean value) {
-        return add(key, value ? 1 : 0);
+        return add(key, String.valueOf(value));
     }
 
     public Parameters add(String key, float value) {
