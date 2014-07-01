@@ -25,7 +25,7 @@ Weiboclient4j
 <dependency>
   <groupId>com.github.hoverruan</groupId>
   <artifactId>weiboclient4j</artifactId>
-  <version>0.4.15</version>
+  <version>0.4.16</version>
 </dependency>
 ```
 
@@ -156,6 +156,8 @@ Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All);
 CHANGELOG
 ---------
 
+* 0.4.16
+    * 添加ForceLogin选项
 * 0.4.15
     * 实现"获取Token信息"接口
 * 0.4.14
