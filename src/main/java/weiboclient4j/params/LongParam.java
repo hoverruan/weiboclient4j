@@ -10,6 +10,15 @@ public abstract class LongParam implements ParameterAction {
         this.value = value;
     }
 
+    public LongParam(String aLongValue) {
+        try {
+            this.value = Long.parseLong(aLongValue);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(String.format("%s value [%s] is not a valid long number",
+                    getClass().getSimpleName(), aLongValue));
+        }
+    }
+
     public long getValue() {
         return value;
     }

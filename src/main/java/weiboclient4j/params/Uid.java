@@ -17,7 +17,7 @@ public class Uid extends LongParam {
     }
 
     public Uid(String value) {
-        this(Long.parseLong(value));
+        super(value);
     }
 
     protected String paramKey() {

@@ -11,7 +11,7 @@ public class TargetUid extends LongParam {
     }
 
     public TargetUid(String value) {
-        this(Long.parseLong(value));
+        super(value);
     }
 
     protected String paramKey() {

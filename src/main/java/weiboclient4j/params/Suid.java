@@ -11,7 +11,7 @@ public class Suid extends LongParam {
     }
 
     public Suid(String value) {
-        this(Long.parseLong(value));
+        super(value);
     }
 
     protected String paramKey() {

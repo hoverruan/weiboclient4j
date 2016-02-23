@@ -29,11 +29,7 @@ public class CoreParameters {
     }
 
     public static Cid cid(String value) {
-        try {
-            return new Cid(value);
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException(String.format("Cid value [%s] is not a parsable Long", value));
-        }
+        return new Cid(value);
     }
 
     public static City city(String value) {

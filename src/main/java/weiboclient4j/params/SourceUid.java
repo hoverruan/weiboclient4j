@@ -11,7 +11,7 @@ public class SourceUid extends LongParam {
     }
 
     public SourceUid(String value) {
-        this(Long.parseLong(value));
+        super(value);
     }
 
     protected String paramKey() {

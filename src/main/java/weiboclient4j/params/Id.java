@@ -19,7 +19,7 @@ public class Id extends LongParam {
     }
 
     public Id(String value) {
-        this(Long.parseLong(value));
+        super(value);
     }
 
     protected String paramKey() {
