@@ -156,6 +156,8 @@ Timeline timeline = service.getFriendsTimeline(paging, BaseApp.No, Feature.All);
 CHANGELOG
 ---------
 
+* 0.4.18
+    * 在SinaWeibo2AccessTokenResponse添加isRealName字段
 * 0.4.17
     * 优化错误提示
 * 0.4.16
