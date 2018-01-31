@@ -6,20 +6,20 @@ import org.codehaus.jackson.type.TypeReference;
 import org.scribe.model.Response;
 import weiboclient4j.WeiboClientException;
 import weiboclient4j.WeiboError;
-import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.logging.Logger;
+
+import static weiboclient4j.utils.StringUtils.isNotBlank;
 
 /**
  * @author Hover Ruan
  */
 public final class JsonUtils {
-    private static Logger log = Logger.getLogger("weiboclient2/json");
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -65,7 +65,7 @@ public final class JsonUtils {
             return readValue(content, type);
         } catch (IOException e) {
             handleWeiboError(0, content, e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -75,7 +75,7 @@ public final class JsonUtils {
             return readValue(body, type);
         } catch (IOException e) {
             handleWeiboError(code, body, e);
-            return null;
+            return Collections.emptyList();
         }
     }
 

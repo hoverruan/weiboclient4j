@@ -1,6 +1,7 @@
 {
-  "access_token":"ACCESS_TOKEN",
-  "expires_in":1234,
-  "remind_in":"798114",
-  "uid":"12341234"
+  "access_token": "ACCESS_TOKEN",
+  "expires_in": 1234,
+  "remind_in": "798114",
+  "uid": "12341234",
+  "isRealName": "true"
 }

@@ -1,13 +1,18 @@
 package weiboclient4j.oauth2;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * @author Hover Ruan
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SinaWeibo2AccessTokenResponse {
     private String accessToken;
     private long expiresIn;
     private long remindIn;
     private long uid;
+    private boolean realName;
 
     public String getAccessToken() {
         return accessToken;
@@ -39,5 +44,14 @@ public class SinaWeibo2AccessTokenResponse {
 
     public void setUid(long uid) {
         this.uid = uid;
+    }
+
+    public boolean isRealName() {
+        return realName;
+    }
+
+    @JsonProperty("isRealName")
+    public void setRealName(boolean realName) {
+        this.realName = realName;
     }
 }

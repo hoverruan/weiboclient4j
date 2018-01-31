@@ -18,5 +18,6 @@ public class ParseSinaWeibo2AccessTokenResponseTest extends AbstractParseJsonTes
         assertEquals("ExpiresIn", 1234, response.getExpiresIn());
         assertEquals("RemindIn", 798114, response.getRemindIn());
         assertEquals("Uid", 12341234, response.getUid());
+        assertEquals("isRealName", true, response.isRealName());
     }
 }
